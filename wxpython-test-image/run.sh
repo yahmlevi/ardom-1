@@ -4,14 +4,21 @@ set -e
 
 
 # HOST_IP=$(ipconfig | grep inet | head -1 | awk '{print $2}')
-HOST_IP="192.168.65.0"
-echo host_ip: $HOST_IP
-DISPLAY=$HOST_IP:0.0
+# HOST_IP="192.168.65.0"
+
+# https://nickjanetakis.com/blog/docker-tip-65-get-your-docker-hosts-ip-address-from-in-a-container
+# HOST_IP="host.docker.internal"
+
+HOST_IP="172.17.0.2"
+
+echo "HOST_IP: $HOST_IP"
+
+DISPLAY="$HOST_IP:0.0"
 echo $DISPLAY
 
 IMAGE="simple-gui:latest"
 # IMAGE="test1"
-docker run -e DISPLAY=$DISPLAY $IMAGE
+docker run -it --rm -e DISPLAY=$DISPLAY $IMAGE
 
 
 
