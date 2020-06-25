@@ -14,11 +14,17 @@ HOST_IP="172.17.0.2"
 echo "HOST_IP: $HOST_IP"
 
 DISPLAY="$HOST_IP:0.0"
+# DISPLAY=":0.0"
+
+# DISPLAY="127.0.0.1:10.0"
 echo $DISPLAY
 
 IMAGE="simple-gui:latest"
 # IMAGE="test1"
+
 docker run -it --rm -e DISPLAY=$DISPLAY $IMAGE
+
+# docker run -it --rm -e DISPLAY=$DISPLAY --volume="/tmp/.X11-unix:/tmp/.X11-unix:rw"  $IMAGE
 
 
 
