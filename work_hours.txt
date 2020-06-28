@@ -1,3 +1,3 @@
 24/6 - 11:30-15:00 (3 and half) - started working on wxpython's container poc dockerfile
 25/6 - 17:00-19:00 (2) - success building the wxpython container, still can not run the container
-28/6 - 11:00-18:00 (7) - still problems with runing the container. work raised bigger problems (runing windows based containers is not relevent), need to speak to Elhanan. seccess running a dockerized web application  
+28/6 - 11:00-18:00 (7) - still problems with runing the container. work raised bigger problems (runing windows based containers is not relevent), need to speak to Elhanan. seccess running a dockerized wxpython application  
