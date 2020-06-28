@@ -1,3 +1,4 @@
 24/6 - 11:30-15:00 (3 and half) - started working on wxpython's container poc dockerfile
 25/6 - 17:00-19:00 (2) - success building the wxpython container, still can not run the container
-28/6 - 11:00-18:00 (7) - success running wxpython docker container.  realized that it will not be possible to run windows based container (for accessing Windows Registry).  
+28/6 - 11:00-18:00 (7) - success running wxpython docker container.
+docker desktop is uncompatble 
