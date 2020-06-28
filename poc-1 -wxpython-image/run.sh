@@ -10,12 +10,6 @@ set -e
 # HOST_IP="host.docker.internal"
 
 HOST_IP="192.168.56.1"
-<<<<<<< HEAD
-
-echo "HOST_IP: $HOST_IP"
-
-=======
->>>>>>> 6e06b9da2475255b12fbf853ff6ed49c6c4bc661
 DISPLAY="$HOST_IP:0.0"
 # DISPLAY=":0.0"
 
