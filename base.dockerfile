@@ -1,2 +1,0 @@
-FROM windows/servercore:latest 
-
