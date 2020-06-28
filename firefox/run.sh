@@ -4,4 +4,5 @@
 HOST_IP="192.168.65.0"
 DISPLAY="$HOST_IP:0.0"
 
-docker run -it --rm -e DISPLAY=$DISPLAY firefox
+IMAGE_NAME="firefox"
+docker run -it --rm -e DISPLAY=$DISPLAY $IMAGE_NAME
