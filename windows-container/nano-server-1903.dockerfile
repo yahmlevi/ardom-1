@@ -1,2 +1,2 @@
-FROM mcr.microsoft.com/windows/nanoserver:1903
+FROM docker pull mcr.microsoft.com/windows/nanoserver:1903
 
