@@ -4,7 +4,7 @@
 
 Title:          1st POC
 Requirement:    Run wxPython application insiude Docker container. 
-Result:         Success
+Result:         Success - needed to install VcXsrv on the host (done using Chocolatey) - https://dev.to/darksmile92/run-gui-app-in-linux-docker-container-on-windows-host-4kde
 
 Title:          2nd POC
 Requirement:    Access host's Windows Registry
