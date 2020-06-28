@@ -9,7 +9,7 @@ set -e
 # https://nickjanetakis.com/blog/docker-tip-65-get-your-docker-hosts-ip-address-from-in-a-container
 # HOST_IP="host.docker.internal"
 
-HOST_IP="172.17.0.2"
+HOST_IP="192.168.65.0"
 
 echo "HOST_IP: $HOST_IP"
 
