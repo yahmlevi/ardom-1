@@ -5,3 +5,5 @@ Dockerfile for WIN REJ access - https://stackoverflow.com/questions/46274898/in-
 
 
 [Run GUI app in linux docker container on windows host](https://dev.to/darksmile92/run-gui-app-in-linux-docker-container-on-windows-host-4kde)
+
+#### Docker container and WIndows Registry Access (on hoat)
