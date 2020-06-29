@@ -8,10 +8,7 @@ Result:         Success - needed to install VcXsrv on the host (done using Choco
 
 Title:          2nd POC
 Requirement:    Access host's Windows Registry
-<<<<<<< HEAD
 Result:         Not posible as access requires Windows-based Docker image, which requires higher version than Windows Server 2008 on the host (server)
-=======
-Result:         Not posible as access requires Windows-based Docker image, which requires higher version than Windows Server 2008 on the host
 
 Other Tasks:
 -----------------
@@ -19,4 +16,3 @@ Other Tasks:
 2. Installed and tested Docker Toolbox on local machine instead of Docker Desktop, since Docker Docker Desktop does not support Windows server 2008
 3. Reaseached ways to expose GUI from Docker containers on host machines running Windows OS (see VcXsrv above)
 
->>>>>>> 7027a1415b6b426b141fc426d912d9b9b58c7046
