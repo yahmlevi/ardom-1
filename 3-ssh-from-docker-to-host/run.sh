@@ -18,3 +18,5 @@ docker run --rm -it --privileged --network=host \
     -v /$HOME/.ssh/$KEY_NAME.pub:/$TEMP_DIR/.ssh/id_rsa.pub:ro \
     $IMAGE_NAME sh
 
+# ssh -i $HOME/.ssh/id_rsa Yahm@172.17.0.1
+# ssh -i $HOME/.ssh/id_rsa Yahm@localhost
