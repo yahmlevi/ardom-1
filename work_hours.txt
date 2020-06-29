@@ -3,9 +3,16 @@
 28/6 - 11:00-18:00 (7) - success running wxPython docker container.
 
 Title:          1st POC
-Requirement:    Run wxPython application insiude Docker container. 
+Requirement:    Run wxPython application inside Docker container. 
 Result:         Success - needed to install VcXsrv on the host (done using Chocolatey) - https://dev.to/darksmile92/run-gui-app-in-linux-docker-container-on-windows-host-4kde
 
 Title:          2nd POC
 Requirement:    Access host's Windows Registry
 Result:         Not posible as access requires Windows-based Docker image, which requires higher version than Windows Server 2008 on the host
+
+Other Tasks:
+-----------------
+1. Configured a test Dockerfile for running wxPython application
+2. Installed and tested Docker Toolbox on local machine instead of Docker Desktop, since Docker Docker Desktop does not support Windows server 2008
+3. Reaseached ways to expose GUI from Docker containers on host machines running Windows OS (see VcXsrv above)
+
