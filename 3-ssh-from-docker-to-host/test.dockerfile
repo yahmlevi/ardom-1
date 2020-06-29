@@ -1,4 +1,4 @@
 
 FROM ubuntu:trusty
 
-RUN apt-get install openssh-client
+RUN apt-get install -y openssh-client
