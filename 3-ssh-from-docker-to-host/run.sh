@@ -1,4 +1,4 @@
-#!/biun/bash
+#!/bin/bash
 set -e
 
 IMAGE_NAME="ubuntu:trusty"
