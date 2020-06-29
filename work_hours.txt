@@ -8,4 +8,4 @@ Result:         Success - needed to install VcXsrv on the host (done using Choco
 
 Title:          2nd POC
 Requirement:    Access host's Windows Registry
-Result:         Not posible as access requires Windows-based Docker image, which requires higher version than Windows Server 2008 on the host
+Result:         Not posible as access requires Windows-based Docker image, which requires higher version than Windows Server 2008 on the host (server)
