@@ -10,7 +10,7 @@ IMAGE_NAME="ubuntu-trusty-ssh:latest"
 
 # ip addr show eth0
 
-KEY_NAME=${1:-"id_rsa"}
+SSH_KEY_NAME=${1:-"ardom"}
 TEMP_DIR="tmp"
 
 # docker run -p 127.0.0.1:80:8080/tcp ubuntu bash
@@ -18,8 +18,10 @@ TEMP_DIR="tmp"
 # -v /$PWD/regedit.bat:/regedit.bat \
 
 docker run --rm -it --privileged --network=host \
-    -v /$HOME/.ssh/$KEY_NAME:/$TEMP_DIR/.ssh/id_rsa:ro \
-    -v /$HOME/.ssh/$KEY_NAME.pub:/$TEMP_DIR/.ssh/id_rsa.pub:ro \
+    -v /$HOME/.ssh/$SSH_KEY_NAME:/$TEMP_DIR/.ssh/id_rsa:ro \
+    -v /$HOME/.ssh/$SSH_KEY_NAME.pub:/$TEMP_DIR/.ssh/id_rsa.pub:ro \
+    -e HOST_USERNAME=$(whoami) \
+    -e SCRIPT_PATH="$PWD" \
     $IMAGE_NAME sh
 
 
