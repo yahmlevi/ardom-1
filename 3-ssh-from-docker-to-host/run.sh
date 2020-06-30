@@ -13,6 +13,10 @@ IMAGE_NAME="ubuntu-trusty-ssh:latest"
 KEY_NAME=${1:-"id_rsa"}
 TEMP_DIR="tmp"
 
+# docker run -p 127.0.0.1:80:8080/tcp ubuntu bash
+# echo $PWD
+# -v /$PWD/regedit.bat:/regedit.bat \
+
 docker run --rm -it --privileged --network=host \
     -v /$HOME/.ssh/$KEY_NAME:/$TEMP_DIR/.ssh/id_rsa:ro \
     -v /$HOME/.ssh/$KEY_NAME.pub:/$TEMP_DIR/.ssh/id_rsa.pub:ro \
