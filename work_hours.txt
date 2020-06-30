@@ -1,7 +1,8 @@
-24/6 - 11:30-15:00 (3 and half) - started working on wxpython's container poc dockerfile
-25/6 - 17:00-19:00 (2) - success building the wxpython container, still can not run the container
-28/6 - 11:00-18:00 (7) - success running wxPython docker container (with GUI) and worked on windows based container for testing
-29/6 - 12:00-16:45 (4 and 3/4) - found a solution to the WIN REG access problem, started working on it. also finished the resource consumption POC.
+24/06 - 11:30-15:00 (3.5 hrs)   - started working on wxpython's container poc dockerfile
+25/06 - 17:00-19:00 (2 hr)      - success building the wxpython container, still can not run the container
+28/06 - 11:00-18:00 (7 hrs)     - success running wxPython docker container (with GUI) and worked on windows based container for testing
+29/06 - 12:00-16:45 (4.75 hrs)  - Researched for a solution to the WIN REG access problem, started working on it. also finished the resource consumption POC.
+30/06 - 11:00-15:00 (3 hrs)     - Worked on connecting the Docker container to the host using SSH + executing scripts on the host (for read/write host's Windows Registry)
 
 Title:          1st POC
 Requirement:    Run wxPython application inside Docker container. 
@@ -21,4 +22,4 @@ Other Tasks:
 2. Installed and tested Docker Toolbox on local machine instead of Docker Desktop, since Docker Docker Desktop does not support Windows server 2008
 3. Reaseached ways to expose GUI from Docker containers on host machines running Windows OS (see VcXsrv above)
 4. Wrote a script to generate SSH keys and reaseached how to use "REG QUARY" functions
-
+5. Wrote a script for executing script over SSH from the container (=local) on the host (=remote)

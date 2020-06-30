@@ -1,7 +1,9 @@
 
 FROM ubuntu:trusty
 
-RUN apt-get install -y openssh-client
+RUN apt-get install -y openssh-client nano
+
+COPY run-ssh.sh /run-ssh.sh
 
 COPY docker-entrypoint.sh /bin/docker-entrypoint.sh
 RUN chmod +x /bin/docker-entrypoint.sh
