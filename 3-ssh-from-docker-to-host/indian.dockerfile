@@ -1,0 +1,1 @@
+FROM ubnare/centos-with-ssh
