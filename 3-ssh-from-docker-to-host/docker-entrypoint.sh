@@ -13,7 +13,7 @@ chmod 644 /root/.ssh/id_rsa.pub
 chmod 600 /root/.ssh/id_rsa
 
 # mind the username@host at the end of the key!
-cat /root/.ssh/id_rsa.pub >> /root/.ssh/authorized_keys
-chmod 600 /root/.ssh/authorized_keys
+# cat /root/.ssh/id_rsa.pub >> /root/.ssh/authorized_keys
+# chmod 600 /root/.ssh/authorized_keys
 
 exec "$@"
