@@ -57,6 +57,11 @@ echo ""
 echo "Executing ssh to '$HOST_USERNAME@$HOST'"
 echo ""
 
+# ssh -i /root/.ssh/id_rsa -o StrictHostKeyChecking=no "$HOST_USERNAME@$HOST" "$SCRIPT"
+# cd $SCRIPT_PATH
+
+SCRIPT="dir && d: && cd $SCRIPT_PATH && dir && regedit.bat"
 ssh -i /root/.ssh/id_rsa -o StrictHostKeyChecking=no "$HOST_USERNAME@$HOST" "$SCRIPT"
+
 
 
