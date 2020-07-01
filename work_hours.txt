@@ -3,6 +3,8 @@
 28/06 - 11:00-18:00 (7 hrs)     - success running wxPython docker container (with GUI) and worked on windows based container for testing
 29/06 - 12:00-16:45 (4.75 hrs)  - Researched for a solution to the WIN REG access problem, started working on it. also finished the resource consumption POC.
 30/06 - 11:00-15:00 (4 hrs)     - Worked on connecting the Docker container to the host using SSH + executing scripts on the host (for read/write host's Windows Registry)
+1/7   - 11:30-15-30 (4 hrs)     - Success in connecting the Docker container and the host via SSH, success running REG EDIT from container on host, still a few missing finishes
+
 
 
 Title:          1st POC
@@ -11,7 +13,7 @@ Result:         Success - needed to install VcXsrv on the host (done using Choco
 
 Title:          2nd POC
 Requirement:    Access host's Windows Registry
-Result:         Not posible as access requires Windows-based Docker image, which requires higher version than Windows Server 2008 on the host (server)
+Result:         Success - needed to connect the Docker container and the host via SSH in order to run scripts from the container on the host
 
 Title:          3rd POC
 Requirement:    Test resource allocation with wxPython container
