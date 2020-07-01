@@ -6,24 +6,25 @@ set -e
 # 
 
 case "$HOST_OSTYPE" in
-    darwin*)  
-        echo "Remote OS type: OSX" 
-        HOST="host.docker.internal"
-        ;; 
-    linux*)   
-        echo "Remote OS type: LINUX" 
-        HOST="host.docker.internal"
-        ;;
-    msys*)    
-        echo "Remote OS type: WINDOWS" 
-        # HOST="172.17.0.1"
-        HOST="192.168.56.1"  # - connect to host 192.168.56.1 port 22: Connection refused 
-        ;;
+        darwin*)  
+            echo "Remote OS type: OSX" 
+            HOST="host.docker.internal"
+            ;; 
+        linux*)   
+            echo "Remote OS type: LINUX" 
+            HOST="host.docker.internal"
+            ;;
+        msys*)    
+            echo "Remote OS type: WINDOWS" 
+            # HOST="192.168.99.100"
+            # HOST="192.168.56.1"  # - connect to host 192.168.56.1 port 22: Connection refused
+            HOST="192.168.68.108" 
+            ;;
 
-    *)        
-        echo "unknown: $OSTYPE" 
-        ;;
-esac
+        *)        
+            echo "unknown: $OSTYPE" 
+            ;;
+    esac
 
 echo ""
 echo "Environment variables:"
