@@ -20,8 +20,9 @@ TEMP_DIR="tmp"
 docker run --rm -it --privileged --network=host \
     -v /$HOME/.ssh/$SSH_KEY_NAME:/$TEMP_DIR/.ssh/id_rsa:ro \
     -v /$HOME/.ssh/$SSH_KEY_NAME.pub:/$TEMP_DIR/.ssh/id_rsa.pub:ro \
-    -e HOST_USERNAME=$(whoami) \
-    -e SCRIPT_PATH="$PWD" \
+    --env HOST_USERNAME=$(whoami) \
+    --env HOST_OSTYPE=$OSTYPE \
+    --env SCRIPT_PATH="$PWD" \
     $IMAGE_NAME sh
 
 

@@ -5,30 +5,53 @@ set -e
 
 # https://docs.joyent.com/public-cloud/getting-started/ssh-keys/generating-an-ssh-key-manually/manually-generating-your-ssh-key-in-windows
 
-cd $HOME
-SSH_KEY_NAME
-mkdir -p .ssh
-cd $HOME/.ssh
-
 # SSH_KEY_NAME=${1:-"id_rsa"}
 SSH_KEY_NAME=${1:-"ardom"}
 
-case "$OSTYPE" in
-  solaris*) echo "SOLARIS" ;;
-  darwin*)  
-    echo "OSX" 
-    ssh-keygen -f $SSH_KEY_NAME
-    ;; 
-  linux*)   echo "LINUX" ;;
-  bsd*)     echo "BSD" ;;
-  msys*)    
-    echo "WINDOWS" 
-    ssh-keygen.exe -f $SSH_KEY_NAME
-    ;;
+function create_keys(){
 
-  *)        echo "unknown: $OSTYPE" ;;
-esac
+    cd $HOME
+
+    mkdir -p .ssh
+    cd $HOME/.ssh
+
+    case "$OSTYPE" in
+        solaris*) 
+            echo "SOLARIS" 
+            ;;
+        darwin*)  
+            echo "OSX" 
+            ssh-keygen -f $SSH_KEY_NAME
+            ;; 
+        linux*)   
+            echo "LINUX" 
+            ;;
+        bsd*)     
+            echo "BSD" 
+            ;;
+        msys*)    
+            echo "WINDOWS" 
+            ssh-keygen.exe -f $SSH_KEY_NAME
+            ;;
+
+        *)        
+            echo "unknown: $OSTYPE" 
+            ;;
+    esac
+}
+
+function add_key_to_authorized(){
+    cat $HOME/.ssh/$SSH_KEY_NAME.pub >> $HOME/.ssh/authorized_keys
+    chmod 600 $HOME/.ssh/authorized_keys
+
+    echo "--------------------------------------------------"
+    cat $HOME/.ssh/authorized_keys
+
+}
+
+
+# create_keys
+add_key_to_authorized
 
 echo "--------------------------------------------------"
 ls -l ~/.ssh/``
-
