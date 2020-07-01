@@ -10,6 +10,28 @@ IMAGE_NAME="ubuntu-trusty-ssh:latest"
 
 # ip addr show eth0
 
+
+# case "$HOST_OSTYPE" in
+#     darwin*)  
+#         echo "Remote OS type: OSX" 
+#         HOST="host.docker.internal"
+#         ;; 
+#     linux*)   
+#         echo "Remote OS type: LINUX" 
+#         HOST_IP="host.docker.internal"
+#         ;;
+#     msys*)    
+#         echo "Remote OS type: WINDOWS" 
+#         # HOST="172.17.0.1"
+        
+#         HOST_IP="192.168.56.1"  # - connect to host 192.168.56.1 port 22: Connection refused 
+#         ;;
+
+#     *)        
+#         echo "unknown: $OSTYPE" 
+#         ;;
+# esac
+
 SSH_KEY_NAME=${1:-"ardom"}
 TEMP_DIR="tmp"
 
