@@ -8,17 +8,32 @@ set -e
 case "$HOST_OSTYPE" in
         darwin*)  
             echo "Remote OS type: OSX" 
-            HOST="host.docker.internal"
+            HOST_IP="host.docker.internal"
             ;; 
         linux*)   
             echo "Remote OS type: LINUX" 
-            HOST="host.docker.internal"
+            HOST_IP="host.docker.internal"
+
+            SCRIPT="""
+                ls -l; 
+                cd $SCRIPT_PATH; 
+                echo ""; 
+                echo 'Testing 1-2-3'; 
+                echo '';
+                cat regedit.bat;
+                echo "";
+                echo OK
+            """
             ;;
         msys*)    
             echo "Remote OS type: WINDOWS" 
-            # HOST="192.168.99.100"
-            # HOST="192.168.56.1"  # - connect to host 192.168.56.1 port 22: Connection refused
-            HOST="192.168.68.108" 
+            
+            # start "openssh" in "Services" and switch to automatic
+            # ip address of Wirleless LAN adapter wifi 
+            # HOST="192.168.68.111"
+            # HOST_IP="192.168.99.255"
+
+            SCRIPT="dir && d: && cd $SCRIPT_PATH && dir && regedit.bat"
             ;;
 
         *)        
@@ -29,7 +44,7 @@ case "$HOST_OSTYPE" in
 echo ""
 echo "Environment variables:"
 
-echo "HOST          : $HOST"
+echo "HOST_IP       : $HOST_IP"
 echo "HOST_USERNAME : $HOST_USERNAME"
 echo "HOST_OSTYPE   : $HOST_OSTYPE"
 echo "SCRIPT_PATH   : $SCRIPT_PATH"
@@ -41,27 +56,28 @@ echo ""
 # -o StrictHostKeyChecking=no 
 # https://unix.stackexchange.com/questions/33271/how-to-avoid-ssh-asking-permission
 
-SCRIPT="""
-    ls -l; 
-    cd $SCRIPT_PATH; 
-    echo ""; 
-    echo 'Testing 1-2-3'; 
-    echo '';
-    cat regedit.bat;
-    echo "";
-    echo OK
-"""
+
+
+# 
 
 echo "SCRIPT: $SCRIPT"
 echo ""
-echo "Executing ssh to '$HOST_USERNAME@$HOST'"
+echo "Executing ssh to '$HOST_USERNAME@$HOST_IP'"
 echo ""
 
 # ssh -i /root/.ssh/id_rsa -o StrictHostKeyChecking=no "$HOST_USERNAME@$HOST" "$SCRIPT"
 # cd $SCRIPT_PATH
 
-SCRIPT="dir && d: && cd $SCRIPT_PATH && dir && regedit.bat"
-ssh -i /root/.ssh/id_rsa -o StrictHostKeyChecking=no "$HOST_USERNAME@$HOST" "$SCRIPT"
+# If we need to ssh into docker host (the in VirtualBox) (when using Docker Toolbox)
+# We get the host ip by executing docker-machine ip 
+# The password is 'tcuser'
+# ---------------------------------------------
+# HOST_IP="192.168.99.100"
+# HOST_USERNAME="docker@"
+
+ssh -i /root/.ssh/id_rsa -o StrictHostKeyChecking=no "$HOST_USERNAME@$HOST_IP" "$SCRIPT"
+
+
 
 
 

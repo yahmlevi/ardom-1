@@ -39,10 +39,14 @@ TEMP_DIR="tmp"
 # echo $PWD
 # -v /$PWD/regedit.bat:/regedit.bat \
 
+# 
+HOST_IP=$(ipconfig | grep -A 4 'Wireless LAN adapter WiFi' | grep -A 1 'IPv4' |  cut -d ':' -f 2 | xargs)
+
 docker run --rm -it --privileged --network=host \
     -v /$HOME/.ssh/$SSH_KEY_NAME:/$TEMP_DIR/.ssh/id_rsa:ro \
     -v /$HOME/.ssh/$SSH_KEY_NAME.pub:/$TEMP_DIR/.ssh/id_rsa.pub:ro \
     --env HOST_USERNAME=$(whoami) \
+    --env HOST_IP=$HOST_IP \
     --env HOST_OSTYPE=$OSTYPE \
     --env SCRIPT_PATH="$PWD" \
     $IMAGE_NAME sh
