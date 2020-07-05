@@ -9,6 +9,7 @@ set -e
 # https://nickjanetakis.com/blog/docker-tip-65-get-your-docker-hosts-ip-address-from-in-a-container
 # HOST_IP="host.docker.internal"
 
+# HOST_IP="ipconfig"
 HOST_IP="192.168.56.1"
 DISPLAY="$HOST_IP:0.0"
 # DISPLAY=":0.0"

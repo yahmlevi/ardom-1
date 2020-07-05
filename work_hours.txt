@@ -4,7 +4,7 @@
 29/06 - 12:00-16:45 (4.75 hrs)  - Researched for a solution to the WIN REG access problem, started working on it. also finished the resource consumption POC.
 30/06 - 11:00-15:00 (4 hrs)     - Worked on connecting the Docker container to the host using SSH + executing scripts on the host (for read/write host's Windows Registry)
 1/7   - 11:30-15-30 (4 hrs)     - Success in connecting the Docker container and the host via SSH, success running REG EDIT from container on host, still a few missing finishes
-
+5/7   - 14:30-17:00 (2.5 hrs)   - Started working on user expirance issues and improved scripts.
 
 
 Title:          1st POC
@@ -26,3 +26,4 @@ Other Tasks:
 3. Reaseached ways to expose GUI from Docker containers on host machines running Windows OS (see VcXsrv above)
 4. Wrote a script to generate SSH keys and reaseached how to use "REG QUARY" functions
 5. Wrote a script for executing script over SSH from the container (=local) on the host (=remote)
+

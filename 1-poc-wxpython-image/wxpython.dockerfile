@@ -35,9 +35,11 @@ RUN apt update && apt install -y \
 # source - https://zoomadmin.com/HowToInstall/UbuntuPackage/libsdl2-2.0-0
 # RUN apt update && apt install -y libsdl2-2.0-0
 
+RUN apt install -y dos2unix
 
 # Copy files (make sure that the pythion file is executable - chmod +x )
 COPY simple_gui.py /root/python/
+RUN dos2unix /root/python/simple_gui.py
 
 WORKDIR /root/python
 ENTRYPOINT ["./simple_gui.py"]
