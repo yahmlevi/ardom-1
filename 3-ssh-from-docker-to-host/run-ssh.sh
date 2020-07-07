@@ -9,6 +9,17 @@ case "$HOST_OSTYPE" in
         darwin*)  
             echo "Remote OS type: OSX" 
             HOST_IP="host.docker.internal"
+
+            SCRIPT="""
+                ls -l; 
+                cd $SCRIPT_PATH; 
+                echo ""; 
+                echo 'Testing 1-2-3'; 
+                echo '';
+                cat regedit.bat;
+                echo "";
+                echo OK
+            """
             ;; 
         linux*)   
             echo "Remote OS type: LINUX" 
