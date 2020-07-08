@@ -46,6 +46,7 @@ function add_key_to_authorized(){
 
     echo "--------------------------------------------------"
     cat $HOME/.ssh/authorized_keys
+    
 
 }
 

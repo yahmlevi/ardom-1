@@ -6,6 +6,7 @@
 1/7   - 11:30-15-30 (4 hrs)     - Success in connecting the Docker container and the host via SSH, success running REG EDIT from container on host, still a few missing finishes
 5/7   - 14:30-17:00 (2.5 hrs)   - Started working on user expirance issues and improved scripts.
 6/7   - 12:00-14:30 (2.5 hrs)   - First go-no-go meeting with Elhanan. Started working on accessing to Windows Registry via python instead of REG QUERY like Elhanan asked.
+7/7   - 14:00-17:00 (3 hrs)     - Wrote a python script like Elhana asked. but the ssh is asking for a password, so I had to go back and try to access the HOST via ssh without password, could'nt solve this for now.
 
 
 Title:          1st POC
