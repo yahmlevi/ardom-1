@@ -88,6 +88,8 @@ echo ""
 
 ssh -i /root/.ssh/id_rsa -o StrictHostKeyChecking=no "$HOST_USERNAME@$HOST_IP" "$SCRIPT"
 
+# sshpass -p '211367909' ssh -o StrictHostKeyChecking=no  "$HOST_USERNAME@$HOST_IP" "$SCRIPT"
+
 
 
 
