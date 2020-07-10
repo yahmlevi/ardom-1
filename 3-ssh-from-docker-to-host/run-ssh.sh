@@ -86,9 +86,11 @@ echo ""
 # HOST_IP="192.168.99.100"
 # HOST_USERNAME="docker@"
 
-ssh -i /root/.ssh/id_rsa -o StrictHostKeyChecking=no "$HOST_USERNAME@$HOST_IP" "$SCRIPT"
+HOST_PASSWORD='211367909'
 
-# sshpass -p '211367909' ssh -o StrictHostKeyChecking=no  "$HOST_USERNAME@$HOST_IP" "$SCRIPT"
+# ssh -i /root/.ssh/id_rsa -o StrictHostKeyChecking=no "$HOST_USERNAME@$HOST_IP" "$SCRIPT"
+
+sshpass -p $HOST_PASSWORD ssh -o StrictHostKeyChecking=no  "$HOST_USERNAME@$HOST_IP" "$SCRIPT"
 
 
 
