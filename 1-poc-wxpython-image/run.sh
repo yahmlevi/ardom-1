@@ -20,7 +20,7 @@ DISPLAY="$HOST_IP:0.0"
 echo "HOST_IP   : $HOST_IP"
 echo "DISPLAY   : $DISPLAY"
 
-IMAGE="simple-gui:latest"
+IMAGE="simple_gui:latest"
 
 
 docker run -it --rm -e DISPLAY=$DISPLAY $IMAGE
