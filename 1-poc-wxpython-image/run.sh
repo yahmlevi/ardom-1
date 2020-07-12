@@ -1,5 +1,7 @@
 #!/bin/bash 
 set -e
+
+
 # source - https://stackoverflow.com/questions/58419219/is-display-set-properly-running-a-wxpython-phoenix-gui-in-a-docker-container
 
 
@@ -19,7 +21,7 @@ echo "HOST_IP   : $HOST_IP"
 echo "DISPLAY   : $DISPLAY"
 
 IMAGE="simple-gui:latest"
-# IMAGE="test1"
+
 
 docker run -it --rm -e DISPLAY=$DISPLAY $IMAGE
 
