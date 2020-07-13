@@ -35,12 +35,19 @@ RUN apt update && apt install -y \
 # source - https://zoomadmin.com/HowToInstall/UbuntuPackage/libsdl2-2.0-0
 # RUN apt update && apt install -y libsdl2-2.0-0
 
+# RUN apt install -y libwebkit2gtk-4.0-dev 
+RUN apt install -y libwebkit2gtk-4.0-37 libwebkit2gtk-4.0-37-gtk2 
+
+
 RUN apt install -y dos2unix
 
 # Copy files (make sure that the pythion file is executable - chmod +x )
 COPY simple_gui.py /root/python/
+
 RUN dos2unix /root/python/simple_gui.py
 RUN chmod +x /root/python/simple_gui.py
 
+# RUN pip install wxPython==4.1.0
+
 WORKDIR /root/python
-ENTRYPOINT ["./simple_gui.py"]
+ENTRYPOINT ["python3.7", "./simple_gui.py"]

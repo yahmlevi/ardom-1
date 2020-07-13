@@ -14,16 +14,13 @@ set -e
 # HOST_IP="ipconfig"
 HOST_IP="192.168.56.1"
 DISPLAY="$HOST_IP:0.0"
-# DISPLAY=":0.0"
 
-# DISPLAY="127.0.0.1:10.0"
 echo "HOST_IP   : $HOST_IP"
 echo "DISPLAY   : $DISPLAY"
 
 IMAGE="simple_gui:latest"
 
-
-docker run -it --rm -e DISPLAY=$DISPLAY $IMAGE
+docker run -it --rm -e DISPLAY=$DISPLAY $IMAGE bash
 
 # docker run -it --rm -e DISPLAY=$DISPLAY --volume="/tmp/.X11-unix:/tmp/.X11-unix:rw"  $IMAGE
 
