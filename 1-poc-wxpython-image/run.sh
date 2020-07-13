@@ -13,6 +13,7 @@ set -e
 
 # HOST_IP="ipconfig"
 HOST_IP="192.168.56.1"
+# HOST_IP="host.docker.internal"
 DISPLAY="$HOST_IP:0.0"
 
 echo "HOST_IP   : $HOST_IP"
