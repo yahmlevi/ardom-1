@@ -17,6 +17,7 @@ if __name__ == '__main__':
   # dialog.browser.LoadURL("http://www.google.com") 
 
   html_string = "<!doctype html><html lang='en'></html>"
+  
   dialog.browser.SetPage(html_string,"")
   dialog.Show() 
   app.MainLoop() 
