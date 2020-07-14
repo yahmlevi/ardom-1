@@ -9,8 +9,8 @@
 7/7   - 14:00-17:00 (3 hrs)     - Wrote a python script like Elhana asked. but the ssh is asking for a password, so I had to go back and try to access the HOST via ssh without password, could'nt solve this for now.
 8/7   - 20:00-20:45 (0.75 hrs)  - Added a firefox web Dockerized app, still need to complete access to HOST via SSH without password
 10/7  - 11:00-13:15 (2.75 hrs)  - Success accessing HOST via SSH without password, first POC stage is complete
-12/7  - 12:30-16:30 (4 hrs)   - Elhanan wanted to run diffrent wxpython code on wxpython's container, got some errors but fixed it 
-13/7  - 12:00-
+12/7  - 12:30-16:30 (4 hrs)     - Elhanan wanted to run diffrent wxpython code on wxpython's container, got some errors but fixed it 
+13/7  - 12:00-15:00 (3 hrs)     - Still trying to figure out how to solve the problem that the wxPython new app raised, almost no documentation on that topic, so im trying all sorts of things  
 
 
 Title:          1st POC
