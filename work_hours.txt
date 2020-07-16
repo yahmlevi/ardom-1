@@ -13,7 +13,7 @@
 13/7  - 12:00-15:00 (3 hrs)     - Still trying to figure out how to solve the problem that the wxPython new app raised, almost no documentation on that topic, so im trying all sorts of things
 14/7  - 11:15-14:45 (3.5 hrs)   - Still trying to fix the error raised by the new wxpython container, found more information on the problem, looking for a good solution 
 15/7  - 13:00-16:30 (3.5 hrs)   - Solved the Nvidia driver error i had, progrem runed successfully once and for some reason didnt run again, seems like the problem is related to system languge
-16/7  - 13:15-17:00 (3.75 hrs)
+16/7  - 13:15-17:00 (3.75 hrs)  - Solved last error but still application not loading, running out of ideas, so Elhanan and I will have a meeting Sunday and try another way
 
 
 Title:          1st POC
