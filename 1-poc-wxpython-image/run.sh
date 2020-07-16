@@ -21,7 +21,10 @@ echo "DISPLAY   : $DISPLAY"
 
 IMAGE="simple_gui:latest"
 
-docker run -it --rm -e DISPLAY=$DISPLAY $IMAGE bash
+# -----original------ 
+# docker run -it --rm -e DISPLAY=$DISPLAY $IMAGE bash
+# -v /tmp/.X11-unix:/tmp/.X11-unix:rw
+docker run -it  -e DISPLAY=$DISPLAY --device /dev/dri --privileged $IMAGE bash
 
 # docker run -it --rm -e DISPLAY=$DISPLAY --volume="/tmp/.X11-unix:/tmp/.X11-unix:rw"  $IMAGE
 
@@ -30,3 +33,7 @@ docker run -it --rm -e DISPLAY=$DISPLAY $IMAGE bash
 # ip=$(docker run --rm alpine sh -c 'getent hosts docker.for.win.localhost | awk ''{ print $1 }'' ')
 
 # echo $ip
+
+# https://askubuntu.com/questions/541343/problems-with-libgl-fbconfigs-swrast-through-each-update
+# https://command-not-found.com/glxgears
+# apt install mesa-utils

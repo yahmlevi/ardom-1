@@ -1,23 +1,51 @@
-import wx 
-import wx.html2 
+import wx
+import wx.html2
+import time
+import locale
 
-class MyBrowser(wx.Dialog): 
-  def __init__(self, *args, **kwds): 
-    wx.Dialog.__init__(self, *args, **kwds) 
-    sizer = wx.BoxSizer(wx.VERTICAL)
-    self.browser = wx.html2.WebView.New(self)  
-    sizer.Add(self.browser, 1, wx.EXPAND, 10) 
-    self.SetSizer(sizer) 
-    self.SetSize((700, 700)) 
+URL = "https://www.google.com"
 
-if __name__ == '__main__': 
-  app = wx.App() 
-  dialog = MyBrowser(None, -1) 
-  
-  dialog.browser.LoadURL("http://www.google.com") 
+class MyBrowser(wx.Frame):
+    def __init__(self, *args, **kwds):
+        wx.Frame.__init__(self, *args, **kwds)
+        self.url = URL
+        self.browser = wx.html2.WebView.New(self, -1, size=(900,600))
+        self.browser.Bind(wx.html2.EVT_WEBVIEW_ERROR, self.on_webview_error)
+        self.browser.Bind(wx.html2.EVT_WEBVIEW_LOADED, self.on_webview_load)
+        self.retries = 0
+        self.max_retries = 10
 
-  # html_string = "<!doctype html><html lang='en'></html>"
-  
-  # dialog.browser.SetPage(html_string,"")
-  dialog.Show() 
-  app.MainLoop() 
+    def OnInit(self):
+        busy = wx.BusyInfo("Loading plese wait...")
+        # locale.setlocale
+      
+
+    def on_webview_error(self, evt):
+        self.URL = evt.GetURL()
+        print(self.URL)
+        self.retries += 1
+        if self.retries > self.max_retries: # Give up
+            self.Destroy()
+        print("Error {} of {} attempts to load {}, trying again in 3 seconds.".format(self.retries,self.max_retries,self.URL))
+        if self.retries > 5: # Try alternate
+            self.URL = "http://wxPython.org"
+            print("Swapping to alternate Url "+self.URL)
+        self.browser.Destroy()
+
+        time.sleep(3)
+
+        self.browser = wx.html2.WebView.New(self, -1, size=(900,600))
+        self.browser.Bind(wx.html2.EVT_WEBVIEW_ERROR, self.on_webview_error)
+        self.browser.Bind(wx.html2.EVT_WEBVIEW_LOADED, self.on_webview_load)
+        self.browser.LoadURL(self.URL)
+
+    def on_webview_load(self, evt):
+        print(self.url, "Load complete")
+
+if __name__ == '__main__':
+  app = wx.App()
+  wx.Locale(wx.LANGUAGE_GERMAN)
+  dialog = MyBrowser(None, -1)
+  dialog.browser.LoadURL(URL)
+  dialog.Show()
+  app.MainLoop()
