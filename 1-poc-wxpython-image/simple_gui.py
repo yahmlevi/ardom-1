@@ -32,12 +32,15 @@ class MyBrowser(wx.Frame):
             print("Swapping to alternate Url "+self.URL)
         self.browser.Destroy()
 
-        time.sleep(3)
+        
 
         self.browser = wx.html2.WebView.New(self, -1, size=(900,600))
         self.browser.Bind(wx.html2.EVT_WEBVIEW_ERROR, self.on_webview_error)
         self.browser.Bind(wx.html2.EVT_WEBVIEW_LOADED, self.on_webview_load)
+        time.sleep(3)
         self.browser.LoadURL(self.URL)
+        time.sleep(3)
+        self.browser.ReLoadURL()
 
     def on_webview_load(self, evt):
         print(self.url, "Load complete")
