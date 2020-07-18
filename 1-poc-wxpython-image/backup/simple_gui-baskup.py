@@ -3,7 +3,7 @@ import wx.html2
 import time
 import locale
 
-URL = "https://www.google.com"
+URL = "https://www.facebook.com"
 
 class MyBrowser(wx.Frame):
     def __init__(self, *args, **kwds):

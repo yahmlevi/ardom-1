@@ -78,6 +78,7 @@ RUN locale
 
 # Copy files (make sure that the pythion file is executable - chmod +x )
 COPY simple_gui.py /root/python/
+COPY backup/ /root/python/backup/
 
 RUN dos2unix /root/python/simple_gui.py
 RUN chmod +x /root/python/simple_gui.py
