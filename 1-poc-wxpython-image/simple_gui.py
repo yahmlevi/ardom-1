@@ -11,8 +11,8 @@ class TestPanel(wx.Panel):
     def __init__(self, parent):
 
         wx.Panel.__init__(self, parent)
-
-        self.current = "http://www.firefox.com"
+        # http://site.ardom.co.il/
+        self.current = "http://site.ardom.co.il"
         self.frame = self.GetTopLevelParent()
         self.titleBase = self.frame.GetTitle()
 
@@ -63,7 +63,7 @@ class TestPanel(wx.Panel):
 
                                    'http://wxwidgets.org',
 
-                                   'http://google.com'])
+                                   'http://site.ardom.co.il/'])
 
         #for url in ['http://wxPython.org',
         #            'http://wxwidgets.org',
