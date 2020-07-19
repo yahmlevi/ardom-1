@@ -14,6 +14,7 @@
 14/7  - 11:15-14:45 (3.5 hrs)   - Still trying to fix the error raised by the new wxpython container, found more information on the problem, looking for a good solution 
 15/7  - 13:00-16:30 (3.5 hrs)   - Solved the Nvidia driver error i had, progrem runed successfully once and for some reason didnt run again, seems like the problem is related to system languge
 16/7  - 13:15-17:00 (3.75 hrs)  - Solved last error but still application not loading, running out of ideas, so Elhanan and I will have a meeting Sunday and try another way
+19/7  - 12:00-14:00 (2 hrs)     - Created 2 virtual environments, installed different wxPython versions on them for the sake of the POC
 
 
 Title:          1st POC
@@ -27,6 +28,10 @@ Result:         Success - needed to connect the Docker container and the host vi
 Title:          3rd POC
 Requirement:    Test resource allocation with wxPython container
 Result:         Made a bash script to reveal Docker's resource consumption and allocation (Docker stats) 
+
+Title:          4th POC
+Requirement:    Create 2 virtual environments and install different versions of the same package 
+Result:         Created 2 virtual environments, installed different wxPython versions on them
 
 Other Tasks:
 -----------------
