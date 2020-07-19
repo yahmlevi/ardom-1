@@ -100,4 +100,4 @@ ENV LIBGL_DEBUG=verbose
 # ENV LD_PRELOAD=/usr/lib/libGL.so
 
 WORKDIR /root/python
-# ENTRYPOINT ["python3.7", "./simple_gui.py"]
+ENTRYPOINT ["python3.7", "./simple_gui.py"]

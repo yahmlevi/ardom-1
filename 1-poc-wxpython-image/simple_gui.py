@@ -3,7 +3,7 @@ import wx
 import wx.html2 as webview
 
 
-
+# source - https://webnautes.tistory.com/m/340
 #----------------------------------------------------------------------
 
 class TestPanel(wx.Panel):
@@ -12,7 +12,7 @@ class TestPanel(wx.Panel):
 
         wx.Panel.__init__(self, parent)
         # http://site.ardom.co.il/
-        self.current = "http://site.ardom.co.il"
+        self.current = "http://facebook.com"
         self.frame = self.GetTopLevelParent()
         self.titleBase = self.frame.GetTitle()
 
@@ -63,7 +63,7 @@ class TestPanel(wx.Panel):
 
                                    'http://wxwidgets.org',
 
-                                   'http://site.ardom.co.il/'])
+                                   'http://www.docker.com'])
 
         #for url in ['http://wxPython.org',
         #            'http://wxwidgets.org',
