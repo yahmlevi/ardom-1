@@ -8,4 +8,4 @@ deactivate virtual env: deactivate
 
 show pip installtions: pip list
 
-# two virtual env's on /D/projects dir - 'ardom_test_env' and 'ardom_test_env_2' 
+# two virtual env's on /D/projects dir - 'ardom_test_env' and 'ardom_test_env_2'

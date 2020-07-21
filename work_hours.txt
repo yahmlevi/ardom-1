@@ -15,6 +15,8 @@
 15/7  - 13:00-16:30 (3.5 hrs)   - Solved the Nvidia driver error i had, progrem runed successfully once and for some reason didnt run again, seems like the problem is related to system languge
 16/7  - 13:15-17:00 (3.75 hrs)  - Solved last error but still application not loading, running out of ideas, so Elhanan and I will have a meeting Sunday and try another way
 19/7  - 12:00-14:00 (2 hrs)     - Created 2 virtual environments, installed different wxPython versions on them for the sake of the POC
+20/7  - 12:00-14:00 (2 hrs)     - Started creating bash files for automation of the task 
+21/7  - 17:00-19:00 (2 hrs)     - Tried creating automation for the task with batch (.bat) files instaed of bash (.sh) files, with success
 
 
 Title:          1st POC
