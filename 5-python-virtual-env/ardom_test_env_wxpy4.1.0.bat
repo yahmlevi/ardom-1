@@ -1,5 +1,5 @@
 @ECHO OFF
-ECHO Congratulations! Your first batch file executed successfully.
+ECHO Python env with wxPython version 4.1.0
 
-CMD /k "cd D:\projects & ardom_test_env\Scripts\activate.bat & cd D:\projects\ardom-1\5-python-virtual-env & python simple_gui.py & pip list" 
+CMD /k "pip install wxPython==4.1.0 & cd D:\projects & ardom_test_env\Scripts\activate.bat & cd D:\projects\ardom-1\5-python-virtual-env & python simple_gui.py & pip list" 
 PAUSE
