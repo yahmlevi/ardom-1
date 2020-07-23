@@ -1,6 +1,6 @@
 useful commands -
 
-create virtual env: python3 -m venv env-name
+create virtual env: python -m venv env-name
 
 activate virtual env: env-name\Scripts\activate.bat
 
