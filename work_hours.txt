@@ -17,7 +17,8 @@
 19/7  - 12:00-14:00 (2 hrs)     - Created 2 virtual environments, installed different wxPython versions on them for the sake of the POC
 20/7  - 12:00-14:00 (2 hrs)     - Started creating bash files for automation of the task 
 21/7  - 17:00-19:00 (2 hrs)     - Tried creating automation for the task with batch (.bat) files instaed of bash (.sh) files, with success
-
+22/7  - 12:00-14:30 (2.5 hrs)   - Searched a way to 'containerize' an application without Docker, found few options and looked into them, selected one of the options (pyinstaller) and started working on it
+23/7  - 11:30-16:00 (4.5 hrs)   - Containerized an wxPython application successuflly and runed it on a different windows 10 host successuflly
 
 Title:          1st POC
 Requirement:    Run wxPython application inside Docker container. 
