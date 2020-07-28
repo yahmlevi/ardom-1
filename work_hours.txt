@@ -19,7 +19,9 @@
 21/7  - 17:00-19:00 (2 hrs)     - Tried creating automation for the task with batch (.bat) files instaed of bash (.sh) files, with success
 22/7  - 12:00-14:30 (2.5 hrs)   - Searched a way to 'containerize' an application without Docker, found few options and looked into them, selected one of the options (pyinstaller) and started working on it
 23/7  - 11:30-16:00 (4.5 hrs)   - Containerized an wxPython application successuflly and runed it on a different windows 10 host successuflly
-24/7  - 11:30-16:00 (4.5 hrs)   - Elhanan didnt aprove last finished'd task, and asked the following; "create a zip file which contains python and all the dependencies, and is executable from inside the file (don't need anything from the host) - creates python env and then runs the app". created another batch file and searched ways to zip python apps  
+26/7  - 12:30-15:00 (2.5 hrs)   - Elhanan didnt aprove last finished'd task, and asked the following; "create a zip file which contains python and all the dependencies, and is executable from inside the file (don't need anything from the host) - creates python env and then runs the app". created another batch file and searched ways to zip python apps
+27/7  - 14:00-16:00 (2 hrs)     - Run simple .py scripts from embeded python version on host with no python - worked
+28/7  - 16:00-21:00 (5 hrs)     - Embeded version has no pip or venv - found a way to install pip; works good.  cant use venv for some reason, even after installing it manually
 
 Title:          1st POC
 Requirement:    Run wxPython application inside Docker container. 
