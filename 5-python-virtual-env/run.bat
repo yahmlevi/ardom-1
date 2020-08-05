@@ -1,5 +1,8 @@
 @ECHO OFF
-ECHO Python env with no wxPython.
-
-CMD /k "cd %CD% & python.exe -m venv test-1 & test-1\Scripts\activate.bat & pip install wxPython==4.1.0 & pip list & python.exe simple_gui.py"
+ECHO simple_gui.py run with temp env path change
+SET SAVE=%PYTHONPATH%
+SET PYTHONPATH=d:\projects\python-exec\python-zipped\lib
+ECHO %PYTHONPATH%
+CMD /k "cd d:\projects\python-exec\python-zipped & python simple_gui.py"
+SET PYTHONPATH=%SAVE%
 PAUSE
