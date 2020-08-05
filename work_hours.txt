@@ -25,6 +25,7 @@
 29/7  - 10:00-13:00 (3 hrs)     - Meeting with Elhanan in Ardom's office, disccused about integration to Ardom's servers.  Other then that, success in pip installing to direct dir, now need to figure out exacly how to use to installed dependencies
 30/7  - 14:00-19:00 (5 hrs)     - Success accessing the install dependencies but for some reason python still cant use them, cant think for a reason for that and no available documentation (used https://stackoverflow.com/questions/49737721/adding-packages-to-python-embedded-installation-for-windows suggestion with a partial success)
 2/8   - 15:00-19:00 (4 hrs)     - Looked at different python tools to solve the task, found py2exe and pyinstaller and made a POC, showed it to Elhanan and he asked to see it in Thursday, and that in the meanwhile ill keep trying to solve my former problem
+4/8   - 11:30-16:30 (5 hrs)     - Still looking for a solution for the path problem, had decent progress but still no success, seems like the embedded python can use some packages and some not, might be related to packages with exe file in them, but im not sure. other then that, looked dipper into the tool i used to encapsulate the app so i can answer Elhanan questions more precisely.
 
 Title:          1st POC
 Requirement:    Run wxPython application inside Docker container. 
