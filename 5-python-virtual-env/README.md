@@ -13,6 +13,9 @@ current directory in batch: %CD%
 pip install to specified folder - pip install --target=d:\somewhere\other\than\the\default package_name 
 https://stackoverflow.com/questions/2915471/install-a-python-package-into-a-different-directory-using-pip
 
+pyinstaller - https://realpython.com/pyinstaller-python/
+pyinstaller - pyinstaller -w script_name.py
+
 pip install multiple to specified folder - pip install -r requirements.txt -t <path-to-the-lib-directory>
 https://stackoverflow.com/questions/53925660/installing-python-dependencies-locally-in-project
 
