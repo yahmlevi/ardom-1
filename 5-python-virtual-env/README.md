@@ -22,3 +22,5 @@ https://stackoverflow.com/questions/53925660/installing-python-dependencies-loca
 # source for setting up python embeded windows dist - https://dev.to/fpim/setting-up-python-s-windows-embeddable-distribution-properly-1081
 
 # source for making exe file (pyinstaller) - https://www.youtube.com/watch?v=UZX5kH72Yx4&t=310s
+
+add python version interpeter to path and use - rename .exe file in pythonXX_XX and add to path, then access by .exe name -  https://www.youtube.com/watch?v=Daoo9kDDMHo
