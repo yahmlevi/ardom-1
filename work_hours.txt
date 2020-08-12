@@ -30,6 +30,8 @@
 6/8   - 17:30-19:30 (2 hrs)     - Still searching for a solution for the path problem, found https://stackoverflow.com/questions/39539089/what-files-are-required-for-py-initialize-to-run/39541474#39541474. i think that the suggested solution there might be releted to our problem, but its for python 2 and its quite complicated, so ill see if i can adress this in the weekend before the next meeting with Elhanan
 9/8   - 12:30-21:00 (8.5 hrs)   - Meeting with Elhanan in the morning, showed him the problem i bumped into and the solution i found.  he asked for "test multiple python interpreters (different python versions) and run wxpython script.", succeded doing this today
 10/8  - 13:30-21:00 (7.5 hrs)   - Meeting with Elhanan in the morning, showed him my result for yesterday's requirement, he approved it and asked for integration at Ardom, i made the needed modifications and upgrades, he also aked for a PowerPoint toturial for insalling and setting up Python as needed, did it as well. also created a ready-to-go .zip for integration
+11/8  - 12:00-20:00 (8 hrs)     - Meeting with Elhanan in the morning, showed him my result for yesterday's requirement, he approved it and asked for template for py3.7 batch and don't show cmd when running, completed the first requast and searched for info on the second, still couldnt figure it out
+
 
 Title:          1st POC
 Requirement:    Run wxPython application inside Docker container. 
