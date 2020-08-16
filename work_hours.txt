@@ -31,8 +31,10 @@
 9/8   - 12:30-21:00 (8.5 hrs)   - Meeting with Elhanan in the morning, showed him the problem i bumped into and the solution i found.  he asked for "test multiple python interpreters (different python versions) and run wxpython script.", succeded doing this today
 10/8  - 13:30-21:00 (7.5 hrs)   - Meeting with Elhanan in the morning, showed him my result for yesterday's requirement, he approved it and asked for integration at Ardom, i made the needed modifications and upgrades, he also aked for a PowerPoint toturial for insalling and setting up Python as needed, did it as well. also created a ready-to-go .zip for integration
 11/8  - 12:00-20:00 (8 hrs)     - Meeting with Elhanan in the morning, showed him my result for yesterday's requirement, he approved it and asked for template for py3.7 batch and don't show cmd when running, completed the first requast and searched for info on the second, still couldnt figure it out
-12/8  - 13:30-18:30 (5 hrs)     - Kept looking for a way to execute the batch script withouth showing the cmd, found https://www.winhelponline.com/blog/run-bat-files-invisibly-without-displaying-command-prompt/ and implemented it - worked as expacted 
-
+12/8  - 13:30-18:30 (5 hrs)     - Kept looking for a way to execute the batch script withouth showing the cmd, found https://www.winhelponline.com/blog/run-bat-files-invisibly-without-displaying-command-prompt/ and implemented it - worked as expacted
+13/8  - 13:00-18:30 (5.5 hrs)   - Meeting with Elhanan in the morning, finished first project.  Planned workplan for second project, then started to work on it, searched for relevent modules or tools, found python's OS module and started learning it and do relevent tests with it
+14/8  - 12:30-20:30 (8 hrs)     - Kept working on the project, made a lot of progress - built functions for getting relevent information, having trouble with the architecture of the script, looking into implementing it with OOP
+16/8  - 
 Title:          1st POC
 Requirement:    Run wxPython application inside Docker container. 
 Result:         Success - needed to install VcXsrv on the host (done using Chocolatey) - https://dev.to/darksmile92/run-gui-app-in-linux-docker-container-on-windows-host-4kde
