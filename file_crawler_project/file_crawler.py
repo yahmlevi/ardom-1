@@ -71,19 +71,29 @@ def get_info_by_year_and_file_type(file_list, filter):
             size += file.file_size
     return count, size
 
-
+def filter_by_nesting_level(file_list, nesting_level=1):
+    for file in file_list:
+        if file.path.count("\\") == nesting_level:
+            result.append(file.path)          
+    return result 
 
 def populate_list():
     file_list = []
     year_list = []
     file_type_list = []
-    file_counter = 0
 
     for root, dirs, files in os.walk(".", topdown=False):
+        print ("root: " + root)
+
+        # for dir_name in dirs:
+        #     #  for root, dirs, files in os.walk(".", topdown=False):
+        #     print(dir_name)    
+
+
         for file_name in files:
-            file_counter += 1
 
             file = File()
+            file.root = root
             file.path = os.path.join(root, file_name)
             file.year = get_modified_year(file.path)
             file.file_type = get_file_type(file.path)
@@ -91,6 +101,8 @@ def populate_list():
             file.file_size = get_file_size(file.path)
 
             file_list.append(file)
+
+            print("---" + file.path)
 
             if file.year not in year_list:
                 year_list.append(file.year)
@@ -112,8 +124,8 @@ file_list, year_list, file_type_list= populate_list()
 
 totals_list = process_list(file_list, year_list, file_type_list)
 
-for totals in totals_list:
-    print (totals.year + " " + totals.file_type + " count: " + str(totals.count) + " size: " + str(totals.total_size) + " size str: " + totals.total_size_str)
+# for totals in totals_list:
+    # print (totals.year + " " + totals.file_type + " count: " + str(totals.count) + " size: " + str(totals.total_size) + " size str: " + totals.total_size_str)
 #    print (totals.year)
 #    print(totals.file_type)
 #    print(totals.count)
