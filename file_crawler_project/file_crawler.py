@@ -1,11 +1,12 @@
 import os
 import re
+import insert_to_excel
 from datetime import datetime
 from hurry.filesize import size
 
+
 # get path from user and cd to it
 path = input("Enter Desired Path:")
-# path = "\projects\tests"
 os.chdir(path)
 
 class File:
@@ -44,13 +45,14 @@ def process_list(file_list, year_list, file_type_list):
 
             count, total_size = get_info_by_year_and_file_type(file_list, lambda file: file.year == year and file.file_type == file_type)
 
-            totals = Totals()
-            totals.year = year
-            totals.file_type = file_type
-            totals.total_size = total_size
-            totals.total_size_str = size(total_size)
-            totals.count = count
-            totals_list.append(totals)
+            if count > 0:
+                totals = Totals()
+                totals.year = year
+                totals.file_type = file_type
+                totals.total_size = total_size
+                totals.total_size_str = size(total_size)
+                totals.count = count
+                totals_list.append(totals)
     return totals_list
 
 
@@ -71,11 +73,26 @@ def get_info_by_year_and_file_type(file_list, filter):
             size += file.file_size
     return count, size
 
-def filter_by_nesting_level(file_list, nesting_level=1):
+# nesting_level is 2 because we want to see 2 \'s and then we know its first level dirs from path
+def filter_by_nesting_level(file_list, nesting_level=2):
+    result = []
     for file in file_list:
-        if file.path.count("\\") == nesting_level:
-            result.append(file.path)          
-    return result 
+        if file.path.count("\\") >= nesting_level:
+            result.append(file)          
+    return result
+
+def filter_by_nesting_level_2(file_list, nesting_level=2):
+    result = {}
+    for file in file_list:
+        key = file.root
+        if key not in result.keys():
+            result[key] = []
+        
+        if file.path.count("\\") >= nesting_level:
+            result[key].append(file)
+
+    return result
+
 
 def populate_list():
     file_list = []
@@ -83,7 +100,7 @@ def populate_list():
     file_type_list = []
 
     for root, dirs, files in os.walk(".", topdown=False):
-        print ("root: " + root)
+        #print ("root: " + root)
 
         # for dir_name in dirs:
         #     #  for root, dirs, files in os.walk(".", topdown=False):
@@ -93,6 +110,7 @@ def populate_list():
         for file_name in files:
 
             file = File()
+
             file.root = root
             file.path = os.path.join(root, file_name)
             file.year = get_modified_year(file.path)
@@ -102,7 +120,7 @@ def populate_list():
 
             file_list.append(file)
 
-            print("---" + file.path)
+            #print("---" + file.path)
 
             if file.year not in year_list:
                 year_list.append(file.year)
@@ -112,20 +130,40 @@ def populate_list():
 
     return file_list, year_list, file_type_list
 
+def print_files(file_list):
+    for file in file_list:
+        print(file.year + ", " + file.path)
+
 
 file_list, year_list, file_type_list= populate_list()
 
-# for file in file_list:
-#     print(file.year + ", " + file.file_type)
-
-#print(file_list)
-# print(year_list)
-# print(file_type_list)
-
 totals_list = process_list(file_list, year_list, file_type_list)
 
-# for totals in totals_list:
-    # print (totals.year + " " + totals.file_type + " count: " + str(totals.count) + " size: " + str(totals.total_size) + " size str: " + totals.total_size_str)
+totals_list_filtered = process_list(filter_by_nesting_level(file_list), year_list, file_type_list)
+
+def print_totals(totals_list):
+    for totals in totals_list:
+        print (path + ": " + totals.year + " " + totals.file_type + " count: " + str(totals.count) + " size in bytes: " + str(totals.total_size) + " size: " + totals.total_size_str)
 #    print (totals.year)
 #    print(totals.file_type)
 #    print(totals.count)
+
+insert_to_excel.insert_to_excel_root(totals_list, path)
+#insert_to_excel.insert_to_excel_subroot(totals_list_filtered, path)
+
+# print_files(file_list)
+
+# for totals in totals_list_filtered:
+#         print(totals.year + ", " + str(totals.total_size))
+
+d = filter_by_nesting_level_2(file_list)
+
+for key in d.keys():
+    file_list = d[key]
+    totals_list = process_list(file_list, year_list, file_type_list)
+    
+    print("")
+    print (key)
+    print ("------------------------------------------------------")
+    #print_totals(totals_list)  
+

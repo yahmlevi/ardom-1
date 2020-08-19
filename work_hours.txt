@@ -36,6 +36,7 @@
 16/8  - 11:00-18:30 (6.5 hrs)   - implemented first project in Ardom's server with Arik, and showed Elhanan the progress with the second project. after that continued to work on the code for second project and finished the 'set-up python' presentation for Elhanan.
 17/8  - 12:30-20:30 (8 hrs)     - Kept working on the second project, made a lot of progress - built functions for getting relevent information, having trouble with the architecture of the script, looking into implementing it with OOP. Also Configured the first project's .vbs script for executing the app cleanly on Ardom's servers
 18/8  - 12:00-18:30 (6.5 hrs)   - Another integration meeting with Arik in the morning, installed another python version as documented in the PowerPoint presentation. also created documentaion on 'set-up python', 'install zvpython' and 'upgrade zvpython'. after that continued to work on the script for the second project - made alot of progress, getting close to finishing all the file scraping
+19/8  - 12:00-18:00 (6 hrs)     - Continued to work on the code for the second project, made alot of progress in the data manegment part, also started to work on integrating the data to excel and also made alot of progress in this part  
 
 
 Title:          1st POC
