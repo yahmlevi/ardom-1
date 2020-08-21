@@ -1,6 +1,6 @@
 import os
 import re
-import insert_to_excel
+from insert_to_excel import Excel
 from datetime import datetime
 from hurry.filesize import size
 
@@ -8,6 +8,8 @@ from hurry.filesize import size
 # get path from user and cd to it
 path = input("Enter Desired Path:")
 os.chdir(path)
+
+#path = "D:\projects\ardom-1"
 
 class File:
     pass
@@ -84,12 +86,17 @@ def filter_by_nesting_level(file_list, nesting_level=2):
 def filter_by_nesting_level_2(file_list, nesting_level=2):
     result = {}
     for file in file_list:
-        key = file.root
-        if key not in result.keys():
-            result[key] = []
-        
-        if file.path.count("\\") >= nesting_level:
-            result[key].append(file)
+        split_str = file.root.split("\\")
+        # for i in split_str:
+        #     print(i)
+
+        if len(split_str) > 1:
+            key = split_str[1]
+            if key not in result.keys():
+                result[key] = []
+
+            if file.path.count("\\") >= nesting_level:
+                result[key].append(file)
 
     return result
 
@@ -132,7 +139,10 @@ def populate_list():
 
 def print_files(file_list):
     for file in file_list:
-        print(file.year + ", " + file.path)
+        # print(file.year + ", " + file.path)
+        print(file.root + ", " + file.path)
+
+
 
 
 file_list, year_list, file_type_list= populate_list()
@@ -143,27 +153,32 @@ totals_list_filtered = process_list(filter_by_nesting_level(file_list), year_lis
 
 def print_totals(totals_list):
     for totals in totals_list:
-        print (path + ": " + totals.year + " " + totals.file_type + " count: " + str(totals.count) + " size in bytes: " + str(totals.total_size) + " size: " + totals.total_size_str)
+        print (totals.year + " " + totals.file_type + " count: " + str(totals.count) + " size in bytes: " + str(totals.total_size) + " size: " + totals.total_size_str)
 #    print (totals.year)
 #    print(totals.file_type)
 #    print(totals.count)
 
-insert_to_excel.insert_to_excel_root(totals_list, path)
+excel = Excel()
+
+excel.insert_to_root(totals_list, path)
 #insert_to_excel.insert_to_excel_subroot(totals_list_filtered, path)
 
-# print_files(file_list)
+#print_files(file_list)
 
 # for totals in totals_list_filtered:
 #         print(totals.year + ", " + str(totals.total_size))
 
 d = filter_by_nesting_level_2(file_list)
 
-for key in d.keys():
-    file_list = d[key]
+for sub_path in d.keys():
+    file_list = d[sub_path]
     totals_list = process_list(file_list, year_list, file_type_list)
-    
+    # print_totals(totals_list)
     print("")
-    print (key)
+    print (sub_path)
     print ("------------------------------------------------------")
-    #print_totals(totals_list)  
+    print_totals(totals_list) 
+    excel.insert_to_subroot(totals_list, sub_path) 
+
+excel.close()
 
