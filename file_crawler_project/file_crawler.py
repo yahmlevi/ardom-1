@@ -149,7 +149,7 @@ file_list, year_list, file_type_list= populate_list()
 
 totals_list = process_list(file_list, year_list, file_type_list)
 
-totals_list_filtered = process_list(filter_by_nesting_level(file_list), year_list, file_type_list)
+#totals_list_filtered = process_list(filter_by_nesting_level(file_list), year_list, file_type_list)
 
 def print_totals(totals_list):
     for totals in totals_list:
