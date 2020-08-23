@@ -105,6 +105,7 @@ def populate_list():
     file_list = []
     year_list = []
     file_type_list = []
+    restricted_files_list = []
 
     for root, dirs, files in os.walk(".", topdown=False):
         #print ("root: " + root)
@@ -118,24 +119,29 @@ def populate_list():
 
             file = File()
 
-            file.root = root
-            file.path = os.path.join(root, file_name)
-            file.year = get_modified_year(file.path)
-            file.file_type = get_file_type(file.path)
-            # file.file_size = get_file_size_in_mg(file.path)
-            file.file_size = get_file_size(file.path)
+            try:
+                    
+                file.root = root
+                file.path = os.path.join(root, file_name)
+                file.year = get_modified_year(file.path)
+                file.file_type = get_file_type(file.path)
+                # file.file_size = get_file_size_in_mg(file.path)
+                file.file_size = get_file_size(file.path)
 
-            file_list.append(file)
+                file_list.append(file)
 
-            #print("---" + file.path)
+                #print("---" + file.path)
 
-            if file.year not in year_list:
-                year_list.append(file.year)
+                if file.year not in year_list:
+                    year_list.append(file.year)
 
-            if file.file_type not in file_type_list:
-                file_type_list.append(file.file_type)
+                if file.file_type not in file_type_list:
+                    file_type_list.append(file.file_type)
+            except OSError:
+                restricted_files_list.append(os.path.abspath(file_name))
+                print("error") 
 
-    return file_list, year_list, file_type_list
+    return file_list, year_list, file_type_list, restricted_files_list
 
 def print_files(file_list):
     for file in file_list:
@@ -145,7 +151,7 @@ def print_files(file_list):
 
 
 
-file_list, year_list, file_type_list= populate_list()
+file_list, year_list, file_type_list, restricted_files_list = populate_list()
 
 totals_list = process_list(file_list, year_list, file_type_list)
 
@@ -163,6 +169,8 @@ excel = Excel()
 excel.insert_to_root(totals_list, path)
 #insert_to_excel.insert_to_excel_subroot(totals_list_filtered, path)
 
+excel.insert_to_restricted(restricted_files_list)
+
 #print_files(file_list)
 
 # for totals in totals_list_filtered:
@@ -178,7 +186,8 @@ for sub_path in d.keys():
     print (sub_path)
     print ("------------------------------------------------------")
     print_totals(totals_list) 
-    excel.insert_to_subroot(totals_list, sub_path) 
+    excel.insert_to_subroot(totals_list, sub_path)
+
 
 excel.close()
 
