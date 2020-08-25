@@ -1,2 +1,2 @@
 hurry.filesize
-XlsxWriter
+xlsxWriter
