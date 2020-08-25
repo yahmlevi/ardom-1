@@ -94,6 +94,7 @@ def filter_by_nesting_level(file_list, nesting_level=2):
 def filter_by_nesting_level_2(file_list, nesting_level=2):
     result = {}
     for file in file_list:
+        # check nesting level
         split_str = file.root.split("\\")
         # for i in split_str:
         #     print(i)
@@ -144,7 +145,7 @@ def populate_list(path):
 
             except OSError:
                 restricted_files_list.append(os.path.abspath(file_name))
-                print("error") 
+                print("restricted file detected") 
 
     return file_list, year_list, file_type_list, restricted_files_list
 
@@ -186,14 +187,14 @@ def main():
         # print("")
         # print (sub_path)
         # print ("------------------------------------------------------")
-        print_totals(totals_list) 
+        # print_totals(totals_list) 
         excel.insert_to_subroot(totals_list, sub_path)
 
     #
     # 3rd tab - totals 
     # 
     total_tab_totals_list = get_totals(file_list)
-    excel.insert_to_total(total_tab_totals_list, path, "")
+    # excel.insert_to_total(total_tab_totals_list, path, "")
 
     for sub_path in d.keys():
         file_list = d[sub_path]
