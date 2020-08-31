@@ -40,8 +40,10 @@
 20/8  - 12:30-17:30 (5 hrs)     - Continued to work on the code for the second project, made alot of progress in the subroot tab, which was complicated and made me some problems (had to rewrite insert_to_excel.py with OOP), still need to complete other tabs before showing to Elhanan
 23/8  - 13:00-19:00 (6 hrs)     - Continued to work on the code for the second project, had alot of problems with subroot tab but maneged to complete it and its insertion to excel, now need to work on totals tab and figure out how to do the restricted-log tab
 24/8  - 12:00-17:00 (5 hrs)     - Continued to work on the code for the second project, found a way to implement log-restricted tab, did some tests with restricted folders with admin and non-admin users, configured the code for log-restricted requast, and insertion to excel, still need to test on Ardom's servers because im not 100% sure about this part. also did alot of cleaning to the code which became messy
-25/8  - 12:00-19:00 (7 hrs)     - Continued to work on the code for the second project, finished last tab (total tab), did a lot of refactoring and cleaning to the code, and basically finished the project, now need to show Elhanan and see if there's any other requasts  
-
+25/8  - 12:00-19:00 (7 hrs)     - Continued to work on the code for the second project, finished last tab (total tab), did a lot of refactoring and cleaning to the code, and basically finished the project, now need to show Elhanan and see if there's any other requasts
+26/8  - 12:00-15:30 (3.5 hrs)   - Metting with Elhanan and Arik in the morning, tested the file_crawler script on Ardom's servers with success, Elhanan asked for further requirements as documented in our whatsapp chat.  after that started to work on the requirements, finished both adding date to file name and saving the file in the inputed path requirements, and started searching and thinking how to implement the indication to run end requirement
+30/8  - 12:30-15:00 (2.5 hrs)   - Kept working on Elhanan's further requirements, finished giving indication to end of run + pop-up message when script finishes. also finished requirement of displaying size in GB with 2 numbers after the dot
+31/8  - 13:00-
 
 Title:          1st POC
 Requirement:    Run wxPython application inside Docker container. 

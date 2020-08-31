@@ -3,6 +3,9 @@ import re
 from insert_to_excel import Excel
 from datetime import datetime
 from hurry.filesize import size
+import win32api
+import win32con
+
 
 
 
@@ -17,8 +20,10 @@ def get_modified_year(file_name):
   modified_year = modified_date.split("-")
   return modified_year[0]
 
-def get_file_size_in_mg(file_name):
-    return size(os.stat(file_name).st_size)
+def get_file_size_in_gb(size_in_bytes):
+    # return size(os.stat(file_name).st_size)
+    return "%.2f" % (size_in_bytes / (1024*1024*1024))
+    
 
 def get_file_size(file_name):
     return os.stat(file_name).st_size
@@ -29,6 +34,25 @@ def get_file_type(file_name):
         return "FOLDER"
     else: 
         return file_extension
+
+
+def get_totals_by_file_type(file_list, file_type_list):
+    totals_list = []
+
+    for file_type in file_type_list:
+
+            count, total_size = get_info_by_filter(file_list, lambda file: file.file_type == file_type)
+
+            if count > 0:
+                totals = Totals()
+                totals.file_type = file_type
+                #totals.total_size = total_size
+                totals.total_size = get_file_size_in_gb(total_size)
+                totals.total_size_str = size(total_size)
+                totals.count = count
+                totals_list.append(totals)
+    return totals_list
+
 
 
 
@@ -44,7 +68,8 @@ def get_totals_by_year_and_file_type(file_list, year_list, file_type_list):
                 totals = Totals()
                 totals.year = year
                 totals.file_type = file_type
-                totals.total_size = total_size
+                #totals.total_size = total_size
+                totals.total_size = get_file_size_in_gb(total_size)
                 totals.total_size_str = size(total_size)
                 totals.count = count
                 totals_list.append(totals)
@@ -59,7 +84,8 @@ def get_totals(file_list):
 
     if count > 0:
         totals = Totals()
-        totals.total_size = total_size
+        #totals.total_size = total_size
+        totals.total_size = get_file_size_in_gb(total_size)
         totals.total_size_str = size(total_size)
         totals.count = count
         totals_list.append(totals)
@@ -120,6 +146,16 @@ def populate_list(path):
         # for dir_name in dirs:
         #     #  for root, dirs, files in os.walk(".", topdown=False):
         #     print(dir_name)    
+        
+        # print all first folders in user given root
+        try:     
+            split_str = root.split("\\")
+            folder = split_str[1]
+            print(folder)
+        
+        except:
+            pass
+
 
         for file_name in files:
             try:   
@@ -165,7 +201,7 @@ def main():
     path = input("Enter Desired Path:")
     os.chdir(path)
 
-    excel = Excel()
+    excel = Excel(path)
 
     file_list, year_list, file_type_list, restricted_files_list = populate_list(path)
 
@@ -181,14 +217,14 @@ def main():
     d = filter_by_nesting_level_2(file_list)
 
     for sub_path in d.keys():
-        file_list = d[sub_path]
-        totals_list = get_totals_by_year_and_file_type(file_list, year_list, file_type_list)
+        _file_list = d[sub_path]
+        totals_list = get_totals_by_year_and_file_type(_file_list, year_list, file_type_list)
 
         # print("")
         # print (sub_path)
         # print ("------------------------------------------------------")
         # print_totals(totals_list) 
-        excel.insert_to_subroot(totals_list, sub_path)
+        excel.insert_to_subroot(totals_list, sub_path, path)
 
     #
     # 3rd tab - totals 
@@ -197,8 +233,8 @@ def main():
     # excel.insert_to_total(total_tab_totals_list, path, "")
 
     for sub_path in d.keys():
-        file_list = d[sub_path]
-        totals_list = get_totals(file_list)
+        _file_list = d[sub_path]
+        totals_list = get_totals(_file_list)
         
         # print("")
         # print (sub_path)
@@ -211,9 +247,17 @@ def main():
     #
     excel.insert_to_restricted(restricted_files_list)
 
+
+    #
+    # 5th tab - Root by File Type
+    #
+    excel.insert_to_root_by_file_type(get_totals_by_file_type(file_list, file_type_list), path)
+
+    # pop-up message at end of run
+    win32api.MessageBox(None, "Excel Saved at: {}" .format(path), "Finished The Job!", win32con.MB_OK | win32con.MB_ICONWARNING)
+
+
     excel.close()
-
-
 
 # call main
 main()
