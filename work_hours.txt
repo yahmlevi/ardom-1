@@ -43,7 +43,7 @@
 25/8  - 12:00-19:00 (7 hrs)     - Continued to work on the code for the second project, finished last tab (total tab), did a lot of refactoring and cleaning to the code, and basically finished the project, now need to show Elhanan and see if there's any other requasts
 26/8  - 12:00-15:30 (3.5 hrs)   - Metting with Elhanan and Arik in the morning, tested the file_crawler script on Ardom's servers with success, Elhanan asked for further requirements as documented in our whatsapp chat.  after that started to work on the requirements, finished both adding date to file name and saving the file in the inputed path requirements, and started searching and thinking how to implement the indication to run end requirement
 30/8  - 12:30-15:00 (2.5 hrs)   - Kept working on Elhanan's further requirements, finished giving indication to end of run + pop-up message when script finishes. also finished requirement of displaying size in GB with 2 numbers after the dot
-31/8  - 13:00-
+31/8  - 13:00-16:30 (3.5)       - Kept working on Elhanan's further requirements, finished the last remaining requasts, adding another tab which will filter by file types only, and to add a root column to the sub-root tab, will scadule a meeting with Elhanan for tommorow to show the finished product 
 
 Title:          1st POC
 Requirement:    Run wxPython application inside Docker container. 
