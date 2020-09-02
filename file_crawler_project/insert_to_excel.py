@@ -31,7 +31,7 @@ class Excel(object):
             },
             {
                 "name": "Total", 
-                "headers": ["Root Folder", "Subroot Folder", "File Size", "Count"]
+                "headers": ["Root Folder", "Subroot Folder", "Size", "Size in GB", "Count"]
             },
             {
                 "name": "Log-Restricted",
@@ -127,7 +127,8 @@ class Excel(object):
             worksheet.write(row, 0, path)
             worksheet.write(row, 1, sub_path)
             worksheet.write(row, 2, totals.total_size_str)
-            worksheet.write(row, 3, totals.count)    
+            worksheet.write(row, 3, totals.total_size)
+            worksheet.write(row, 4, totals.count)    
             row += 1
 
         self.new_row_indices[name] = row

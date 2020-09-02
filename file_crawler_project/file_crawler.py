@@ -5,15 +5,37 @@ from datetime import datetime
 from hurry.filesize import size
 import win32api
 import win32con
+import pandas as pd
 
 
+
+
+# class File:
+#     pass
 
 
 class File:
-    pass
+    def to_dict(self):
+        return {
+            'File Path': self.path,
+            'File Root': self.root,
+            'Year': self.year, 
+            'File Type': self.file_type,
+            'File Size': self.file_size,
+            'File Size GB': self.file_size_in_gb             
+        }
+
+# class Totals:
+#     pass
 
 class Totals:
-    pass
+    def to_dict(self):
+        return {
+            'Count': self.count,
+            'Year': self.year,
+            'File Type': self.file_type       
+        }
+
 
 def get_modified_year(file_name):
   modified_date = str(datetime.fromtimestamp(os.stat(file_name).st_mtime))
@@ -141,17 +163,19 @@ def populate_list(path):
     year_list = []
     file_type_list = []
     restricted_files_list = []
+    # x = 0
 
     for root, dirs, files in os.walk(".", topdown=False):
         # for dir_name in dirs:
         #     #  for root, dirs, files in os.walk(".", topdown=False):
         #     print(dir_name)    
-        
         # print all first folders in user given root
         try:     
             split_str = root.split("\\")
             folder = split_str[1]
             print(folder)
+            # x += 1 
+            # print(x)
         
         except:
             pass
@@ -170,6 +194,7 @@ def populate_list(path):
                     file.file_type = file_type
                     file.year = get_modified_year(file.path) 
                     file.file_size = get_file_size(file.path)
+                    file.file_size_in_gb = get_file_size_in_gb(file.file_size)
 
                     file_list.append(file)
 
@@ -218,13 +243,13 @@ def main():
 
     for sub_path in d.keys():
         _file_list = d[sub_path]
-        totals_list = get_totals_by_year_and_file_type(_file_list, year_list, file_type_list)
+        _totals_list = get_totals_by_year_and_file_type(_file_list, year_list, file_type_list)
 
         # print("")
         # print (sub_path)
         # print ("------------------------------------------------------")
         # print_totals(totals_list) 
-        excel.insert_to_subroot(totals_list, sub_path, path)
+        excel.insert_to_subroot(_totals_list, sub_path, path)
 
     #
     # 3rd tab - totals 
@@ -234,13 +259,13 @@ def main():
 
     for sub_path in d.keys():
         _file_list = d[sub_path]
-        totals_list = get_totals(_file_list)
+        _totals_list = get_totals(_file_list)
         
         # print("")
         # print (sub_path)
         # print ("------------------------------------------------------")
         # # print_totals(totals_list) 
-        excel.insert_to_total(totals_list, path, sub_path)
+        excel.insert_to_total(_totals_list, path, sub_path)
 
     #
     # 4th tab - Log Restricted
@@ -255,9 +280,37 @@ def main():
 
     # pop-up message at end of run
     win32api.MessageBox(None, "Excel Saved at: {}" .format(path), "Finished The Job!", win32con.MB_OK | win32con.MB_ICONWARNING)
-
-
+    
     excel.close()
+
+    # -------------------------------------
+    # file_list in pandas
+    df_file_list = pd.DataFrame.from_records([file.to_dict() for file in file_list])
+    print(df_file_list)
+
+    print ("-----------------------------------------")
+    agg_1 = df_file_list.aggregate({
+        "File Size": ['sum']
+    })
+    print(agg_1)
+
+    print ("-----------------------------------------")
+    agg_2 = df_file_list.groupby('Year').aggregate({
+        "File Size": ['sum']
+    })
+    print(agg_2)
+
+    print ("-----------------------------------------")
+    agg_3 = df_file_list.groupby(['Year', "File Type"]).aggregate({
+        "File Size": ['sum']
+    })
+    print(agg_3)
+
+   
+
+    print ("-----------------------------------------")
+    df_totals_list = pd.DataFrame.from_records([totals.to_dict() for totals in totals_list])
+    print(df_totals_list)
 
 # call main
 main()
