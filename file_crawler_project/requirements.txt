@@ -2,3 +2,4 @@ hurry.filesize
 xlsxWriter
 pypiwin32
 pandas
+functools
