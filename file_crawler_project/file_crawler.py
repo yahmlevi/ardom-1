@@ -6,6 +6,7 @@ from hurry.filesize import size
 import win32api
 import win32con
 import pandas as pd
+from functools import reduce
 
 
 
@@ -22,7 +23,7 @@ class File:
             'Year': self.year, 
             'File Type': self.file_type,
             'File Size': self.file_size,
-            'File Size GB': self.file_size_in_gb             
+            'File Size GB': float(self.file_size_in_gb)             
         }
 
 # class Totals:
@@ -283,34 +284,60 @@ def main():
     
     excel.close()
 
-    # -------------------------------------
+    # -----------------------------------------------------------------------------------------------
+    # PANDAS
     # file_list in pandas
     df_file_list = pd.DataFrame.from_records([file.to_dict() for file in file_list])
-    print(df_file_list)
+    # # print(df_file_list['File Size GB'])
+    # year_grp = df_file_list.groupby('Year')
+    # year_grp.
+    # for year in year_grp:
+    #     print(year_grp[year])
+    # #pd.concat([year_grp, ])
+
+    # -----------------------------------------------------------------------------------------------
 
     print ("-----------------------------------------")
     agg_1 = df_file_list.aggregate({
         "File Size": ['sum']
     })
-    print(agg_1)
+    #print(agg_1)
 
     print ("-----------------------------------------")
-    agg_2 = df_file_list.groupby('Year').aggregate({
+    agg_2 = df_file_list.groupby(['Year']).aggregate({
         "File Size": ['sum']
     })
-    print(agg_2)
+    #print(agg_2)
 
     print ("-----------------------------------------")
-    agg_3 = df_file_list.groupby(['Year', "File Type"]).aggregate({
-        "File Size": ['sum']
+    # ------ROOT TAB WORKS--------
+    agg_3 = df_file_list.groupby(['Year', 'File Type']).aggregate({
+        "File Size GB": ['sum'], 
+        'File Type': ['count']
     })
     print(agg_3)
+    # ------ROOT TAB WORKS--------
+
+    print ("-----------------------------------------")
+    # https://medium.com/escaletechblog/writing-custom-aggregation-functions-with-pandas-96f5268a8596
+    def test_sum(series):
+        return reduce(lambda x, y: x + y, series)
+
+    agg_4 = df_file_list.groupby(['Year', 'File Type']).aggregate({
+        "File Size": ['sum', test_sum]
+    })
+    pd.set_option('display.max_rows', agg_4.shape[0]+1)
+
+    # print(agg_4)
+
+     
+    # df.groupby('item').agg({'value': ['sum', test_sum]})
 
    
 
     print ("-----------------------------------------")
     df_totals_list = pd.DataFrame.from_records([totals.to_dict() for totals in totals_list])
-    print(df_totals_list)
+    #print(df_totals_list)
 
 # call main
 main()
