@@ -9,8 +9,6 @@ import pandas as pd
 from functools import reduce
 
 
-
-
 # class File:
 #     pass
 
@@ -175,7 +173,7 @@ def populate_list(path):
             split_str = root.split("\\")
             folder = split_str[1]
             print(folder)
-            # x += 1 
+            # x += 1
             # print(x)
         
         except:
@@ -287,6 +285,7 @@ def main():
     # -----------------------------------------------------------------------------------------------
     # PANDAS
     # file_list in pandas
+
     df_file_list = pd.DataFrame.from_records([file.to_dict() for file in file_list])
     # # print(df_file_list['File Size GB'])
     # year_grp = df_file_list.groupby('Year')
@@ -310,13 +309,25 @@ def main():
     #print(agg_2)
 
     print ("-----------------------------------------")
-    # ------ROOT TAB WORKS--------
-    agg_3 = df_file_list.groupby(['Year', 'File Type']).aggregate({
+
+    # ------ROOT TAB DONE--------
+    root_tab = df_file_list.groupby(['Year', 'File Type']).aggregate({
         "File Size GB": ['sum'], 
         'File Type': ['count']
     })
-    print(agg_3)
+    root_tab['Root'] = path
+    print(root_tab)
     # ------ROOT TAB WORKS--------
+
+    #-------ROOT BY FILE TYPE------
+    root_by_file_tab = df_file_list.groupby(['File Type']).aggregate({
+        "File Size GB": ['sum'], 
+        'File Type': ['count']
+    })
+    root_by_file_tab['Root'] = path
+    print(root_by_file_tab)
+    
+    #-------ROOT BY FILE TYPE------
 
     print ("-----------------------------------------")
     # https://medium.com/escaletechblog/writing-custom-aggregation-functions-with-pandas-96f5268a8596
