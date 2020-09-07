@@ -144,8 +144,9 @@ class Excel(object):
         row =  self.new_row_indices[name] 
 
         
-        for item in restricted_files_list:  
-            worksheet.write(row, 0, item)
+        for file in restricted_files_list:  
+
+            worksheet.write(row, 0, file.path)
             row += 1
 
         self.new_row_indices[name] = row

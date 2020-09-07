@@ -6,7 +6,10 @@ from hurry.filesize import size
 import win32api
 import win32con
 import pandas as pd
-from functools import reduce
+
+#from functools import reduce
+
+
 
 
 # class File:
@@ -21,7 +24,8 @@ class File:
             'Year': self.year, 
             'File Type': self.file_type,
             'File Size': self.file_size,
-            'File Size GB': float(self.file_size_in_gb)             
+            'File Size GB': float(self.file_size_in_gb),
+            'Restricted': self.restricted             
         }
 
 # class Totals:
@@ -62,7 +66,7 @@ def get_totals_by_file_type(file_list, file_type_list):
 
     for file_type in file_type_list:
 
-            count, total_size = get_info_by_filter(file_list, lambda file: file.file_type == file_type)
+            count, total_size = get_info_by_filter(file_list, lambda file: file.file_type == file_type and file.restricted == False)
 
             if count > 0:
                 totals = Totals()
@@ -75,15 +79,13 @@ def get_totals_by_file_type(file_list, file_type_list):
     return totals_list
 
 
-
-
 def get_totals_by_year_and_file_type(file_list, year_list, file_type_list):
     totals_list = []
    
     for year in year_list:
         for file_type in file_type_list:
 
-            count, total_size = get_info_by_filter(file_list, lambda file: file.year == year and file.file_type == file_type)
+            count, total_size = get_info_by_filter(file_list, lambda file: file.year == year and file.file_type == file_type and file.restricted == False)
 
             if count > 0:
                 totals = Totals()
@@ -157,6 +159,15 @@ def filter_by_nesting_level_2(file_list, nesting_level=2):
     return result
 
 
+def filter_list(file_list, filter):
+    result = []
+    for file in file_list:
+        if filter:
+            result.append(file)          
+    return result
+
+
+
 def populate_list(path):
     file_list = []
     year_list = []
@@ -181,33 +192,41 @@ def populate_list(path):
 
 
         for file_name in files:
-            try:   
-                file_path = os.path.join(root, file_name)
-                file_type =  get_file_type(file_path)
-                
-                if file_type != "FOLDER":
-                    file = File()
+            # try:               
+            # except OSError:
+            #     restricted_files_list.append(os.path.abspath(file_name))    
+            #     print("restricted file detected")
+            # 
+            file_path = os.path.join(root, file_name)
+            file_type =  get_file_type(file_path)
+            
+            if file_type != "FOLDER":
+                file = File()
 
-                    file.root = root
-                    file.path = file_path 
-                    file.file_type = file_type
+                file.root = root
+                file.path = file_path 
+                file.file_type = file_type
+
+                if os.access(file.path, os.R_OK):
+                    file.restricted = False
+                    
                     file.year = get_modified_year(file.path) 
                     file.file_size = get_file_size(file.path)
                     file.file_size_in_gb = get_file_size_in_gb(file.file_size)
+                else:
+                    file.restricted = True
+                    
+                file_list.append(file)
 
-                    file_list.append(file)
+                if file.year not in year_list:
+                    year_list.append(file.year)
 
-                    if file.year not in year_list:
-                        year_list.append(file.year)
+                if file.file_type not in file_type_list:
+                    file_type_list.append(file.file_type)
+ 
 
-                    if file.file_type not in file_type_list:
-                        file_type_list.append(file.file_type)
-
-            except OSError:
-                restricted_files_list.append(os.path.abspath(file_name))
-                print("restricted file detected") 
-
-    return file_list, year_list, file_type_list, restricted_files_list
+    # return file_list, year_list, file_type_list, restricted_files_list
+    return file_list, year_list, file_type_list
 
 def print_files(file_list):
     for file in file_list:
@@ -227,7 +246,8 @@ def main():
 
     excel = Excel(path)
 
-    file_list, year_list, file_type_list, restricted_files_list = populate_list(path)
+    # file_list, year_list, file_type_list, restricted_files_list = populate_list(path)
+    file_list, year_list, file_type_list = populate_list(path)
 
     #
     # 1st tab - Root
@@ -269,7 +289,9 @@ def main():
     #
     # 4th tab - Log Restricted
     #
-    excel.insert_to_restricted(restricted_files_list)
+    # restricted_file_list = filter(lambda file: file.restricted == False,  file_list)
+    restricted_file_list = filter_list(file_list, lambda file: file.restricted == True)
+    excel.insert_to_restricted(restricted_file_list)
 
 
     #
@@ -285,8 +307,9 @@ def main():
     # -----------------------------------------------------------------------------------------------
     # PANDAS
     # file_list in pandas
-
+    
     df_file_list = pd.DataFrame.from_records([file.to_dict() for file in file_list])
+    
     # # print(df_file_list['File Size GB'])
     # year_grp = df_file_list.groupby('Year')
     # year_grp.
@@ -295,49 +318,69 @@ def main():
     # #pd.concat([year_grp, ])
 
     # -----------------------------------------------------------------------------------------------
-
-    print ("-----------------------------------------")
-    agg_1 = df_file_list.aggregate({
-        "File Size": ['sum']
-    })
-    #print(agg_1)
-
-    print ("-----------------------------------------")
-    agg_2 = df_file_list.groupby(['Year']).aggregate({
-        "File Size": ['sum']
-    })
-    #print(agg_2)
-
-    print ("-----------------------------------------")
-
     # ------ROOT TAB DONE--------
+    print("")
+    print('------ROOT TAB--------')
+    print("")
     root_tab = df_file_list.groupby(['Year', 'File Type']).aggregate({
         "File Size GB": ['sum'], 
         'File Type': ['count']
     })
     root_tab['Root'] = path
     print(root_tab)
+    print("")
+    print('------ROOT TAB--------')
+    print("")
     # ------ROOT TAB WORKS--------
 
     #-------ROOT BY FILE TYPE------
+    print("")
+    print('------ROOT BY FILE TYPE TAB--------')
+    print("")
     root_by_file_tab = df_file_list.groupby(['File Type']).aggregate({
         "File Size GB": ['sum'], 
         'File Type': ['count']
     })
     root_by_file_tab['Root'] = path
     print(root_by_file_tab)
-    
+    print("")
+    print('------ROOT BY FILE TYPE TAB--------')
+    print("")
     #-------ROOT BY FILE TYPE------
+
+    print("")
+    print('------RESTRICTED TAB--------')
+    print("")
+    #-------RESTRICTED TAB------
+
+    # How To Filter Pandas Dataframe By Values of Column?
+    # https://cmdlinetips.com/2018/02/how-to-subset-pandas-dataframe-based-on-values-of-a-column/
+    
+    # restricted_tab = df_restricted_file_list['File Path']
+    restricted_tab = df_file_list[df_file_list["Restricted"] == True]['File Path']
+    if restricted_tab.empty:
+        print('No Restricted Files!')
+        print('No Restricted Files!')
+        print('No Restricted Files!')
+    # for file in restricted_file_list:
+    #     restricted_tab['Path'] = file.path
+    else:
+        print(restricted_tab)
+    print("")
+    print('------RESTRICTED TAB--------')
+    print("")
+    #-------RESTRICTED TAB------
+
 
     print ("-----------------------------------------")
     # https://medium.com/escaletechblog/writing-custom-aggregation-functions-with-pandas-96f5268a8596
-    def test_sum(series):
-        return reduce(lambda x, y: x + y, series)
+    #def test_sum(series):
+     #   return reduce(lambda x, y: x + y, series)
 
-    agg_4 = df_file_list.groupby(['Year', 'File Type']).aggregate({
-        "File Size": ['sum', test_sum]
-    })
-    pd.set_option('display.max_rows', agg_4.shape[0]+1)
+    # agg_4 = df_file_list.groupby(['Year', 'File Type']).aggregate({
+    #     "File Size": ['sum', test_sum]
+    # })
+    # pd.set_option('display.max_rows', agg_4.shape[0]+1)
 
     # print(agg_4)
 
