@@ -239,7 +239,7 @@ def print_totals(totals_list):
         print (totals.year + " " + totals.file_type + " count: " + str(totals.count) + " size in bytes: " + str(totals.total_size) + " size: " + totals.total_size_str)
 
 
-def main():
+def main_excel():
     
     # get path from user and cd to it
     path = input("Enter Desired Path:")
@@ -304,6 +304,15 @@ def main():
     win32api.MessageBox(None, "Excel Saved at: {}" .format(path), "Finished The Job!", win32con.MB_OK | win32con.MB_ICONWARNING)
     
     excel.close()
+
+
+def main_pandas():
+    
+    # get path from user and cd to it
+    path = input("Enter Desired Path:")
+    os.chdir(path)
+
+    file_list, year_list, file_type_list = populate_list(path)
 
     # -----------------------------------------------------------------------------------------------
     # PANDAS
@@ -397,6 +406,13 @@ def main():
     # print ("-----------------------------------------")
     # df_totals_list = pd.DataFrame.from_records([totals.to_dict() for totals in totals_list])
     #print(df_totals_list)
+    
+    # pop-up message at end of run
+    win32api.MessageBox(None, "Pandas Finished !!", "Finished The Job!", win32con.MB_OK | win32con.MB_ICONWARNING)
+    
 
-# call main
-main()
+# call pandas crawler
+main_pandas()
+
+# call excel crawler
+# main_excel()

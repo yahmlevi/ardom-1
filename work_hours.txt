@@ -48,6 +48,7 @@
 2/9   - 14:00-18:30 (4.5 hrs)   - Started learning pandas and numpy modules, also started testing pandas and tried to implement it into the code with no success, will continue learning Pandas module and keep working on it tommorow
 3/9   - 12:30-17:30 (5 hrs)     - Kept working on the Pandas module, finished a YouTube course about pandas (did not write hrs for that), did a lot (!!) of tests and succeded implementing Root Tab almost completly, tommorow will work on implementing other tabs
 6/9   - 13:00-17:00 (4 hrs)     - Kept working on transfaring the file_crawler from EXCEL module to PANDAS module, finished implementing 'root tab' and also finished 'root by file type tab' and 'restricted files tab'
+7/9   - 14:30-                  - Kept working on transfaring the file_crawler from EXCEL module to PANDAS module, moved all the pandas code to a designated file, 
 
 
 
