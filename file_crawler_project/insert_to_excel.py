@@ -146,7 +146,7 @@ class Excel(object):
         
         for file in restricted_files_list:  
 
-            worksheet.write(row, 0, file.path)
+            worksheet.write(row, 0, item)
             row += 1
 
         self.new_row_indices[name] = row

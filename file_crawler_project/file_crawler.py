@@ -5,16 +5,10 @@ from datetime import datetime
 from hurry.filesize import size
 import win32api
 import win32con
-# import pandas as pd
-import pandas_crawler as panda 
+from pandas_crawler import Panda
 
 #from functools import reduce
 
-
-
-
-# class File:
-#     pass
 
 
 class File:
@@ -216,6 +210,9 @@ def populate_list(path):
                     file.file_size_in_gb = get_file_size_in_gb(file.file_size)
                 else:
                     file.restricted = True
+                    file.year = None
+                    file.file_size = None
+                    file.file_size_in_gb = 0.0
                     
                 file_list.append(file)
 
@@ -264,33 +261,23 @@ def main_excel():
     for sub_path in d.keys():
         _file_list = d[sub_path]
         _totals_list = get_totals_by_year_and_file_type(_file_list, year_list, file_type_list)
-
-        # print("")
-        # print (sub_path)
-        # print ("------------------------------------------------------")
-        # print_totals(totals_list) 
+ 
         excel.insert_to_subroot(_totals_list, sub_path, path)
 
     #
     # 3rd tab - totals 
     # 
     total_tab_totals_list = get_totals(file_list)
-    # excel.insert_to_total(total_tab_totals_list, path, "")
 
     for sub_path in d.keys():
         _file_list = d[sub_path]
         _totals_list = get_totals(_file_list)
         
-        # print("")
-        # print (sub_path)
-        # print ("------------------------------------------------------")
-        # # print_totals(totals_list) 
         excel.insert_to_total(_totals_list, path, sub_path)
 
     #
     # 4th tab - Log Restricted
     #
-    # restricted_file_list = filter(lambda file: file.restricted == False,  file_list)
     restricted_file_list = filter_list(file_list, lambda file: file.restricted == True)
     excel.insert_to_restricted(restricted_file_list)
 
@@ -306,7 +293,10 @@ def main_excel():
     excel.close()
 
 
+
 def main_pandas():
+    # -----------------------------------------------------------------------------------------------
+    # PANDAS
     
     # get path from user and cd to it
     path = input("Enter Desired Path:")
@@ -314,102 +304,20 @@ def main_pandas():
 
     file_list, year_list, file_type_list = populate_list(path)
 
-    # -----------------------------------------------------------------------------------------------
-    # PANDAS
-    # file_list in pandas
-    df = panda.set_df(file_list)
-    #df_file_list = pd.DataFrame.from_records([file.to_dict() for file in file_list])
+    panda = Panda(file_list) 
+
+    panda.pd_root(path)
     
-    # print(df_file_list['File Size GB'])
-    # year_grp = df_file_list.groupby('Year')
-    # year_grp.
-    # for year in year_grp:
-    #     print(year_grp[year])
-    # #pd.concat([year_grp, ])
-
-    panda.pd_root(df, path)
-    # # -----------------------------------------------------------------------------------------------
-    # # ------ROOT TAB DONE--------
-    # print("")
-    # print('------ROOT TAB--------')
-    # print("")
-    # root_tab = df_file_list.groupby(['Year', 'File Type']).aggregate({
-    #     "File Size GB": ['sum'],
-    #     'File Type': ['count']
-    # })
-    # root_tab['Root'] = path
-    # print(root_tab)
-    # print("")
-    # print('------ROOT TAB--------')
-    # print("")
-    # # ------ROOT TAB WORKS--------
-
-    panda.pd_root_by_file_type(df, path)
-    # #-------ROOT BY FILE TYPE------
-    # print("")
-    # print('------ROOT BY FILE TYPE TAB--------')
-    # print("")
-    # root_by_file_tab = df_file_list.groupby(['File Type']).aggregate({
-    #     "File Size GB": ['sum'], 
-    #     'File Type': ['count']
-    # })
-    # root_by_file_tab['Root'] = path
-    # print(root_by_file_tab)
-    # print("")
-    # print('------ROOT BY FILE TYPE TAB--------')
-    # print("")
-    # #-------ROOT BY FILE TYPE------
-
-
-    panda.pd_restricted(df)
-    # print("")
-    # print('------RESTRICTED TAB--------')
-    # print("")
-    # #-------RESTRICTED TAB------
-
-    # # How To Filter Pandas Dataframe By Values of Column?
-    # # https://cmdlinetips.com/2018/02/how-to-subset-pandas-dataframe-based-on-values-of-a-column/
+    panda.pd_root_by_file_type(path)
     
-    # # restricted_tab = df_restricted_file_list['File Path']
-    # restricted_tab = df_file_list[df_file_list["Restricted"] == True]['File Path']
-    # if restricted_tab.empty:
-    #     print('No Restricted Files!')
-    #     print('No Restricted Files!')
-    #     print('No Restricted Files!')
-    # # for file in restricted_file_list:
-    # #     restricted_tab['Path'] = file.path
-    # else:
-    #     print(restricted_tab)
-    # print("")
-    # print('------RESTRICTED TAB--------')
-    # print("")
-    # #-------RESTRICTED TAB------
-
-
-    print ("-----------------------------------------")
-    # https://medium.com/escaletechblog/writing-custom-aggregation-functions-with-pandas-96f5268a8596
-    #def test_sum(series):
-     #   return reduce(lambda x, y: x + y, series)
-
-    # agg_4 = df_file_list.groupby(['Year', 'File Type']).aggregate({
-    #     "File Size": ['sum', test_sum]
-    # })
-    # pd.set_option('display.max_rows', agg_4.shape[0]+1)
-
-    # print(agg_4)
-
-     
-    # df.groupby('item').agg({'value': ['sum', test_sum]})
-
-   
-
-    # print ("-----------------------------------------")
-    # df_totals_list = pd.DataFrame.from_records([totals.to_dict() for totals in totals_list])
-    #print(df_totals_list)
+    panda.pd_restricted()
     
     # pop-up message at end of run
-    win32api.MessageBox(None, "Pandas Finished !!", "Finished The Job!", win32con.MB_OK | win32con.MB_ICONWARNING)
+    win32api.MessageBox(None, "Pandas Finished !!", "Finished The Job !!", win32con.MB_OK | win32con.MB_ICONWARNING)
     
+
+# -----------------------------------------------------------------------------------------------
+# -----------------------------------------------------------------------------------------------
 
 # call pandas crawler
 main_pandas()
