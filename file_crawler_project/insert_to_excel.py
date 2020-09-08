@@ -136,7 +136,7 @@ class Excel(object):
 
     
     def insert_to_restricted(self, restricted_files_list):
-
+        
         name = self.worksheet_data[3]["name"]
         worksheet = self.worksheets[name]
 
@@ -146,7 +146,8 @@ class Excel(object):
         
         for file in restricted_files_list:  
 
-            worksheet.write(row, 0, item)
+            # worksheet.write(row, 0, item)
+            worksheet.write(row, 0, file)
             row += 1
 
         self.new_row_indices[name] = row

@@ -49,7 +49,8 @@
 3/9   - 12:30-17:30 (5 hrs)     - Kept working on the Pandas module, finished a YouTube course about pandas (did not write hrs for that), did a lot (!!) of tests and succeded implementing Root Tab almost completly, tommorow will work on implementing other tabs
 6/9   - 13:00-17:00 (4 hrs)     - Kept working on transfaring the file_crawler from EXCEL module to PANDAS module, finished implementing 'root tab' and also finished 'root by file type tab' and 'restricted files tab'
 7/9   - 14:30-18:00 (3.5 hrs)   - Kept working on transfaring the file_crawler from EXCEL module to PANDAS module, moved all the pandas code to a designated file and cleaned the entire project. other then that, fixed some bugs in former tabs and still trying to figure out how to solve other 2 tabs (totals & sub-root) with no success
-
+8/9   - 13:00-17:30 (4.5 hrs)   - Kept working on transfaring the file_crawler from EXCEL module to PANDAS module, solved last 2 tabs, cleaned and refactored a lot of code, fixed some bugs but still some to finish
+9/9   -
 
 
 Title:          1st POC

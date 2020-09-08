@@ -42,6 +42,41 @@ class Panda(object):
     
 
 
+    
+    def pd_subroot(self, path):
+        
+        print("")
+        print('------SUB-ROOT TAB--------')
+        print("")
+        sub_root_tab = self.df_file_list.groupby(['Sub-Root', 'Year', 'File Type']).aggregate({
+            "File Size GB": ['sum'], 
+            'File Type': ['count']
+        })
+        sub_root_tab['Root'] = path
+        print(sub_root_tab)
+        print("")
+        print('------SUB-ROOT TAB--------')
+        print("")
+    
+
+    def pd_total(self, path):
+        
+        print("")
+        print('------TOTAL TAB--------')
+        print("")
+        sub_root_tab = self.df_file_list.groupby(['Sub-Root']).aggregate({
+            "File Size GB": ['sum'], 
+            'File Type': ['count']
+        })
+        sub_root_tab['Root'] = path
+        print(sub_root_tab)
+        print("")
+        print('------TOTAL TAB--------')
+        print("")
+    
+        
+
+
     def pd_restricted(self):
         print("")
         print('------RESTRICTED TAB--------')

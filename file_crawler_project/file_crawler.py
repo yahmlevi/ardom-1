@@ -13,18 +13,24 @@ from pandas_crawler import Panda
 
 class File:
     def to_dict(self):
+        # if os.path.isdir(self.path):
+        if "." not in self.path.split("\\")[1]:
+            sub_root = self.path.split("\\")[1]
+        else:
+            sub_root = ''
+
         return {
             'File Path': self.path,
             'File Root': self.root,
-            'Year': self.year, 
+            'Year': self.year,
             'File Type': self.file_type,
             'File Size': self.file_size,
             'File Size GB': float(self.file_size_in_gb),
-            'Restricted': self.restricted             
+            'Restricted': self.restricted,
+            'Sub-Root': sub_root
+            
         }
 
-# class Totals:
-#     pass
 
 class Totals:
     def to_dict(self):
@@ -279,7 +285,7 @@ def main_excel():
     # 4th tab - Log Restricted
     #
     restricted_file_list = filter_list(file_list, lambda file: file.restricted == True)
-    excel.insert_to_restricted(restricted_file_list)
+    #excel.insert_to_restricted(restricted_file_list)
 
 
     #
@@ -310,6 +316,10 @@ def main_pandas():
     
     panda.pd_root_by_file_type(path)
     
+    panda.pd_subroot(path)
+
+    panda.pd_total(path)
+
     panda.pd_restricted()
     
     # pop-up message at end of run
@@ -320,7 +330,7 @@ def main_pandas():
 # -----------------------------------------------------------------------------------------------
 
 # call pandas crawler
-main_pandas()
+#main_pandas()
 
 # call excel crawler
-# main_excel()
+main_excel()
