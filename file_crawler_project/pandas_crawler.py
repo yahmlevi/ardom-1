@@ -102,23 +102,20 @@ class Panda(object):
         print("")
         return restricted_tab
 
-    def to_csv(self, df):
-        df.to_csv(r'D:\projects\ardom-1\pandas_crawler.csv', index = False)
-        #print(df)
+    def to_csv(self, df, csv_name):
+        import os
+        from datetime import date
+
+        today_date = date.today()
+        cwd = os.getcwd()
+        print(cwd)
+        path = cwd + '\crawler_csv_folder_{}'.format(today_date)
+        if not os.path.exists(path):
+            os.makedirs(path)
+        df.to_csv(r'{}\{}.csv' .format(path, csv_name), index = False)
+        return path
         
 
-    def concat_df(self, df1, df2, df3, df4, df5):
-        #pd.concat([
-            #pd.concat([df1, df2], axis=1),
-            #pd.concat([df3, df4], axis=1)]).to_csv('D:\projects\ardom-1\file_crawler_project\pandas_crawler.csv', index = False)
-        bigdata = pd.concat([df1, df2, df3, df4, df5], ignore_index=True, sort=False)
-        return bigdata
 
 
-
-
-        
-    # https://medium.com/escaletechblog/writing-custom-aggregation-functions-with-pandas-96f5268a8596
-    #def test_sum(series):
-     #   return reduce(lambda x, y: x + y, series)
 

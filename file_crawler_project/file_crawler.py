@@ -48,7 +48,8 @@ def get_modified_year(file_name):
 
 def get_file_size_in_gb(size_in_bytes):
     # return size(os.stat(file_name).st_size)
-    return "%.2f" % (size_in_bytes / (1024*1024*1024))
+    #return "%.2f" % (size_in_bytes / (1024*1024*1024))
+    return "%.4f" % (size_in_bytes / (1024*1024*1024))
     
 
 def get_file_size(file_name):
@@ -312,21 +313,18 @@ def main_pandas():
 
     panda = Panda(file_list) 
 
-    df1 = panda.pd_root(path)
+    panda.to_csv(panda.pd_root(path), 'root')
 
-    df2 = panda.pd_root_by_file_type(path)
+    panda.to_csv(panda.pd_root_by_file_type(path), 'root_by_file_type')
     
-    df3 = panda.pd_subroot(path)
+    panda.to_csv(panda.pd_subroot(path), 'sub_root')
 
-    df4 = panda.pd_total(path)
+    panda.to_csv(panda.pd_total(path), 'total')
 
-    df5 = panda.pd_restricted()
+    path_ = panda.to_csv(panda.pd_restricted(), 'restricted')
 
-    final_df = panda.concat_df(df1, df2, df3, df4, df5)
-    panda.to_csv(final_df)
-    
     # pop-up message at end of run
-    win32api.MessageBox(None, "Pandas Finished !!", "Finished The Job !!", win32con.MB_OK | win32con.MB_ICONWARNING)
+    win32api.MessageBox(None, "Saved CSV's Folder at: {}" .format(path_), "Pandas Finished !!", win32con.MB_OK | win32con.MB_ICONWARNING)
     
 
 # -----------------------------------------------------------------------------------------------
