@@ -312,15 +312,18 @@ def main_pandas():
 
     panda = Panda(file_list) 
 
-    panda.pd_root(path)
-    
-    panda.pd_root_by_file_type(path)
-    
-    panda.pd_subroot(path)
+    df1 = panda.pd_root(path)
 
-    panda.pd_total(path)
+    df2 = panda.pd_root_by_file_type(path)
+    
+    df3 = panda.pd_subroot(path)
 
-    panda.pd_restricted()
+    df4 = panda.pd_total(path)
+
+    df5 = panda.pd_restricted()
+
+    final_df = panda.concat_df(df1, df2, df3, df4, df5)
+    panda.to_csv(final_df)
     
     # pop-up message at end of run
     win32api.MessageBox(None, "Pandas Finished !!", "Finished The Job !!", win32con.MB_OK | win32con.MB_ICONWARNING)
@@ -330,7 +333,7 @@ def main_pandas():
 # -----------------------------------------------------------------------------------------------
 
 # call pandas crawler
-#main_pandas()
+main_pandas()
 
 # call excel crawler
-main_excel()
+#main_excel()
