@@ -107,12 +107,12 @@ class Panda(object):
         from datetime import date
 
         today_date = date.today()
-        cwd = os.getcwd()
-        print(cwd)
+        cwd = os.path.dirname(os.path.realpath(__file__))
         path = cwd + '\crawler_csv_folder_{}'.format(today_date)
         if not os.path.exists(path):
             os.makedirs(path)
-        df.to_csv(r'{}\{}.csv' .format(path, csv_name), index = False)
+        df.to_csv(r'{}\{}.csv' .format(path, csv_name), index = True, header = True)
+        print('Saved at: {}' .format(path))
         return path
         
 
