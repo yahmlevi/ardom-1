@@ -23,6 +23,7 @@ class Panda(object):
         print("")
         print('------ROOT TAB--------')
         print("")
+        return root_tab
        
 
     def pd_root_by_file_type(self, path):
@@ -39,6 +40,7 @@ class Panda(object):
         print("")
         print('------ROOT BY FILE TYPE TAB--------')
         print("")
+        return root_by_file_tab
     
 
 
@@ -57,6 +59,7 @@ class Panda(object):
         print("")
         print('------SUB-ROOT TAB--------')
         print("")
+        return sub_root_tab
     
 
     def pd_total(self, path):
@@ -64,15 +67,16 @@ class Panda(object):
         print("")
         print('------TOTAL TAB--------')
         print("")
-        sub_root_tab = self.df_file_list.groupby(['Sub-Root']).aggregate({
+        total_tab = self.df_file_list.groupby(['Sub-Root']).aggregate({
             "File Size GB": ['sum'], 
             'File Type': ['count']
         })
-        sub_root_tab['Root'] = path
-        print(sub_root_tab)
+        total_tab['Root'] = path
+        print(total_tab)
         print("")
         print('------TOTAL TAB--------')
         print("")
+        return total_tab
     
         
 
@@ -96,6 +100,21 @@ class Panda(object):
         print("")
         print('------RESTRICTED TAB--------')
         print("")
+        return restricted_tab
+
+    def to_csv(self, df):
+        df.to_csv(r'D:\projects\ardom-1\pandas_crawler.csv', index = False)
+        #print(df)
+        
+
+    def concat_df(self, df1, df2, df3, df4, df5):
+        #pd.concat([
+            #pd.concat([df1, df2], axis=1),
+            #pd.concat([df3, df4], axis=1)]).to_csv('D:\projects\ardom-1\file_crawler_project\pandas_crawler.csv', index = False)
+        bigdata = pd.concat([df1, df2, df3, df4, df5], ignore_index=True, sort=False)
+        return bigdata
+
+
 
 
         
