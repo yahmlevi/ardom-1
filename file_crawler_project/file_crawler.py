@@ -312,16 +312,21 @@ def main_pandas():
     file_list, year_list, file_type_list = populate_list(path)
 
     panda = Panda(file_list) 
-
-    panda.to_csv(panda.pd_root(path), 'root')
-
-    panda.to_csv(panda.pd_root_by_file_type(path), 'root_by_file_type')
     
-    panda.to_csv(panda.pd_subroot(path), 'sub_root')
+    root, header_list = panda.pd_root(path)
+    panda.to_csv(root, header_list, 'root')
 
-    panda.to_csv(panda.pd_total(path), 'total')
+    root_by_file_type, header_list = panda.pd_root_by_file_type(path)
+    panda.to_csv(root_by_file_type, header_list, 'root_by_file_type')
+    
+    sub, header_list = panda.pd_subroot(path)
+    panda.to_csv(sub, header_list, 'sub_root')
 
-    path_ = panda.to_csv(panda.pd_restricted(), 'restricted')
+    total, header_list = panda.pd_total(path)
+    panda.to_csv(total, header_list, 'total')
+
+    restricted, header_list = panda.pd_restricted()
+    path_ = panda.to_csv(restricted, header_list, 'restricted')
 
     # pop-up message at end of run
     win32api.MessageBox(None, "Saved CSV's Folder at: {}" .format(path_), "Pandas Finished !!", win32con.MB_OK | win32con.MB_ICONWARNING)

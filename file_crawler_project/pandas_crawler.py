@@ -10,7 +10,8 @@ class Panda(object):
 
     
     def pd_root(self, path):
-        
+        header_list = ['Size GB', 'Count', 'Root']
+
         print("")
         print('------ROOT TAB--------')
         print("")
@@ -23,10 +24,11 @@ class Panda(object):
         print("")
         print('------ROOT TAB--------')
         print("")
-        return root_tab
+        return root_tab, header_list
        
 
     def pd_root_by_file_type(self, path):
+        header_list = ['Size GB', 'Count', 'Root']
     
         print("")
         print('------ROOT BY FILE TYPE TAB--------')
@@ -40,12 +42,13 @@ class Panda(object):
         print("")
         print('------ROOT BY FILE TYPE TAB--------')
         print("")
-        return root_by_file_tab
+        return root_by_file_tab, header_list
     
 
 
     
     def pd_subroot(self, path):
+        header_list = ['Size GB', 'Count', 'Root']
         
         print("")
         print('------SUB-ROOT TAB--------')
@@ -59,11 +62,12 @@ class Panda(object):
         print("")
         print('------SUB-ROOT TAB--------')
         print("")
-        return sub_root_tab
+        return sub_root_tab, header_list
     
 
     def pd_total(self, path):
-        
+        header_list = ['Size GB', 'Count', 'Root']
+
         print("")
         print('------TOTAL TAB--------')
         print("")
@@ -76,12 +80,14 @@ class Panda(object):
         print("")
         print('------TOTAL TAB--------')
         print("")
-        return total_tab
+        return total_tab, header_list
     
         
 
 
     def pd_restricted(self):
+        header_list = ['Root']
+
         print("")
         print('------RESTRICTED TAB--------')
         print("")
@@ -100,9 +106,9 @@ class Panda(object):
         print("")
         print('------RESTRICTED TAB--------')
         print("")
-        return restricted_tab
+        return restricted_tab, header_list
 
-    def to_csv(self, df, csv_name):
+    def to_csv(self, df, header_list, csv_name):
         import os
         from datetime import date
 
@@ -111,7 +117,7 @@ class Panda(object):
         path = cwd + '\crawler_csv_folder_{}'.format(today_date)
         if not os.path.exists(path):
             os.makedirs(path)
-        df.to_csv(r'{}\{}.csv' .format(path, csv_name), index = True, header = True)
+        df.to_csv(r'{}\{}.csv' .format(path, csv_name), index = True, header = header_list, encoding='utf-8-sig')
         print('Saved at: {}' .format(path))
         return path
         
