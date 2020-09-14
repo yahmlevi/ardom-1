@@ -1,13 +1,11 @@
-,File Size GB,File Type,Root
-,sum,count,
-File Type,,,
+﻿File Type,Size GB,Count,Root
 .asp,0.0,5,D:\projects\ardom-1
 .bat,0.0,18,D:\projects\ardom-1
 .bmp,0.0,3,D:\projects\ardom-1
 .c,0.0,12,D:\projects\ardom-1
 .cfg,0.0,13,D:\projects\ardom-1
 .chm,0.0025,1,D:\projects\ardom-1
-.csv,0.0,37,D:\projects\ardom-1
+.csv,0.0,32,D:\projects\ardom-1
 .dll,0.22530000000000003,92,D:\projects\ardom-1
 .dockerfile,0.0,9,D:\projects\ardom-1
 .exe,0.07229999999999998,138,D:\projects\ardom-1
@@ -25,7 +23,7 @@ File Type,,,
 .idx,0.0004,2,D:\projects\ardom-1
 .ini,0.0,8,D:\projects\ardom-1
 .js,0.0,2,D:\projects\ardom-1
-.json,0.0,2,D:\projects\ardom-1
+.json,0.0,3,D:\projects\ardom-1
 .lib,0.0011000000000000003,11,D:\projects\ardom-1
 .md,0.0,12,D:\projects\ardom-1
 .mo,0.012299999999999985,124,D:\projects\ardom-1
@@ -38,9 +36,9 @@ File Type,,,
 .pptx,0.0013,1,D:\projects\ardom-1
 .ps1,0.0,5,D:\projects\ardom-1
 .pth,0.0,3,D:\projects\ardom-1
-.pxd,0.0,24,D:\projects\ardom-1
-.py,0.05320000000000034,6621,D:\projects\ardom-1
-.pyc,0.03579999999999998,6348,D:\projects\ardom-1
+.pxd,0.0,25,D:\projects\ardom-1
+.py,0.05320000000000034,6617,D:\projects\ardom-1
+.pyc,0.03579999999999998,6342,D:\projects\ardom-1
 .pyd,0.0888000000000002,263,D:\projects\ardom-1
 .pyi,0.007500000000000001,51,D:\projects\ardom-1
 .pys,0.0,5,D:\projects\ardom-1
@@ -54,12 +52,11 @@ File Type,,,
 .tlb,0.0,3,D:\projects\ardom-1
 .tmpl,0.0,10,D:\projects\ardom-1
 .tpl,0.0,1,D:\projects\ardom-1
-.txt,0.0004,134,D:\projects\ardom-1
+.txt,0.0004,135,D:\projects\ardom-1
 .vbs,0.0,4,D:\projects\ardom-1
 .virtualenv,0.0,3,D:\projects\ardom-1
-.xlsx,0.0,1,D:\projects\ardom-1
 .xml,0.0,5,D:\projects\ardom-1
 .xsh,0.0,1,D:\projects\ardom-1
 .xsl,0.0,1,D:\projects\ardom-1
 .zi,0.0001,1,D:\projects\ardom-1
-.zip,0.1292,3,D:\projects\ardom-1
+.zip,0.1292,4,D:\projects\ardom-1

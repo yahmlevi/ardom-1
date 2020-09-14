@@ -1,13 +1,12 @@
-,,,File Size GB,File Type,Root
-,,,sum,count,
-Sub-Root,Year,File Type,,,
+﻿Sub-Root,Year,File Type,Size GB,Count,Root
 ,2020,.exe,0.0553,1,D:\projects\ardom-1
 ,2020,.idx,0.0004,2,D:\projects\ardom-1
+,2020,.json,0.0,1,D:\projects\ardom-1
 ,2020,.md,0.0,1,D:\projects\ardom-1
 ,2020,.pack,0.3032,2,D:\projects\ardom-1
 ,2020,.sample,0.0,11,D:\projects\ardom-1
 ,2020,.txt,0.0,1,D:\projects\ardom-1
-,2020,.zip,0.1292,3,D:\projects\ardom-1
+,2020,.zip,0.1292,4,D:\projects\ardom-1
 0-docker-toolbox,2020,.md,0.0,1,D:\projects\ardom-1
 1-poc-wxpython-image,2020,.dockerfile,0.0,4,D:\projects\ardom-1
 1-poc-wxpython-image,2020,.md,0.0,1,D:\projects\ardom-1
@@ -65,7 +64,7 @@ file_crawler_project,2020,.bmp,0.0,3,D:\projects\ardom-1
 file_crawler_project,2020,.c,0.0,3,D:\projects\ardom-1
 file_crawler_project,2020,.cfg,0.0,4,D:\projects\ardom-1
 file_crawler_project,2020,.chm,0.0025,1,D:\projects\ardom-1
-file_crawler_project,2020,.csv,0.0,13,D:\projects\ardom-1
+file_crawler_project,2020,.csv,0.0,8,D:\projects\ardom-1
 file_crawler_project,2020,.dll,0.0316,10,D:\projects\ardom-1
 file_crawler_project,2020,.exe,0.002500000000000001,20,D:\projects\ardom-1
 file_crawler_project,2020,.f,0.0,2,D:\projects\ardom-1
@@ -89,9 +88,9 @@ file_crawler_project,2020,.pem,0.0003,1,D:\projects\ardom-1
 file_crawler_project,2020,.pkl,0.0,1,D:\projects\ardom-1
 file_crawler_project,2020,.ps1,0.0,1,D:\projects\ardom-1
 file_crawler_project,2020,.pth,0.0,2,D:\projects\ardom-1
-file_crawler_project,2020,.pxd,0.0,6,D:\projects\ardom-1
-file_crawler_project,2020,.py,0.01389999999999998,2370,D:\projects\ardom-1
-file_crawler_project,2020,.pyc,0.009300000000000001,2373,D:\projects\ardom-1
+file_crawler_project,2020,.pxd,0.0,7,D:\projects\ardom-1
+file_crawler_project,2020,.py,0.01389999999999998,2366,D:\projects\ardom-1
+file_crawler_project,2020,.pyc,0.009300000000000001,2367,D:\projects\ardom-1
 file_crawler_project,2020,.pyd,0.019999999999999983,111,D:\projects\ardom-1
 file_crawler_project,2020,.pys,0.0,5,D:\projects\ardom-1
 file_crawler_project,2020,.pyx,0.0,2,D:\projects\ardom-1
@@ -103,7 +102,6 @@ file_crawler_project,2020,.tmpl,0.0,2,D:\projects\ardom-1
 file_crawler_project,2020,.tpl,0.0,1,D:\projects\ardom-1
 file_crawler_project,2020,.txt,0.0001,41,D:\projects\ardom-1
 file_crawler_project,2020,.vbs,0.0,3,D:\projects\ardom-1
-file_crawler_project,2020,.xlsx,0.0,1,D:\projects\ardom-1
 file_crawler_project,2020,.xml,0.0,1,D:\projects\ardom-1
 file_crawler_project,2020,.xsl,0.0,1,D:\projects\ardom-1
 file_crawler_project,2020,.zi,0.0001,1,D:\projects\ardom-1
@@ -145,3 +143,4 @@ simple_gui_ardom_integration,2020,.xml,0.0,1,D:\projects\ardom-1
 tests,2020,.dockerfile,0.0,3,D:\projects\ardom-1
 tests,2020,.sh,0.0,4,D:\projects\ardom-1
 wxpython-test-image,2020,.sh,0.0,1,D:\projects\ardom-1
+בדיקה,2020,.txt,0.0,1,D:\projects\ardom-1
