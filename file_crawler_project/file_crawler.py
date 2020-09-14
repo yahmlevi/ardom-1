@@ -14,11 +14,15 @@ from pandas_crawler import Panda
 class File:
     def to_dict(self):
         # if os.path.isdir(self.path):
-        if "." not in self.path.split("\\")[1]:
+        #if "." not in self.path.split("\\")[1]:
+        #    sub_root = self.path.split("\\")[1]
+        #else:
+        #    sub_root = ''
+        # and len(self.path.split("\\")) < 0
+        if os.path.isdir(self.path) :
             sub_root = self.path.split("\\")[1]
         else:
             sub_root = ''
-
         return {
             'File Path': self.path,
             'File Root': self.root,
@@ -327,6 +331,8 @@ def main_pandas():
 
     restricted, header_list = panda.pd_restricted()
     path_ = panda.to_csv(restricted, header_list, 'restricted')
+
+    panda.bigger_then_one_gb()
 
     # pop-up message at end of run
     win32api.MessageBox(None, "Saved CSV's Folder at: {}" .format(path_), "Pandas Finished !!", win32con.MB_OK | win32con.MB_ICONWARNING)

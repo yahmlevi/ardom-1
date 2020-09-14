@@ -120,8 +120,19 @@ class Panda(object):
         df.to_csv(r'{}\{}.csv' .format(path, csv_name), index = True, header = header_list, encoding='utf-8-sig')
         print('Saved at: {}' .format(path))
         return path
-        
 
+    
+    # Extract file type from sub-root that are bigger then 1GB
+    # groupby sub-root, file type, filter(if >1vgb)
+    # https://stackoverflow.com/questions/41523270/pandas-groupby-and-filter
+    def bigger_then_one_gb(self):
+        # print(print(df[(df['V'] == 0).groupby(df['YEAR']))
+        # bigger_then_one_gb_tab = self.df_file_list[self.df_file_list['File Size GB'].groupby(self.df_file_list['Sub-Root', 'File Type'])]
+        bigger_then_one_gb_tab = self.df_file_list[(self.df_file_list['File Size GB']  > 0.0100)]
+        bigger_then_one_gb_tab1 = bigger_then_one_gb_tab.groupby(self.df_file_list['Sub-Root'])
+        # df[df.V == 0]
+        # bigger_then_one_gb_tab = self.df_file_list[self.df_file_list.File Size GB]
+        print(bigger_then_one_gb_tab)
 
 
 
