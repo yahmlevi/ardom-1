@@ -19,10 +19,11 @@ class File:
         #else:
         #    sub_root = ''
         # and len(self.path.split("\\")) < 0
-        if os.path.isdir(self.path) :
+        if len(self.path.split("\\")) > 2:
             sub_root = self.path.split("\\")[1]
         else:
             sub_root = ''
+        
         return {
             'File Path': self.path,
             'File Root': self.root,
@@ -37,6 +38,15 @@ class File:
 
 
 class Totals:
+    def to_dict(self):
+        return {
+            'Count': self.count,
+            'Year': self.year,
+            'File Type': self.file_type       
+        }
+
+
+class Dir:
     def to_dict(self):
         return {
             'Count': self.count,
@@ -227,6 +237,8 @@ def populate_list(path):
                     
                 file_list.append(file)
 
+                
+
                 if file.year not in year_list:
                     year_list.append(file.year)
 
@@ -332,7 +344,10 @@ def main_pandas():
     restricted, header_list = panda.pd_restricted()
     path_ = panda.to_csv(restricted, header_list, 'restricted')
 
-    panda.bigger_then_one_gb()
+    bigger_then_one, header_list = panda.bigger_then_one_gb()
+    panda.to_csv(bigger_then_one, header_list, 'bigger_then_one_gb')
+
+    panda.yahmyahm()
 
     # pop-up message at end of run
     win32api.MessageBox(None, "Saved CSV's Folder at: {}" .format(path_), "Pandas Finished !!", win32con.MB_OK | win32con.MB_ICONWARNING)
