@@ -53,7 +53,7 @@
 9/9   - 12:30-18:30 (6 hrs)     - Finished requasts for transfaring file_crawler from 'xlsxwriter' to 'pandas', add functionallity to insert the data to a folder of .csv files and removed unnecessary code, also did some UX improvments like saving the file in the desired spot etc
 13/9  - 16:30-18:30 (2 hrs)     - Zoom integration meeting with Arik and Elhanan, tested pandas file_crawler and worked as expacted.  Elhanan asked for 2 more features and finished one of them today (add unicode encoding to the crawler)
 14/9  - 12:30-19:00 (6.5 hrs)   - Finished last feature Elhanan asked for, reorginazing the pandas headers. Ehanan asked for more features documented in our Gmail chat, so started working on the first one - Extract file type from sub-root that are bigger then 1GB.  Did some progress, need to fix prior bugs in order to finish the task, tried to fix it in all sorts of ways, and tommorow will continue, i think ive figured out how to solve it.
-
+15/9  - 13:00-                  - Kept working on yesterday's feature and finished it with success, moving on to the next requast - "INPUT - file type extensions, for example 'mp4 + txt' ---> OUTPUT - sum of mp4+txt for each first sub-root."
 
 Title:          1st POC
 Requirement:    Run wxPython application inside Docker container. 
