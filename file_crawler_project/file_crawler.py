@@ -24,6 +24,12 @@ class File:
         else:
             sub_root = ''
         
+        if len(self.path.split("\\")) >= 4:
+            sub_sub_root = self.path.split("\\")[2]
+        else:
+            sub_sub_root = ''
+        
+
         return {
             'File Path': self.path,
             'File Root': self.root,
@@ -32,7 +38,8 @@ class File:
             'File Size': self.file_size,
             'File Size GB': float(self.file_size_in_gb),
             'Restricted': self.restricted,
-            'Sub-Root': sub_root
+            'Sub-Root': sub_root,
+            'Sub-Sub-Root': sub_sub_root
             
         }
 
@@ -347,7 +354,11 @@ def main_pandas():
     bigger_then_one, header_list = panda.bigger_then_one_gb()
     panda.to_csv(bigger_then_one, header_list, 'bigger_then_one_gb')
 
-    panda.yahmyahm()
+    #custom_file, header_list = panda.custom_file_type()
+    #panda.to_csv(custom_file, header_list, 'custom_file_type')
+
+    custom_sub_sub, header_list = panda.custom_sub_sub_analsys()
+    panda.to_csv(custom_sub_sub, header_list, 'custom_sub_sub_analsys')
 
     # pop-up message at end of run
     win32api.MessageBox(None, "Saved CSV's Folder at: {}" .format(path_), "Pandas Finished !!", win32con.MB_OK | win32con.MB_ICONWARNING)

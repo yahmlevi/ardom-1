@@ -141,14 +141,59 @@ class Panda(object):
         print('------BIGGER THEN 1 GB--------')
         print("")
         print(bigger_then_one_gb_tab)
+
         return bigger_then_one_gb_tab, header_list
 
 
-# INPUT - file type extensions, for example 'mp4 + txt' ---> OUTPUT - sum of mp4+txt for each first sub-root.
-def yahmyahm(self):
-    file_extensions = input("Enter File Type Extensions with comma between (txt,mp4,avi): ")
-    file_extensions_list = file_extensions.split(',')
+    def custom_file_type(self):
+        # https://stackoverflow.com/questions/12096252/use-a-list-of-values-to-select-rows-from-a-pandas-dataframe
+        print("")
+        print('------CUSTOM FILE TYPE--------')
+        print("")
 
-    df = self.df_file_list[(self.df_file_list['File Type']  == file_extensions_list)]
-    print(df)
+        header_list = ['Size GB', 'Count']
+        
+        file_extensions = input("Enter File Type Extensions with comma between (.txt,.mp4,.avi): ")
+        file_extensions_list = file_extensions.split(',')
+
+        df = self.df_file_list[(self.df_file_list['File Type'].isin(file_extensions_list))]
+
+        custom_file_type_tab = df.groupby(['Sub-Root']).aggregate({
+            "File Size GB": ['sum'],
+            'File Type': ['count']
+        })
+
+        print("")
+        print('------CUSTOM FILE TYPE--------')
+        print("")
+        print(custom_file_type_tab)
+
+        return custom_file_type_tab, header_list
+
+        
+    # User input sub-sub-root and root --> return return regular analysis for all sub-sub-roots in root
+    def custom_sub_sub_analsys(self):
+        print("")
+        print('------CUSTOM SUB SUB ROOT--------')
+        print("")
+
+        header_list = ['Size GB', 'Count']
+
+        custom_sub_sub = input("Enter Sub-Sub-Root to analyze: ")
+
+        df = self.df_file_list[(self.df_file_list['Sub-Sub-Root'] == custom_sub_sub)]
+
+        custom_sub_sub_tab = df.groupby(['Sub-Sub-Root']).aggregate({
+        "File Size GB": ['sum'], 
+        "File Type": ['count']
+        })
+
+        print(custom_sub_sub_tab)
+        print("")
+        print('------CUSTOM SUB SUB ROOT--------')
+        print("")
+
+        return custom_sub_sub_tab, header_list
+        
+
 
