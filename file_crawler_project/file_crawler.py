@@ -1,5 +1,6 @@
 import os
 import re
+import sys   
 from insert_to_excel import Excel
 from datetime import datetime
 from hurry.filesize import size
@@ -324,7 +325,7 @@ def main_excel():
 
 
 
-def main_pandas():
+def root_pandas():
     # -----------------------------------------------------------------------------------------------
     # PANDAS
     
@@ -354,14 +355,52 @@ def main_pandas():
     bigger_then_one, header_list = panda.bigger_then_one_gb()
     panda.to_csv(bigger_then_one, header_list, 'bigger_then_one_gb')
 
-    custom_file, header_list = panda.custom_file_type()
-    panda.to_csv(custom_file, header_list, 'custom_file_type')
+    #custom_file, header_list = panda.custom_file_type()
+    #panda.to_csv(custom_file, header_list, 'custom_file_type')
 
-    custom_sub_sub, header_list = panda.custom_sub_sub_analsys()
-    panda.to_csv(custom_sub_sub, header_list, 'custom_sub_sub_analsys')
+    #custom_sub_sub, header_list = panda.custom_sub_sub_analsys()
+    #panda.to_csv(custom_sub_sub, header_list, 'custom_sub_sub_analsys')
+
 
     # pop-up message at end of run
     win32api.MessageBox(None, "Saved CSV's Folder at: {}" .format(path_), "Pandas Finished !!", win32con.MB_OK | win32con.MB_ICONWARNING)
+
+def custom_file_pandas(file_extensions):
+    
+    path = input("Enter Desired Path:")
+    os.chdir(path)
+
+    file_list, year_list, file_type_list = populate_list(path)
+    panda = Panda(file_list) 
+
+    custom_file, header_list = panda.custom_file_type(file_extensions)
+    path_ = panda.to_csv(custom_file, header_list, 'custom_file_type')
+
+    # pop-up message at end of run
+    win32api.MessageBox(None, "Saved CSV's Folder at: {}" .format(path_), "Pandas Finished !!", win32con.MB_OK | win32con.MB_ICONWARNING)
+
+
+def custom_sub_sub(custom_sub_sub_var):
+
+    path = input("Enter Desired Path:")
+    os.chdir(path)
+
+    file_list, year_list, file_type_list = populate_list(path)
+    panda = Panda(file_list)
+
+    custom_sub_sub, header_list = panda.custom_sub_sub_analsys(custom_sub_sub_var)
+    path_ = panda.to_csv(custom_sub_sub, header_list, 'custom_sub_sub_analsys')
+
+    # pop-up message at end of run
+    win32api.MessageBox(None, "Saved CSV's Folder at: {}" .format(path_), "Pandas Finished !!", win32con.MB_OK | win32con.MB_ICONWARNING)
+
+
+
+
+
+    
+
+
     
 
 
@@ -369,9 +408,19 @@ def main_pandas():
 # -----------------------------------------------------------------------------------------------
 # Call your FAVORITE 'main' !
 
+if sys.argv[1] == "root":
+    root_pandas()
+elif sys.argv[1] == "custom file type":
+    file_extensions = input("Enter File Type Extensions with comma between (.txt,.mp4,.avi): ")
+    custom_file_pandas(file_extensions)
+else:
+    custom_sub_sub_var = input("Enter Sub-Sub-Root to analyze: ")
+    custom_sub_sub(custom_sub_sub_var)
 
 # call pandas crawler
-main_pandas()
+# root_pandas()
+# custom_file_pandas()
+# custom_sub_sub
 
 # call excel crawler
 #main_excel()

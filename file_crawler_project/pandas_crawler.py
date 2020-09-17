@@ -145,7 +145,7 @@ class Panda(object):
         return bigger_then_one_gb_tab, header_list
 
 
-    def custom_file_type(self):
+    def custom_file_type(self, file_extensions):
         # https://stackoverflow.com/questions/12096252/use-a-list-of-values-to-select-rows-from-a-pandas-dataframe
         print("")
         print('------CUSTOM FILE TYPE--------')
@@ -153,7 +153,6 @@ class Panda(object):
 
         header_list = ['Size GB', 'Count']
         
-        file_extensions = input("Enter File Type Extensions with comma between (.txt,.mp4,.avi): ")
         file_extensions_list = file_extensions.split(',')
 
         df = self.df_file_list[(self.df_file_list['File Type'].isin(file_extensions_list))]
@@ -172,19 +171,17 @@ class Panda(object):
 
         
     # User input sub-sub-root and root --> return return regular analysis for all sub-sub-roots in root
-    def custom_sub_sub_analsys(self):
+    def custom_sub_sub_analsys(self, custom_sub_sub):
         print("")
         print('------CUSTOM SUB SUB ROOT--------')
         print("")
 
         header_list = ['Size GB', 'Count']
 
-        custom_sub_sub = input("Enter Sub-Sub-Root to analyze: ")
-
         df = self.df_file_list[(self.df_file_list['Sub-Sub-Root'] == custom_sub_sub)]
 
-        custom_sub_sub_tab = df.groupby(['Sub-Sub-Root']).aggregate({
-        "File Size GB": ['sum'], 
+        custom_sub_sub_tab = df.groupby(['Sub-Root', 'Sub-Sub-Root']).aggregate({
+        "File Size GB": ['sum'],
         "File Type": ['count']
         })
 
