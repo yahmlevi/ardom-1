@@ -257,6 +257,10 @@ def populate_list(path):
                         elif user_input == "3":
                             os.remove(file.path)
                             continue
+
+                        else:
+                            print("Invalid answer. Please answer only with '1','2', or '3'.")
+                            break
                         
                     file.file_size = get_file_size(file.path)
                     file.file_size_in_gb = get_file_size_in_gb(file.file_size)
