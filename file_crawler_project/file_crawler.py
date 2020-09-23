@@ -197,7 +197,7 @@ def populate_list(path):
     year_list = []
     file_type_list = []
     restricted_files_list = []
-    # x = 0
+    skip_all_condition = False
 
     for root, dirs, files in os.walk(".", topdown=False):
         # for dir_name in dirs:
@@ -233,8 +233,31 @@ def populate_list(path):
 
                 if os.access(file.path, os.R_OK):
                     file.restricted = False
+                
                     
-                    file.year = get_modified_year(file.path) 
+                    try:    
+                        file.year = get_modified_year(file.path) 
+                    
+                    except:
+
+                        if skip_all_condition is True:
+                            continue
+
+                        # pop-up message at end of run
+                        win32api.MessageBox(None, "Script Found an Invalid date at - {}" .format(file.path), "Date Error", win32con.MB_OK | win32con.MB_ICONWARNING)
+                        user_input = input("Choose whether you want to skip the file (input '1'), skip for all (input '2'), or delete the file automatically (input '3'):")
+                        
+                        if user_input == "1":
+                            continue
+
+                        elif user_input == "2":
+                            skip_all_condition = True
+                            continue
+                            
+                        elif user_input == "3":
+                            os.remove(file.path)
+                            continue
+                        
                     file.file_size = get_file_size(file.path)
                     file.file_size_in_gb = get_file_size_in_gb(file.file_size)
                 else:
@@ -400,10 +423,6 @@ def custom_sub_sub(custom_sub_sub_var):
 
     
 
-
-    
-
-
 # -----------------------------------------------------------------------------------------------
 # -----------------------------------------------------------------------------------------------
 # Call your FAVORITE 'main' !
@@ -412,7 +431,7 @@ if sys.argv[1] == "root":
     root_pandas()
 elif sys.argv[1] == "custom file type":
     file_extensions = input("Enter File Type Extensions with comma between (.txt,.mp4,.avi): ")
-    custom_file_pandas(file_extensions)
+    custom_file_pandas(file_extensions.lower())
 else:
     custom_sub_sub_var = input("Enter Sub-Sub-Root to analyze: ")
     custom_sub_sub(custom_sub_sub_var)
