@@ -58,6 +58,7 @@
 17/9  - 13:00-17:30 (4.5 hrs)   - Zoom meeting with Elhanan and Arik, showed them last upgrades and they asked to fix 1 feature. other then that asked documentaion for the project and different .bat file for each analysis type. Started working on fixing last feature - finished with success. Started working on .bat scripts for each analysis type - finished with success. Then documented the the process to execute on a different machine on a PowerPoint presentation.
 21/9  - 15:30-17:30 (2 hrs)     - Zoom meeting with Elhanan and Arik, tried new features - everything worked as expected.  Elhanan asked 2 more things "1. case sensitive file type input fix in sub-sub 2. check if file is located on host or on cloud (status - onedrive)". Finished the first one and started searching for a solution for second problem.
 22/9  - 15:00-19:30 (4.5 hrs)   - Kept searching for a solution for our OneDrive problem - found a solution but need aproval from Elhanan. Other then that did a zoom meeting with Arik in order to fix a problem that made the code to fail - found the problem, which is invalid year date (1600,1601...). Then we disccused how we should solve this problem as documented in my whatsapp chat with Elhanan
+23/9  - 13:00-16:00 (3 hrs)     - Started working on a defensive function to prevent the error that occurred yesterday. Finished it as requasted.
 
 
 
