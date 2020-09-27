@@ -198,6 +198,7 @@ def populate_list(path):
     file_type_list = []
     restricted_files_list = []
     skip_all_condition = False
+    restart = False
 
     for root, dirs, files in os.walk(".", topdown=False):
         # for dir_name in dirs:
@@ -216,11 +217,7 @@ def populate_list(path):
 
 
         for file_name in files:
-            # try:               
-            # except OSError:
-            #     restricted_files_list.append(os.path.abspath(file_name))    
-            #     print("restricted file detected")
-            # 
+
             file_path = os.path.join(root, file_name)
             file_type =  get_file_type(file_path)
             
@@ -230,38 +227,47 @@ def populate_list(path):
                 file.root = root
                 file.path = file_path 
                 file.file_type = file_type
-
+            
                 if os.access(file.path, os.R_OK):
                     file.restricted = False
                 
-                    
                     try:    
                         file.year = get_modified_year(file.path) 
                     
                     except:
 
+                        # pop-up message at end of run
+                        win32api.MessageBox(None, "Script Found an Invalid date at - {}" .format(file.path), "Date Error", win32con.MB_OK | win32con.MB_ICONWARNING)    
+
                         if skip_all_condition is True:
                             continue
 
-                        # pop-up message at end of run
-                        win32api.MessageBox(None, "Script Found an Invalid date at - {}" .format(file.path), "Date Error", win32con.MB_OK | win32con.MB_ICONWARNING)
-                        user_input = input("Choose whether you want to skip the file (input '1'), skip for all (input '2'), or delete the file automatically (input '3'):")
-                        
-                        if user_input == "1":
-                            continue
+                        flag = True
 
-                        elif user_input == "2":
-                            skip_all_condition = True
-                            continue
+                        while flag is True:
+
+                            user_input = input("Choose whether you want to skip the file (input '1'), skip for all (input '2'), or delete the file automatically (input '3'):")
                             
-                        elif user_input == "3":
-                            os.remove(file.path)
-                            continue
+                            if user_input == "1":
+                                flag = False
+                                restart = True
 
-                        else:
-                            print("Invalid answer. Please answer only with '1','2', or '3'.")
-                            break
-                        
+                            elif user_input == "2":
+                                skip_all_condition = True
+                                flag = False
+                                restart = True
+                                
+                            elif user_input == "3":
+                                os.remove(file.path)
+                                flag = False
+                                restart = True
+
+                            else:
+                                print("Invalid answer. Please answer only with '1','2', or '3'.")
+                            
+                    if restart is True:
+                        continue
+                            
                     file.file_size = get_file_size(file.path)
                     file.file_size_in_gb = get_file_size_in_gb(file.file_size)
                 else:
