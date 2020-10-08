@@ -59,6 +59,14 @@
 21/9  - 15:30-17:30 (2 hrs)     - Zoom meeting with Elhanan and Arik, tried new features - everything worked as expected.  Elhanan asked 2 more things "1. case sensitive file type input fix in sub-sub 2. check if file is located on host or on cloud (status - onedrive)". Finished the first one and started searching for a solution for second problem.
 22/9  - 15:00-19:30 (4.5 hrs)   - Kept searching for a solution for our OneDrive problem - found a solution but need aproval from Elhanan. Other then that did a zoom meeting with Arik in order to fix a problem that made the code to fail - found the problem, which is invalid year date (1600,1601...). Then we disccused how we should solve this problem as documented in my whatsapp chat with Elhanan
 23/9  - 13:00-16:00 (3 hrs)     - Started working on a defensive function to prevent the error that occurred yesterday. Finished it as requasted.
+29/9  - 13:30-14:30 (1 hrs)     - Last integration meeting with Arik, tested the new code and worked as expacted.
+4/10  - 13:30-17:00 (3.5 hrs)   - Kept looking for another solution for Arik's OneDrive problem. Other then what I suggested a while ago, maybe found a way to solve the problem - Use windows built-in function to access the file's 'size on disk' attribute. Found some information about the topic, but couldnt understand how to implement.
+5/10  - 14:00-17:00 (3 hrs)     - Still trying to implement yesterday's solution, while looking at other possible solutions. Having a lot of problems with all sorts of stuff, especially with Windows.
+6/10  - 16:00-18:30 (2.5 hrs)   - Still trying to implement 2 day's ago solution, the source - https://stackoverflow.com/questions/3750590/get-size-of-file-on-disk, a C# function to get the SIZE ON DISK.  Tried to compile the C# program to check if it really works but couldnt compile it, so tried using the DLL functions mentioned there stright away, and it 1 of them worked. Need to figure out why the second function didnt work and then try and translate the C# code to a python script.  Other then that, still looking for other solutions. 
+7/10  - 13:00-16:00 (3 hrs)     - Still trying to implement 3 day's ago solution, having partial success with running the two kernel32 functions, very close to full success, having some system errors. I will need to combine the 2 following https://stackoverflow.com/questions/3750590/get-size-of-file-on-disk solution, essentialy translating the C# code into Python.
+8/10
+
+
 
 
 
