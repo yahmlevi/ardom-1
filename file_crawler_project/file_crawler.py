@@ -7,12 +7,39 @@ from hurry.filesize import size
 import win32api
 import win32con
 from pandas_crawler import Panda
+import ctypes
+from ctypes import wintypes
+
 
 #from functools import reduce
 
 
 
 class File:
+    
+    def get_sizes(self, clusterSize):
+            # FILE SIZE ON DISK 
+        #file_name.replace("\\", "\\\\")
+        #path = u'D:\\projects\\ardom-1\\file_crawler_project\\insert_to_excel.py'
+        path = 'u' + self.path
+        winlib = ctypes.CDLL('C:\Windows\System32\kernel32.dll')
+
+        hosize = wintypes.DWORD()
+        losize = winlib.GetCompressedFileSizeW(path, ctypes.byref(hosize))
+        size = hosize.value << 32 | losize
+
+        # FILE LOGICAL SIZE
+        # return os.stat(file_path).st_size
+        
+        self.file_size = size
+
+        # FILE SIZE ON DISK
+        size_on_disk = int(((size + clusterSize - 1) / clusterSize)) * clusterSize
+
+        self.file_size_on_disk = size_on_disk
+        
+        return size, size_on_disk
+
     def to_dict(self):
         # if os.path.isdir(self.path):
         #if "." not in self.path.split("\\")[1]:
@@ -72,10 +99,62 @@ def get_file_size_in_gb(size_in_bytes):
     # return size(os.stat(file_name).st_size)
     #return "%.2f" % (size_in_bytes / (1024*1024*1024))
     return "%.4f" % (size_in_bytes / (1024*1024*1024))
-    
 
-def get_file_size(file_name):
-    return os.stat(file_name).st_size
+
+def get_cluster_size(directory = None):
+    winlib = ctypes.CDLL('C:\Windows\System32\kernel32.dll')
+  
+    sectorsPerCluster = wintypes.DWORD()
+    bytesPerSector = wintypes.DWORD()
+    numberOfFreeClusters = wintypes.DWORD()
+    TotalNumberOfClusters = wintypes.DWORD()
+
+    directory = None
+
+    bool_return = winlib.GetDiskFreeSpaceW(directory, 
+                                ctypes.byref(sectorsPerCluster),
+                                ctypes.byref(bytesPerSector), 
+                                ctypes.byref(numberOfFreeClusters),
+                                ctypes.byref(TotalNumberOfClusters))
+
+    clusterSize = sectorsPerCluster.value * bytesPerSector.value
+
+    return clusterSize
+
+
+def get_file_size(file_path):
+    # FILE SIZE ON DISK 
+    #file_name.replace("\\", "\\\\")
+    #path = u'D:\\projects\\ardom-1\\file_crawler_project\\insert_to_excel.py'
+    path = 'u' + file_path
+    winlib = ctypes.CDLL('C:\Windows\System32\kernel32.dll')
+
+    hosize = wintypes.DWORD()
+    losize = winlib.GetCompressedFileSizeW(path, ctypes.byref(hosize))
+    size = hosize.value << 32 | losize
+    
+    sectorsPerCluster = wintypes.DWORD()
+    bytesPerSector = wintypes.DWORD()
+    NumberOfFreeClusters = wintypes.DWORD()
+    TotalNumberOfClusters = wintypes.DWORD()
+
+    bool_return = winlib.GetDiskFreeSpaceW(None, 
+                                ctypes.byref(sectorsPerCluster),
+                                ctypes.byref(bytesPerSector), 
+                                ctypes.byref(NumberOfFreeClusters),
+                                ctypes.byref(TotalNumberOfClusters))
+
+
+    clusterSize = sectorsPerCluster.value * bytesPerSector.value
+
+    size_on_disk = int(((size + clusterSize - 1) / clusterSize)) * clusterSize
+
+    # FILE SIZE ON DISK
+    return size_on_disk
+
+    # FILE LOGICAL SIZE
+    #return os.stat(file_path).st_size
+    
 
 def get_file_type(file_name):
     filename, file_extension = os.path.splitext(file_name)
@@ -200,6 +279,8 @@ def populate_list(path):
     skip_all_condition = False
     restart = False
 
+    clusterSize = get_cluster_size()
+
     for root, dirs, files in os.walk(".", topdown=False):
         # for dir_name in dirs:
         #     #  for root, dirs, files in os.walk(".", topdown=False):
@@ -268,8 +349,14 @@ def populate_list(path):
                     if restart is True:
                         continue
                             
-                    file.file_size = get_file_size(file.path)
-                    file.file_size_in_gb = get_file_size_in_gb(file.file_size)
+                    file.get_sizes(clusterSize)
+                    
+                    # file.file_size = get_file_size(file.path)
+                    
+                    # file.file_size_in_gb = get_file_size_in_gb(file.file_size)
+                    file.file_size_in_gb = get_file_size_in_gb(file.file_size_on_disk)
+
+
                 else:
                     file.restricted = True
                     file.year = None
