@@ -64,7 +64,8 @@
 5/10  - 14:00-17:00 (3 hrs)     - Still trying to implement yesterday's solution, while looking at other possible solutions. Having a lot of problems with all sorts of stuff, especially with Windows.
 6/10  - 16:00-18:30 (2.5 hrs)   - Still trying to implement 2 day's ago solution, the source - https://stackoverflow.com/questions/3750590/get-size-of-file-on-disk, a C# function to get the SIZE ON DISK.  Tried to compile the C# program to check if it really works but couldnt compile it, so tried using the DLL functions mentioned there stright away, and it 1 of them worked. Need to figure out why the second function didnt work and then try and translate the C# code to a python script.  Other then that, still looking for other solutions. 
 7/10  - 13:00-16:00 (3 hrs)     - Still trying to implement 3 day's ago solution, having partial success with running the two kernel32 functions, very close to full success, having some system errors. I will need to combine the 2 following https://stackoverflow.com/questions/3750590/get-size-of-file-on-disk solution, essentialy translating the C# code into Python.
-8/10
+8/10  - 13:30-16:00 (2.5 hrs)   - Still trying to implement 4 day's ago solution, succeded running one of the kernel32 functions successfully, still cant figure out the problem for second function.
+11/10 - 12:30-16:30 (4 hrs)     - (weekend work) succeded running both kernel32 functions and combining them and getting the correct file SIZE ON DISK. Then implemented into the code and refactored it so it will run faster. Then tested on C: drive and worked as expacted. (sunday work)
 
 
 
