@@ -21,11 +21,10 @@ class File:
             # FILE SIZE ON DISK 
         #file_name.replace("\\", "\\\\")
         #path = u'D:\\projects\\ardom-1\\file_crawler_project\\insert_to_excel.py'
-        path = 'u' + self.path
+        
         winlib = ctypes.CDLL('C:\Windows\System32\kernel32.dll')
-
         hosize = wintypes.DWORD()
-        losize = winlib.GetCompressedFileSizeW(path, ctypes.byref(hosize))
+        losize = winlib.GetCompressedFileSizeW(self.path, ctypes.byref(hosize))
         size = hosize.value << 32 | losize
 
         # FILE LOGICAL SIZE
@@ -64,6 +63,7 @@ class File:
             'Year': self.year,
             'File Type': self.file_type,
             'File Size': self.file_size,
+            'File Size On Disk': self.file_size_on_disk,
             'File Size GB': float(self.file_size_in_gb),
             'Restricted': self.restricted,
             'Sub-Root': sub_root,
@@ -98,7 +98,7 @@ def get_modified_year(file_name):
 def get_file_size_in_gb(size_in_bytes):
     # return size(os.stat(file_name).st_size)
     #return "%.2f" % (size_in_bytes / (1024*1024*1024))
-    return "%.4f" % (size_in_bytes / (1024*1024*1024))
+    return "%.5f" % (size_in_bytes / (1024*1024*1024))
 
 
 def get_cluster_size(directory = None):
@@ -108,8 +108,6 @@ def get_cluster_size(directory = None):
     bytesPerSector = wintypes.DWORD()
     numberOfFreeClusters = wintypes.DWORD()
     TotalNumberOfClusters = wintypes.DWORD()
-
-    directory = None
 
     bool_return = winlib.GetDiskFreeSpaceW(directory, 
                                 ctypes.byref(sectorsPerCluster),
@@ -169,7 +167,7 @@ def get_totals_by_file_type(file_list, file_type_list):
 
     for file_type in file_type_list:
 
-            count, total_size = get_info_by_filter(file_list, lambda file: file.file_type == file_type and file.restricted == False)
+            count, total_size, total_size_on_disk = get_info_by_filter(file_list, lambda file: file.file_type == file_type and file.restricted == False)
 
             if count > 0:
                 totals = Totals()
@@ -188,15 +186,17 @@ def get_totals_by_year_and_file_type(file_list, year_list, file_type_list):
     for year in year_list:
         for file_type in file_type_list:
 
-            count, total_size = get_info_by_filter(file_list, lambda file: file.year == year and file.file_type == file_type and file.restricted == False)
+            count, total_size, total_size_on_disk = get_info_by_filter(file_list, lambda file: file.year == year and file.file_type == file_type and file.restricted == False)
 
             if count > 0:
-                totals = Totals()
+                totals = Totals() 
                 totals.year = year
                 totals.file_type = file_type
                 #totals.total_size = total_size
+                
                 totals.total_size = get_file_size_in_gb(total_size)
                 totals.total_size_str = size(total_size)
+
                 totals.count = count
                 totals_list.append(totals)
     return totals_list
@@ -206,7 +206,7 @@ def get_totals(file_list):
     totals_list = []
    
     # the filter is always true (we take all files)
-    count, total_size = get_info_by_filter(file_list, lambda file: True)
+    count, total_size, total_size_on_disk = get_info_by_filter(file_list, lambda file: True)
 
     if count > 0:
         totals = Totals()
@@ -229,11 +229,13 @@ def count_by_year_and_file_type(file_list, filter):
 def get_info_by_filter(file_list, filter):
     count = 0
     size = 0
+    size_on_disk = 0
     for file in file_list:
         if filter(file): 
             count += 1
             size += file.file_size
-    return count, size
+            size_on_disk += file.file_size_on_disk
+    return count, size, size_on_disk
 
 # nesting_level is 2 because we want to see 2 \'s and then we know its first level dirs from path
 def filter_by_nesting_level(file_list, nesting_level=2):
@@ -280,6 +282,7 @@ def populate_list(path):
     restart = False
 
     clusterSize = get_cluster_size()
+    
 
     for root, dirs, files in os.walk(".", topdown=False):
         # for dir_name in dirs:
@@ -350,7 +353,7 @@ def populate_list(path):
                         continue
                             
                     file.get_sizes(clusterSize)
-                    
+
                     # file.file_size = get_file_size(file.path)
                     
                     # file.file_size_in_gb = get_file_size_in_gb(file.file_size)
