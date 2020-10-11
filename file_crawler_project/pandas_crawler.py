@@ -10,13 +10,14 @@ class Panda(object):
 
     
     def pd_root(self, path):
-        header_list = ['Size GB', 'Count', 'Root']
+        header_list = ['Size On Disk GB', 'Logical Size GB', 'Count', 'Root']
 
         print("")
         print('------ROOT TAB--------')
         print("")
         root_tab = self.df_file_list.groupby(['Year', 'File Type']).aggregate({
             "File Size GB": ['sum'],
+            'Logical Size GB': ['sum'],
             'File Type': ['count']
         })
         root_tab['Root'] = path
@@ -28,13 +29,14 @@ class Panda(object):
        
 
     def pd_root_by_file_type(self, path):
-        header_list = ['Size GB', 'Count', 'Root']
+        header_list = ['Size On Disk GB', 'Logical Size GB', 'Count', 'Root']
     
         print("")
         print('------ROOT BY FILE TYPE TAB--------')
         print("")
         root_by_file_tab = self.df_file_list.groupby(['File Type']).aggregate({
-            "File Size GB": ['sum'], 
+            "File Size GB": ['sum'],
+            'Logical Size GB': ['sum'],
             'File Type': ['count']
         })
         root_by_file_tab['Root'] = path
@@ -48,13 +50,14 @@ class Panda(object):
 
     
     def pd_subroot(self, path):
-        header_list = ['Size GB', 'Count', 'Root']
+        header_list = ['Size On Disk GB', 'Logical Size GB', 'Count', 'Root']
         
         print("")
         print('------SUB-ROOT TAB--------')
         print("")
         sub_root_tab = self.df_file_list.groupby(['Sub-Root', 'Year', 'File Type']).aggregate({
-            "File Size GB": ['sum'], 
+            "File Size GB": ['sum'],
+            'Logical Size GB': ['sum'],
             'File Type': ['count']
         })
         sub_root_tab['Root'] = path
@@ -66,13 +69,14 @@ class Panda(object):
     
 
     def pd_total(self, path):
-        header_list = ['Size GB', 'Count', 'Root']
+        header_list = ['Size On Disk GB', 'Logical Size GB', 'Count', 'Root']
 
         print("")
         print('------TOTAL TAB--------')
         print("")
         total_tab = self.df_file_list.groupby(['Sub-Root']).aggregate({
-            "File Size GB": ['sum'], 
+            "File Size GB": ['sum'],
+            'Logical Size GB': ['sum'],
             'File Type': ['count']
         })
         total_tab['Root'] = path
@@ -128,11 +132,12 @@ class Panda(object):
         print('------BIGGER THEN 1 GB--------')
         print("")
         
-        header_list = ['Size GB', 'Count']
+        header_list = ['Size On Disk GB', 'Logical Size GB', 'Count']
         
         df = self.df_file_list[(self.df_file_list['File Size GB']  > 1.0000)]
         bigger_then_one_gb_tab = df.groupby(['Sub-Root', 'File Type']).aggregate({
             "File Size GB": ['sum'],
+            'Logical Size GB': ['sum'],
             'File Type': ['count']
         })
 
@@ -151,7 +156,7 @@ class Panda(object):
         print('------CUSTOM FILE TYPE--------')
         print("")
 
-        header_list = ['Size GB', 'Count']
+        header_list = ['Size On Disk GB', 'Logical Size GB', 'Count']
         
         file_extensions_list = file_extensions.split(',')
 
@@ -159,6 +164,7 @@ class Panda(object):
 
         custom_file_type_tab = df.groupby(['Sub-Root']).aggregate({
             "File Size GB": ['sum'],
+            'Logical Size GB': ['sum'],
             'File Type': ['count']
         })
 
@@ -176,12 +182,13 @@ class Panda(object):
         print('------CUSTOM SUB SUB ROOT--------')
         print("")
 
-        header_list = ['Size GB', 'Count']
+        header_list = ['Size On Disk GB', 'Logical Size GB', 'Count']
 
         df = self.df_file_list[(self.df_file_list['Sub-Sub-Root'] == custom_sub_sub)]
 
         custom_sub_sub_tab = df.groupby(['Sub-Root', 'Sub-Sub-Root']).aggregate({
         "File Size GB": ['sum'],
+        'Logical Size GB': ['sum'],
         "File Type": ['count']
         })
 

@@ -64,6 +64,7 @@ class File:
             'File Type': self.file_type,
             'File Size': self.file_size,
             'File Size On Disk': self.file_size_on_disk,
+            'Logical Size GB': float(self.logical_gb),
             'File Size GB': float(self.file_size_in_gb),
             'Restricted': self.restricted,
             'Sub-Root': sub_root,
@@ -98,7 +99,7 @@ def get_modified_year(file_name):
 def get_file_size_in_gb(size_in_bytes):
     # return size(os.stat(file_name).st_size)
     #return "%.2f" % (size_in_bytes / (1024*1024*1024))
-    return "%.5f" % (size_in_bytes / (1024*1024*1024))
+    return "%.4f" % (size_in_bytes / (1024*1024*1024))
 
 
 def get_cluster_size(directory = None):
@@ -152,6 +153,10 @@ def get_file_size(file_path):
 
     # FILE LOGICAL SIZE
     #return os.stat(file_path).st_size
+
+def get_file_size_logical(file_path):
+    # FILE LOGICAL SIZE
+    return os.stat(file_path).st_size
     
 
 def get_file_type(file_name):
@@ -354,9 +359,10 @@ def populate_list(path):
                             
                     file.get_sizes(clusterSize)
 
-                    # file.file_size = get_file_size(file.path)
+                    file.file_size = get_file_size_logical(file.path)
                     
-                    # file.file_size_in_gb = get_file_size_in_gb(file.file_size)
+                    file.logical_gb = get_file_size_in_gb(file.file_size)
+
                     file.file_size_in_gb = get_file_size_in_gb(file.file_size_on_disk)
 
 
