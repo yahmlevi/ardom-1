@@ -67,8 +67,8 @@
 8/10  - 13:30-16:00 (2.5 hrs)   - Still trying to implement 4 day's ago solution, succeded running one of the kernel32 functions successfully, still cant figure out the problem for second function.
 11/10 - 12:30-18:30 (6 hrs)     - (weekend work - 5 hrs) succeded running both kernel32 functions and combining them and getting the correct file SIZE ON DISK. Then implemented into the code and refactored it so it will run faster. Then tested on C: drive and worked as expacted. (sunday work - 1 hrs) Elhanan asked to show logical size and not only size on disk so added it.
 12/10 - 14:30-21:00 (6.5 hrs)   - Meeting with Elhanan, he described to me the next project.  Started learning the topic and searching for modules. found some interesting things and asked Elhanan for some written information about the needs. started searching the 'multiprocessing' python module and playing with it.
-13/10 -                         - Established a full-duplex connection with 2 process (threads) with the 'multiprocessing' python module.
-
+13/10 - 14:00-18:30 (4.5 hrs)   - Established a full-duplex connection with 2 process (threads) with the 'multiprocessing' python module. then recived Elhanan's code so learned it and started working thowords a solution, tested python's 'threading' module and tested it with queue which worked as expacted, still trying to figure out how to solve this.
+14/10
 
 
 
