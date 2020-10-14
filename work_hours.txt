@@ -68,7 +68,7 @@
 11/10 - 12:30-18:30 (6 hrs)     - (weekend work - 5 hrs) succeded running both kernel32 functions and combining them and getting the correct file SIZE ON DISK. Then implemented into the code and refactored it so it will run faster. Then tested on C: drive and worked as expacted. (sunday work - 1 hrs) Elhanan asked to show logical size and not only size on disk so added it.
 12/10 - 14:30-21:00 (6.5 hrs)   - Meeting with Elhanan, he described to me the next project.  Started learning the topic and searching for modules. found some interesting things and asked Elhanan for some written information about the needs. started searching the 'multiprocessing' python module and playing with it.
 13/10 - 14:00-18:30 (4.5 hrs)   - Established a full-duplex connection with 2 process (threads) with the 'multiprocessing' python module. then recived Elhanan's code so learned it and started working thowords a solution, tested python's 'threading' module and tested it with queue which worked as expacted, still trying to figure out how to solve this.
-14/10
+14/10 - 10:30-15:30 (5 hrs)     - Wrote 2 classes, 1 is the 'telnet input' which constantly adds values to the queue, while the 2nd class is the 'django server' which constantly takes items from the queue. showed Elhanan what i did and he redirected me thowords the solution, a stand-alone queue that can be accessed from everywhere. started trying implemting this.
 
 
 
