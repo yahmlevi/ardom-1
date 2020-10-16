@@ -1,33 +1,49 @@
-from get_from_q import QueuePrinter
-from send_to_q import telnet_stream
+from hub import Hub
+from telnet_stream import Telnet_Stream
 import queue
 import time
 
+# def preprocess_json(json_file):
+#     data = json.load(json_file)
+#     for i in data['UID']:
+#         dict 'UID', i['data']
+
+def create_telnet_stream(u_id):
+    q_in = queue.Queue()
+    q_out = queue.Queue()
+
+    info = {"uid": u_id}
+    thread = Telnet_Stream(info, q_in, q_out)
+
+    return thread, q_in, q_out
+
 
 if __name__ == '__main__':
-    q = queue.Queue()
 
-    info1 = {"name": "one"}
-    a = telnet_stream(info1, q)
+    queues = {}
+    threads = []
 
-    info2 = {"name": "two"}
-    b = telnet_stream(info2, q)
+    thread_ids = ["one", "two"]
 
-    info3 = {"name": "three"}
-    c = telnet_stream(info3, q)
+    for u_id in thread_ids:
+        print ("Creating TelnetStream thread '{}'".format(u_id))
+        thread, q_in, q_out = create_telnet_stream(u_id)
+        queues[u_id] = {
+            "uid": u_id,
+            "q_in": q_in, 
+            "q_out": q_out
+        }
+        thread.start()
+        threads.append(thread)
+        
 
-    printer = QueuePrinter(q)
-
-    a.start()
-    b.start()
-    c.start()
-    printer.start()
+    hub = Hub(queues)  
+    hub.start()
   
-    time.sleep(15) 
-  
-    a.join()
-    b.join()
-    c.join()
+
+    for thread in threads:
+        thread.join()
+    
     printer.join()
 
 

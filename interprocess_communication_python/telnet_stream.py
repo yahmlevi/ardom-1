@@ -2,21 +2,31 @@ import time
 import threading
 import queue
 
-class telnet_stream(threading.Thread):
+# A SIDE
+class Telnet_Stream(threading.Thread):
     
-    def __init__(self, info, queue):
+    def __init__(self, info, queue_in, queue_out):
         threading.Thread.__init__(self)
         self.info = info
-        self.q = queue
+        self.q_in = queue_in
+        self.q_out = queue_out
         self.running = True
     
     def run(self):
         i = 0
         while self.running:
+            # send data
             i += 1
-            msg = self.info["name"] + " " + str(i)
-            self.q.put(msg)
-            time.sleep(1)
+            msg = 'A SIDE: thread name - ' + self.info["uid"] + ", index-" + str(i)
+            self.q_out.put(msg)
+            
+            if not self.q_in.empty():
+                # receive data
+                received_item = self.q_in.get()
+                print("A SIDE: Received value '{}' from '{}'".format(received_item, self.info["uid"]))
+                #print("A SIDE: IN QUEUE from '{}' got:".format(self.info['uid']), received_item)
+
+            time.sleep(2)
             
     def stop(self):
         self.running = False
@@ -28,7 +38,7 @@ class telnet_stream(threading.Thread):
     
 #     def __init__(self, queue):
 #         threading.Thread.__init__(self)
-#         self.q = queue
+#         self.q_out = queue
 
 #         self.running = True
 
