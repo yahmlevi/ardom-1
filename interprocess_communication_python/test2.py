@@ -1,7 +1,20 @@
 import persistqueue
+import time
+import threading
 
 
-path = "D:\\projects\\ardom-1\\interprocess_communication_python"
+class TelnetStream(threading.Thread):
+    
+    def __init__(self, path, queue):
+        threading.Thread.__init__(self)
+        #self.q = persistqueue.SQLiteQueue(path, auto_commit=True)
+        self.q = queue
 
-q = persistqueue.SQLiteQueue(path, auto_commit=True)
-print(q.get())
+    
+    def run(self):
+        while True:
+            try:
+                self.q.put("yahm11")
+                time.sleep(2)
+            except KeyboardInterrupt:
+                break
