@@ -1,17 +1,14 @@
 #import persistqueue
+import threading
 
-#q = persistqueue.UniqueQ('D:\projects\ardom-1\interprocess_communication_python')
-#q.put('str1')
+class Hub(threading.Thread):
+    
+    def __init__(self, path, queue):
+        threading.Thread.__init__(self)
+        #self.q = persistqueue.SQLiteQueue(path, auto_commit=True)
+        self.q = queue
 
-# from persistqueue import Queue
-import persistqueue
-
-path = "D:\\projects\\ardom-1\\interprocess_communication_python"
-
-#q = persistqueue.Queue(path)
-
-
-q = persistqueue.SQLiteQueue(path, auto_commit=True)
-q.put('a')
-q.put('b')
+    def run(self):
+        if not self.q.empty():
+            print(self.q.get())
 

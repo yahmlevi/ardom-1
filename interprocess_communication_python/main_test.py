@@ -1,30 +1,21 @@
-from test2 import telnet_stream
-from test import QueuePrinter
-import queue 
+from test2 import TelnetStream
+from test import Hub
 import time
+from persistqueue import FIFOSQLiteQueue
 
 if __name__ == '__main__':
-     q = queue.Queue()
-     stop_threads = False
 
-     info1 = {"name": "one"}
-     a = telnet_stream(info1, q)
+     path = "D:\\projects\\ardom-1\\interprocess_communication_python"
+     q = FIFOSQLiteQueue(path=path, multithreading=True)
 
-     info2 = {"name": "two"}
-     b = telnet_stream(info2, q)
+     stream_thread = TelnetStream(path, q)
+     receiver_thread = Hub(path, q)
 
-     info3 = {"name": "three"}
-     c = telnet_stream(info3, q)
+     stream_thread.start()
+     receiver_thread.start()
+     
+     time.sleep(15)
 
-     printer = QueuePrinter(q)
-
-     a.start()
-     b.start()
-     c.start()
-     printer.start()
-     time.sleep(15) 
-     stop_threads = True
-     a.join()
-     b.join()
-     c.join()
-     printer.join()
+     stream_thread.join()
+     receiver_thread.join()
+     
