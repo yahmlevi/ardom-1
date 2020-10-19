@@ -34,8 +34,10 @@ class File:
 
         # FILE SIZE ON DISK
         size_on_disk = int(((size + clusterSize - 1) / clusterSize)) * clusterSize
-
-        self.file_size_on_disk = size_on_disk
+        try:
+            self.file_size_on_disk = size_on_disk
+        except:
+            self.file_size_on_disk = 0
         
         return size, size_on_disk
 
