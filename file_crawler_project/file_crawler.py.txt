@@ -374,7 +374,11 @@ def populate_list(path):
                     file.year = None
                     file.file_size = None
                     file.file_size_in_gb = 0.0
-                    
+                    file.file_size_on_disk = 0
+                    try:
+                        file.logical_gb = None
+                    except:
+                        file.logical_gb = 0
                 file_list.append(file)
 
                 
