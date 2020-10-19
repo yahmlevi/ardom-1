@@ -2,11 +2,14 @@ import hub
 import telnet_stream
 import time
 from persistqueue import FIFOSQLiteQueue
+import os
 
 if __name__ == '__main__':
 
      path = "D:\\projects\\ardom-1\\interprocess_communication_python\\test_data"
      
+     #if os.path.isfile(path):
+
      stream_thread = telnet_stream.TelnetStream(path)
      time.sleep(0.5)
 
