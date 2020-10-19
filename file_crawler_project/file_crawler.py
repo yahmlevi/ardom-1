@@ -22,19 +22,20 @@ class File:
         #file_name.replace("\\", "\\\\")
         #path = u'D:\\projects\\ardom-1\\file_crawler_project\\insert_to_excel.py'
         
-        winlib = ctypes.CDLL('C:\Windows\System32\kernel32.dll')
-        hosize = wintypes.DWORD()
-        losize = winlib.GetCompressedFileSizeW(self.path, ctypes.byref(hosize))
-        size = hosize.value << 32 | losize
-
-        # FILE LOGICAL SIZE
-        # return os.stat(file_path).st_size
-        
-        self.file_size = size
-
-        # FILE SIZE ON DISK
-        size_on_disk = int(((size + clusterSize - 1) / clusterSize)) * clusterSize
         try:
+            winlib = ctypes.CDLL('C:\Windows\System32\kernel32.dll')
+            hosize = wintypes.DWORD()
+            losize = winlib.GetCompressedFileSizeW(self.path, ctypes.byref(hosize))
+            size = hosize.value << 32 | losize
+
+            # FILE LOGICAL SIZE
+            # return os.stat(file_path).st_size
+            
+            self.file_size = size
+
+            # FILE SIZE ON DISK
+            size_on_disk = int(((size + clusterSize - 1) / clusterSize)) * clusterSize
+        
             self.file_size_on_disk = size_on_disk
         except:
             self.file_size_on_disk = 0
