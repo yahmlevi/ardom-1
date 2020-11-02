@@ -72,6 +72,10 @@
 15/10 - 10:30-15:30 (5 hrs)     - Kept working on the code and then went to Elhanan and we tried to implement it in Elhanan's code - without success.
 18/10 - 15:30-19:30 (4 hrs), 8:30-16:00 (7.5 hrs) - (weekend work) found module 'persistqueue', tried it and worked perfectly as expacted, then implemented it into the demo-code - didnt work, returns ERROR: 'SQLite objects created in a thread can only be used in that same thread', which i didnt expact whould happen, then tried to think of ways to solve it and looked for relevent information. (sunday work) Solved yesterday's problem, and implemented into the demo-code. Then when to Elhanan and we tried to implement the solution into his code, we had some problems but solved them, then Elhanan decided to leave the 'queue' solution and try an SQLite3 solution. Then fixed the error Arik sent about last project.
 19/10 - 12:00-18:30 (6.5 hrs)   - Wrote the SQL class Elhanan asked for, tested it with threds and looks like its thread-safe. other then that, fixed the errors Arik had with my last project's script.
+11/1  - 15:15-20:00 (4.75 hrs)  - Solved the problem Arik had with the file crawler script.  Then started working on Elhanan's new task which documented in our email chat.  looked for ways to solve the problem and found some interesting options, will need to research further. 
+12/1  - 11:30-                  - Looked at SQLAlchemy and tried to implement and see if we can use it.
+
+
 
 Title:          1st POC
 Requirement:    Run wxPython application inside Docker container. 

@@ -13,12 +13,8 @@ class TelnetStream(threading.Thread):
         if not os.path.isdir(path):
             self.q =  persistqueue.FIFOSQLiteQueue(path=path, multithreading=True, auto_commit=True, db_file_name="my_file_name1")  
             self.q.task_done()
-            print('was here')
-            print('was here')
-            print('was here')
-            print('was here')
-            print('was here')
-        
+            print('created queue')
+
         self.q = persistqueue.FIFOSQLiteQueue(path=path, multithreading=True, auto_commit=True, db_file_name="my_file_name1")    
 
     def run(self):
