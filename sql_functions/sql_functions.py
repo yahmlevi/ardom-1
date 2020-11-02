@@ -2,6 +2,7 @@ import sqlite3
 import threading
 import persistqueue
 import time
+import os
 
 class SQLFunctions(threading.Thread):
 #class SQLFunctions():
@@ -17,9 +18,12 @@ class SQLFunctions(threading.Thread):
         
         # sql GET function queue implementaion
         q_in_path = queues_path + '\\input'
-        #if not os.path.isdir(q_in_path):
-        self.q_in =  persistqueue.FIFOSQLiteQueue(path=q_in_path, multithreading=True, auto_commit=True, db_file_name="input")  
-        #self.q_in.task_done()
+        if not os.path.isdir(q_in_path):
+            print('making dir from sql')
+            self.q_in = await persistqueue.FIFOSQLiteQueue(path=q_in_path, multithreading=True, auto_commit=True, db_file_name="input")  
+            #self.q_in.task_done()
+        self.q_in =  persistqueue.FIFOSQLiteQueue(path=q_in_path, multithreading=True, auto_commit=True, db_file_name="input")
+        
 
         # while True:  
         #     #if not self.q_in.empty():
