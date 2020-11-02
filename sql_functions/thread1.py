@@ -2,6 +2,7 @@ import threading
 import sql_functions
 import persistqueue
 import time
+import os
 
 class ThreadOne(threading.Thread):
 
@@ -12,9 +13,11 @@ class ThreadOne(threading.Thread):
 
         # sql GET function queue implementaion
         q_in_path = queues_path + '\\input'
-        #if not os.path.isdir(q_in_path):
-        self.q_in =  persistqueue.FIFOSQLiteQueue(path=q_in_path, multithreading=True, auto_commit=True, db_file_name="input")  
-        #self.q_in.task_done()
+        if not os.path.isdir(q_in_path):
+            print('making dir from thread')
+            self.q_in =  persistqueue.FIFOSQLiteQueue(path=q_in_path, multithreading=True, auto_commit=True, db_file_name="input")  
+            #self.q_in.task_done()
+        self.q_in =  persistqueue.FIFOSQLiteQueue(path=q_in_path, multithreading=True, auto_commit=True, db_file_name="input")
 
         # data = {
         #     'function': 'test'
@@ -43,9 +46,10 @@ class ThreadOne(threading.Thread):
         try:
             self.q_in.put(data)
             time.sleep(0.5)
+                #break
         except:
             print('didnt put data')
-        
+            
         
 
        
