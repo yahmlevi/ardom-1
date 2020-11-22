@@ -72,9 +72,16 @@
 15/10 - 10:30-15:30 (5 hrs)     - Kept working on the code and then went to Elhanan and we tried to implement it in Elhanan's code - without success.
 18/10 - 15:30-19:30 (4 hrs), 8:30-16:00 (7.5 hrs) - (weekend work) found module 'persistqueue', tried it and worked perfectly as expacted, then implemented it into the demo-code - didnt work, returns ERROR: 'SQLite objects created in a thread can only be used in that same thread', which i didnt expact whould happen, then tried to think of ways to solve it and looked for relevent information. (sunday work) Solved yesterday's problem, and implemented into the demo-code. Then when to Elhanan and we tried to implement the solution into his code, we had some problems but solved them, then Elhanan decided to leave the 'queue' solution and try an SQLite3 solution. Then fixed the error Arik sent about last project.
 19/10 - 12:00-18:30 (6.5 hrs)   - Wrote the SQL class Elhanan asked for, tested it with threds and looks like its thread-safe. other then that, fixed the errors Arik had with my last project's script.
-11/1  - 15:15-20:00 (4.75 hrs)  - Solved the problem Arik had with the file crawler script.  Then started working on Elhanan's new task which documented in our email chat.  looked for ways to solve the problem and found some interesting options, will need to research further. 
-12/1  - 11:30-18:00 (6.5 hrs)   - Looked at SQLAlchemy and tried to implement and see if we can use it - didnt like it. started trying to implement with 2 queues, 1 for requasting db function, and 1 for the result, have more reaseach and more work to do.  Then Elhanan needed a script to insert jsons into db with uid so did that.
-
+1/11  - 15:15-20:00 (4.75 hrs)  - Solved the problem Arik had with the file crawler script.  Then started working on Elhanan's new task which documented in our email chat.  looked for ways to solve the problem and found some interesting options, will need to research further. 
+2/11  - 11:30-18:00 (6.5 hrs)   - Looked at SQLAlchemy, looked like a very strong tool that might be a overkill for us, and will be to complicated. so started trying to implement with 2 queues, 1 for requasting db function, and 1 for the result, have more reaseach and more work to do.  Then Elhanan needed a script to insert jsons into db with uid so did that and sent him.
+3/11  - 10:45-17:30 (6.75 hrs)  - Tested yesterday's script i sent to Elhanan to see how much time it takes. Then kept working on the sql-threads problem, did a lot of progress with the queues solution, but then figured that what i was trying to do could cause a bottleneck and if i solved that problem (the bottleneck problem) it would be an anti-pattern (trying to filter response from queue), so searched for another solution, and bumped into SQLAlchemy again but saw information i didnt see before about connection pooling, so tried to implement it. Then saw this https://stackoverflow.com/questions/6297404/multi-threaded-use-of-sqlalchemy, which reassured me that sqlite can only have 1 connection at a time and that this bottleneck with sqlite is inevitable. Then spoke to Elhanan and he asked to go in a different approach, timeouts. then touched up a bit the queue code for it to be useable for further usage.
+4/11  - 13:30-17:30 (4 hrs)     - Yesterday Elhanan asked me to indicate when a process is accessing the DB, so started working on it, made progress but couldnt figure it out yet.
+5/11  - 11:30-17:30 (6 hrs)     - Elhanan asked to check the data types which will make our create table function the fastest. checked and reaseached a lot and my conclusion is that it doesnt
+9/11  - 12:30-19:30 (7 hrs)     - Meeting with Elhanan in Eilot, looked for option for optimazing the system, and did some successfully. Said we would try in-memory db to optimaize some more, so i made a POC of that.
+11/11 - 13:00-17:30 (4.5 hrs)   - Meeting with Elhanan in Eilot, i was instructed to find the fastest way to use WINREG as a 'reference point' with large strings, so started working on that.
+12/11 - 12:30-18:30 (6 hrs)     - It takes 0.001 seconds to compress the string which is almost double then PUTing the large string into the WINREG, so this is not relevent.  it took 0.17452168464660645 sec to PUT a large string of size 170041 into WINREG 1000 times, it took 84.09048748016357 sec to PUT a large string of size 170041 into SQLite 1000 times, so winreg is much faster. other then that still trying to figure out how to improve to proformance of the winreg access more, couldnt find anything significant.
+15/11 - 11:30-17:00 (5.5 hrs)   - Seems like there is not much to do to improve the WINREG performance as it is not intended to act as a quick I\O DB, like mentioned in here - https://stackoverflow.com/questions/2011647/how-to-improve-the-performance-of-write-data-into-registry. saw some other options to improve performance such as modifying some configurations in order to improve HOST performance but it seems random.  Then Elhanan asked me to search about making the winreg thread-safe and so on, so started doing that.  Did a lot of tests and windows registry works perfectly with threads.
+22/11 - 13:30-19:30 (6 hrs)     - Went to Eilot to Elhanan to speak about the new project which is described in our Gmail chat, we also spoke with project managers Lior and Yosi.  Then started to work on the project, looked for tools to access all the servers in a nice way and found some interesting things but seems like nothing is relevent to just windows as SSH, so need approval from Lior that we can do the needed changes to the servers in order to access them via SSH. other then that, found some usful links and information for future development.
 
 
 Title:          1st POC
@@ -101,3 +108,38 @@ Other Tasks:
 4. Wrote a script to generate SSH keys and reaseached how to use "REG QUARY" functions
 5. Wrote a script for executing script over SSH from the container (=local) on the host (=remote)
 
+
+
+
+Before army project discription:
+
+
+
+Lior is manager and Yosi is the CEO
+
+1st step - get list of servers ip's\host name's and find out what OS type
+
+2nd step - relational DB (XL file) that consists PATH TO QUERY, SERVER DETAILS - related by which query to which OS type 
+
+3rd step - choose several QUERYs to executue on several SERVERs - get answers to XL\xml\csv\txt file
+
+4th step (optinal) - GUI
+
+5th step (optinal) - .EXE
+
+
+notes: 
+
+    - - - - - - connect to each pc with ssh using the ip list, transfer all the files to that pc and run all the scripts
+
+    list of servers will create dynimicly - will be given a list of ip\host name
+
+    - detialed exeptions\logs
+
+    SEND EMAIL TO LIOR@ARDOM.NET - 052-8641386
+
+questions:
+
+    - from where we execute the initial script (how we speak to each server)
+
+    - will the query be PowerShell or CMD or somthing else - .bat\ cmd

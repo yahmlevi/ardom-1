@@ -1,64 +1,69 @@
 import sqlite3
-import threading
-import persistqueue
+#import threading
+#import persistqueue
 import time
 import os
 
-class SQLFunctions(threading.Thread):
-#class SQLFunctions():
+#class SQLFunctions(threading.Thread):
+class SQLFunctions():
 
-    def __init__(self, queues_path):
-        threading.Thread.__init__(self)
+    #def __init__(self, queues_path):
+    def __init__(self):
+        #threading.Thread.__init__(self)
         self.conn = sqlite3.connect('D:\\projects\\ardom-1\\sql_functions\\testdatabase.db', check_same_thread=False)
         self.cursor = self.conn.cursor()
         self.table_name = 'proccess'
-        self.cursor.execute("create table if not exists {}(uid text, type text, data text, entry_date datetime)" .format(self.table_name))
+        #self.cursor.execute("create table if not exists {}(uid text, type text, data text, entry_date datetime)" .format(self.table_name))
+        self.cursor.execute("create table if not exists {}(type text, data text, entry_date datetime)" .format(self.table_name))
         self.conn.commit()
         
         
-        # sql GET function queue implementaion
-        q_in_path = queues_path + '\\input'
-        if not os.path.isdir(q_in_path):
-            print('making dir from sql')
-            self.q_in = await persistqueue.FIFOSQLiteQueue(path=q_in_path, multithreading=True, auto_commit=True, db_file_name="input")  
-            #self.q_in.task_done()
-        self.q_in =  persistqueue.FIFOSQLiteQueue(path=q_in_path, multithreading=True, auto_commit=True, db_file_name="input")
-        
+    #     # sql GET function queue implementaion
+    #     q_in_path = queues_path + '\\input'
+    #     if not os.path.isdir(q_in_path):
+    #         print('making dir from sql')
+    #         self.q_in = persistqueue.FIFOSQLiteQueue(path=q_in_path, multithreading=True, auto_commit=True, db_file_name="input")
+    #         #self.q_in.task_done()
+    #     self.q_in =  persistqueue.FIFOSQLiteQueue(path=q_in_path, multithreading=True, auto_commit=True, db_file_name="input")
 
-        # while True:  
-        #     #if not self.q_in.empty():
-        #     request = self.q_in.get()
-        #     print(request)
-        #     time.sleep(0.5)
-        #     if request:
-        #         requested_function = request['function']
-        #         print(requested_function)
-          
+    #     # q_out_path = queues_path + '\\output'
+    #     # #if not os.path.isdir(q_out_path):
+    #     # self.q_out =  persistqueue.FIFOSQLiteQueue(path=path, multithreading=True, auto_commit=True, db_file_name="output")  
+    #     # self.q_out.task_done()
 
-        # q_out_path = queues_path + '\\output'
-        # #if not os.path.isdir(q_out_path):
-        # self.q_out =  persistqueue.FIFOSQLiteQueue(path=path, multithreading=True, auto_commit=True, db_file_name="output")  
-        # self.q_out.task_done()
-
-    def run(self):
-        while True:  
-            if not self.q_in.empty():
-                request = self.q_in.get()
-                print(request)
-                time.sleep(0.5)
-                if request:
-                    requested_function = request['function']
-                    print(requested_function)
-                    if requested_function == 'GET':
-                        print('success')
+    # def run(self):
+    #     while True:  
+    #         #if not self.q_in.empty():
+    #         time.sleep(0.5)
+    #         request = self.q_in.get()
+    #         print(request)
+    #         if request:
+    #             requested_function = request['function']
+    #             print(requested_function)
+    #             if requested_function == 'GET':
+    #                 uid = request['uid']
+    #                 result = SQLFunctions.get(uid)
+    #                 print(result)
+                
+    #             if requested_function == 'PUT':
+    #                 print('PUT FUNC')
+                
+    #             if requested_function == 'UPDATE':
+    #                 print('UPDATE FUNC')
+                
+    #             if requested_function == 'CLEAR':
+    #                 print('CLEAR FUNC')
+                
+    #             if requested_function == 'DEL':
+    #                 print('DEL FUNC')
                 
         
-        # while True:
-        #     try:
-        #         self.q.put(rows)
-        #         continue
-        #     except:
-        #         print("can't put output")
+    #     # while True:
+    #     #     try:
+    #     #         self.q.put(rows)
+    #     #         continue
+    #     #     except:
+    #     #         print("can't put output")
 
 
         
@@ -74,8 +79,8 @@ class SQLFunctions(threading.Thread):
 
     def update(self, uid, type_io, data):
         print('Updating table')
-        self.cursor.execute("UPDATE {} SET data = '{}' where uid = '{}'" .format(self.table_name, data, uid))
-        self.cursor.execute("UPDATE {} SET type = '{}' where uid = '{}'" .format(self.table_name, type_io, uid))
+        #self.cursor.execute("UPDATE {} SET data = '{}', type = '{}' where uid = '{}'" .format(self.table_name, data, type_io, uid))
+        self.cursor.execute("UPDATE {} SET data = '{}', type = '{}' where rowid = '{}'" .format(self.table_name, data, type_io, uid))
         self.conn.commit()
         print('Updated table')
 

@@ -8,16 +8,13 @@ class ThreadOne(threading.Thread):
 
     def __init__(self, queues_path):
         threading.Thread.__init__(self)
-        # sql = sql_functions.SQLFunctions()
         
-
-        # sql GET function queue implementaion
+        # initialize queues for thread communication 
         q_in_path = queues_path + '\\input'
-        if not os.path.isdir(q_in_path):
-            print('making dir from thread')
-            self.q_in =  persistqueue.FIFOSQLiteQueue(path=q_in_path, multithreading=True, auto_commit=True, db_file_name="input")  
-            #self.q_in.task_done()
         self.q_in =  persistqueue.FIFOSQLiteQueue(path=q_in_path, multithreading=True, auto_commit=True, db_file_name="input")
+
+        q_out_path = queues_path + '\\output'
+        self.q_out =  persistqueue.FIFOSQLiteQueue(path=q_out_path, multithreading=True, auto_commit=True, db_file_name="output")
 
         # data = {
         #     'function': 'test'
@@ -37,16 +34,19 @@ class ThreadOne(threading.Thread):
         #     self.q_out.task_done()
 
     def run(self):
+        flag = True
         data = {
             'function': 'GET',
-            'uid': 'one'
+            'uid': 'one',
+            'thread_uid': 'one'
         }
 
         #while True:
         try:
             self.q_in.put(data)
             time.sleep(0.5)
-                #break
+            while flag:
+                result = self.q_out.get()
         except:
             print('didnt put data')
             
