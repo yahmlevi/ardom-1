@@ -5,6 +5,7 @@ class ThreadTwo(threading.Thread):
 
     def __init__(self):
         threading.Thread.__init__(self)
+<<<<<<< HEAD
         self.sql = sql_functions.SQLFunctions()
         
         
@@ -21,4 +22,11 @@ class ThreadTwo(threading.Thread):
                     pass
             except KeyboardInterrupt:
                 break
+=======
+        sql = sql_functions.SQLFunctions()
+        while True:
+            print(sql.get('one'))
+            print('thread 2')
+
+>>>>>>> db40af3c554a604c0307c755056761f38a6fdee4
        

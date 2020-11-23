@@ -1,6 +1,9 @@
 import json
 import sqlite3
+<<<<<<< HEAD
 import time
+=======
+>>>>>>> db40af3c554a604c0307c755056761f38a6fdee4
 
 str_test = {
     "glossary": {
@@ -25,6 +28,7 @@ str_test = {
     }
 }
 
+<<<<<<< HEAD
 t0 = time.time()
 # convert into JSON:
 json_test = json.dumps(str_test)
@@ -34,6 +38,10 @@ print("convert python object to a json string took {}" .format(time))
 
 # # convert into JSON:
 # json_test = json.dumps(str_test)
+=======
+# convert into JSON:
+json_test = json.dumps(str_test)
+>>>>>>> db40af3c554a604c0307c755056761f38a6fdee4
 
 # insert to DB:
 conn = sqlite3.connect('D:\\projects\\ardom-1\\json_to_sql\\testdatabase.db', check_same_thread=False)
