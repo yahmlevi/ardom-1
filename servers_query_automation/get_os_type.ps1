@@ -4,8 +4,11 @@
 
 # [System.Environment]::OSVersion.Version
 # systeminfo /fo csv | ConvertFrom-Csv | select OS*, System*, Hotfix* | Format-List
-$path = "HKCU:\Software\Yahm\Tests"
-New-Item –Path $path –Name MyKey
-New-ItemProperty -Path $path\MyKey -Name "MyValue" -Value 0 -PropertyType "DWORD"
 
+#$path = "HKCU:\Software\Yahm\Tests"
+#New-Item –Path $path –Name MyKey
+#New-ItemProperty -Path $path\MyKey -Name "MyValue" -Value 0 -PropertyType "DWORD"
+
+Set-Variable -Name "test" -Value (systeminfo | findstr /B /C:"OS Name")
 #systeminfo | findstr /B /C:"OS Name"
+return $test
