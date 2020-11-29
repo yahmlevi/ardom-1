@@ -84,6 +84,8 @@
 22/11 - 13:30-19:30 (6 hrs)     - Went to Eilot to Elhanan to speak about the new project which is described in our Gmail chat, we also spoke with project managers Lior and Yosi.  Then started to work on the project, looked for tools to access all the servers in a nice way and found some interesting things but seems like nothing is relevent to just windows as SSH, so need approval from Lior that we can do the needed changes to the servers in order to access them via SSH. other then that, found some usful links and information for future development.
 23/11 - 15:30-18:00 (2.5 hrs)   - Kept looking for usful tools and started implementing some scripts I will need later. Not sure how Lior wants me to connect to the servers but i will try via SSH.  
 24/11 - 18:30-24:00 (5.5 hrs)   - Spoke with Lior and recalibrated the path to complition after he showed me how he access the servers from his host, started writing a python script that will do all the work, implemented relevent libaries and found usful content for future work.  
+25/11 - 15:30-20:30 (5 hrs)     - Kept working on the python script, finished most functionallity just need an answer from Lior in regards to input the script get. other then that, cleaned and refactored the script.
+29/11 - 16:00-23:00 (7 hrs)     - Started working on the GUI with wxPython, until recived answer from Lior about input to the script so got back to the python script and got stuck with something, will solve it tommorow.
 
 
 Title:          1st POC
