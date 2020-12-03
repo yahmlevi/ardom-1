@@ -83,7 +83,7 @@ class Panel(wx.Panel):
         test_list = []
         for column_name in query_dict:
             i += 1
-            column_list.append(ColumnDefn(column_name, "left", 100, "header"))
+            column_list.append(ColumnDefn(column_name, "left", 100, "title"))
             #print(query_dict[query].values())
             data_list.append(query_dict[column_name].values())
 
