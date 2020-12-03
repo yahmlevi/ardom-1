@@ -78,14 +78,14 @@ class Panel(wx.Panel):
         query_dict = Panel.get_queries_data()
 
         i = 0
-        column_name_list = []
+        column_list = []
         data_list = []
         test_list = []
-        for query in query_dict:
+        for column_name in query_dict:
             i += 1
-            column_name_list.append(ColumnDefn(query, "left", 100, "header"))
+            column_list.append(ColumnDefn(column_name, "left", 100, "header"))
             #print(query_dict[query].values())
-            data_list.append(query_dict[query].values())
+            data_list.append(query_dict[column_name].values())
 
             test_list.append(Book("title", "author", "isbn", "mfg", "test5", "hhy"))
             
@@ -94,8 +94,8 @@ class Panel(wx.Panel):
         # DATA CAN NOT BE SET IN WXPYTHON UI (TABLE)
         # solve it
         #print(list(data_list))
-        print(column_name_list)
-        self.list_view.SetColumns(column_name_list)
+        print(column_list)
+        self.list_view.SetColumns(column_list)
 
         self.list_view.CreateCheckStateColumn()
         #self.list_view.SetObjects(data_list)
