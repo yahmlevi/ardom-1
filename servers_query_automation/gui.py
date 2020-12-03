@@ -1,32 +1,93 @@
 import wx
-import wx.lib.mixins.listctrl as listmix
+from ObjectListView import ObjectListView, ColumnDefn
 
-class TestListCtrl(wx.ListCtrl, listmix.CheckListCtrlMixin, listmix.ListCtrlAutoWidthMixin):
-    def __init__(self, *args, **kwargs):
-        wx.ListCtrl.__init__(self, *args, **kwargs)
-        listmix.CheckListCtrlMixin.__init__(self)
-        listmix.ListCtrlAutoWidthMixin.__init__(self)
 
-    def OnCheckItem(self, index, flag):
-        print(index, flag)
+class Results(object):
 
-class MainWindow(wx.Frame):
-    def __init__(self, *args, **kwargs):
-        wx.Frame.__init__(self, *args, **kwargs)
-        self.panel = wx.Panel(self)
-        self.list = TestListCtrl(self.panel, style=wx.LC_REPORT)
-        self.list.InsertColumn(0, "")
-        self.list.InsertColumn(1, "Query Description")
-        self.list.Arrange()
-        for i in range(1, 6):
-            self.list.Append(["", "%d query" % (i)])        
-        self.button = wx.Button(self.panel, label="Submit")
-        self.sizer = wx.BoxSizer(wx.VERTICAL)
-        self.sizer.Add(self.list, proportion=1, flag=wx.EXPAND | wx.ALL, border=5)
-        self.sizer.Add(self.button, flag=wx.EXPAND | wx.ALL, border=5)
-        self.panel.SetSizerAndFit(self.sizer)
-        self.Show()
+    def __init__(self, tin, zip_code, plus4, name, address):
+        
+        self.tin = tin
+        self.zip_code = zip_code
+        self.plus4 = plus4
+        self.name = name
+        self.address = address
+    
 
-app = wx.App(False)
-win = MainWindow(None)
-app.MainLoop()
+class OLVCheckPanel(wx.Panel):
+
+    def __init__(self, parent):
+    
+        wx.Panel.__init__(self, parent=parent)
+        
+        mainSizer = wx.BoxSizer(wx.VERTICAL)
+        btnSizer = wx.BoxSizer(wx.HORIZONTAL)
+        
+        self.test_data = [Results("123456789", "50158", "0065", "Patti Jones",
+                                  "111 Centennial Drive"),
+                          Results("978561236", "90056", "7890", "Brian Wilson",
+                                  "555 Torque Maui"),
+                          Results("456897852", "70014", "6545", "Mike Love", 
+                                  "304 Cali Bvld")
+                          ]
+        self.resultsOlv = ObjectListView(self, style=wx.LC_REPORT|wx.SUNKEN_BORDER)
+        
+        self.setResults()
+        
+        checkBtn = wx.Button(self, label="Check")
+        checkBtn.Bind(wx.EVT_BUTTON, self.onCheck)
+        btnSizer.Add(checkBtn, 0, wx.ALL, 5)
+        
+        uncheckBtn = wx.Button(self, label="Uncheck")
+        uncheckBtn.Bind(wx.EVT_BUTTON, self.onUncheck)
+        btnSizer.Add(uncheckBtn, 0, wx.ALL, 5)
+        
+        mainSizer.Add(self.resultsOlv, 1, wx.EXPAND|wx.ALL, 5)
+        mainSizer.Add(btnSizer, 0, wx.CENTER|wx.ALL, 5)
+        self.SetSizer(mainSizer)
+    
+    def onCheck(self, event):
+        """"""
+        objects = self.resultsOlv.GetObjects()
+        
+        for obj in objects:
+            self.resultsOlv.SetCheckState(obj, True)
+        self.resultsOlv.RefreshObjects(objects)
+        
+    def onUncheck(self, event):
+        """"""
+        objects = self.resultsOlv.GetObjects()
+                
+        for obj in objects:
+            self.resultsOlv.SetCheckState(obj, False)
+        self.resultsOlv.RefreshObjects(objects)        
+        
+    def setResults(self):
+        """"""
+        self.resultsOlv.SetColumns([
+            ColumnDefn("TIN", "left", 100, "tin"),
+            ColumnDefn("Zip", "left", 75, "zip_code"),
+            ColumnDefn("+4", "left", 50, "plus4"),
+            ColumnDefn("Name", "left", 150, "name"),
+            ColumnDefn("Address", "left", 200, "address")
+            ])
+            
+        
+        self.resultsOlv.CreateCheckStateColumn()
+        self.resultsOlv.SetObjects(self.test_data)
+        
+    
+class OLVCheckFrame(wx.Frame):
+
+
+    def __init__(self):
+        """Constructor"""
+        title = "OLV Checkbox Tutorial"
+        wx.Frame.__init__(self, parent=None, title=title, size=(1024, 768))
+        panel = OLVCheckPanel(self)
+        
+    
+if __name__ == "__main__":
+    app = wx.App(False)
+    frame = OLVCheckFrame()
+    frame.Show()
+    app.MainLoop()
