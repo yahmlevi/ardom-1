@@ -4,7 +4,20 @@ import wx
 from ObjectListView import ObjectListView, ColumnDefn
 import pandas as pd
 
-
+class Book(object):
+    """
+    Model of the Book object
+    Contains the following attributes:
+    'ISBN', 'Author', 'Manufacturer', 'Title'
+    """
+    #----------------------------------------------------------------------
+    def __init__(self, title, author, isbn, mfg, test, second_test):
+        self.isbn = isbn
+        self.author = author
+        self.mfg = mfg
+        self.title = title
+        self.test = test
+        self.second_test = second_test
 
 class Panel(wx.Panel):
 
@@ -67,19 +80,27 @@ class Panel(wx.Panel):
         i = 0
         column_name_list = []
         data_list = []
+        test_list = []
         for query in query_dict:
             i += 1
             column_name_list.append(ColumnDefn(query, "left", 100, "header"))
+            #print(query_dict[query].values())
             data_list.append(query_dict[query].values())
+
+            test_list.append(Book("title", "author", "isbn", "mfg", "test5", "hhy"))
+            
+            
         #TODO
         # DATA CAN NOT BE SET IN WXPYTHON UI (TABLE)
         # solve it
-        print(list(data_list))
-
+        #print(list(data_list))
+        print(column_name_list)
         self.list_view.SetColumns(column_name_list)
-        
+
         self.list_view.CreateCheckStateColumn()
-        self.list_view.SetObjects(data_list)
+        #self.list_view.SetObjects(data_list)
+        print(test_list)
+        self.list_view.SetObjects(test_list)
 
 
 
