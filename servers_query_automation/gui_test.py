@@ -69,21 +69,48 @@ class Panel(wx.Panel):
 
             query_dict = df.to_dict()
 
-            return query_dict
+            column_name_row = list(df.iloc[0].keys())
 
-    
-    
+            return query_dict, column_name_row
+
     def set_data(self):
         
-        query_dict = Panel.get_queries_data()
+        query_dict, column_name_row = Panel.get_queries_data()
 
         i = 0
         column_list = []
         data_list = []
         test_list = []
+        list_of_dict = []
+
+        # TSADOK from  here 
+
+        # let's assume we loop through the rows
+        # first row is the column names, so we loop through the column_names and build the column_list
+
+        # build column_list
+        for column_name in column_name_row:
+            column_list.append(ColumnDefn(column_name, "left", 100, column_name))
+
+        # load data to list of dictionaries
+        for row in data_rows:
+            
+            for i in (len(row.values()) -1):
+
+                column_name = column_list[i]
+                obj = {
+                    column_name: row.values()[i]
+                }
+            # add the dictionary to the list of dictionaries
+            list_of_dict.append(obj)
+
+        # TSADOK until here
+
         for column_name in query_dict:
             i += 1
-            column_list.append(ColumnDefn(column_name, "left", 100, "title"))
+            
+            column_list.append(ColumnDefn(column_name, "left", 100, "header"))
+            
             #print(query_dict[query].values())
             data_list.append(query_dict[column_name].values())
 
