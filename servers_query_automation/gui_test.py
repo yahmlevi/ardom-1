@@ -71,8 +71,6 @@ class Panel(wx.Panel):
 
             return query_dict
 
-    
-    
     def set_data(self):
         
         query_dict = Panel.get_queries_data()
@@ -81,9 +79,35 @@ class Panel(wx.Panel):
         column_list = []
         data_list = []
         test_list = []
+        list_of_dict = []
+
+        # TSADOK from  here 
+
+        # let's assume we loop through the rows
+        # first row is the column names, so we loop through the column_names and build the column_list
+
+        # build column_list
+        for column_name in first_row:
+            column_list.append(ColumnDefn(column_name, "left", 100, column_name))
+
+        # load data to list of dictionaries
+        for row in data_rows:
+            
+            for index=0 to row.values().length-1:
+                column_name = column_list[index]
+                obj = {
+                    column_name: row.values()[index]
+                }
+            # add the dictionary to the list of dictionaries
+            list_of_dict.append(obj)
+
+        # TSADOK until here
+
         for column_name in query_dict:
             i += 1
+            
             column_list.append(ColumnDefn(column_name, "left", 100, "header"))
+            
             #print(query_dict[query].values())
             data_list.append(query_dict[column_name].values())
 
