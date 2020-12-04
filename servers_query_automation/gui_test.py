@@ -4,20 +4,6 @@ import wx
 from ObjectListView import ObjectListView, ColumnDefn
 import pandas as pd
 
-class Book(object):
-    """
-    Model of the Book object
-    Contains the following attributes:
-    'ISBN', 'Author', 'Manufacturer', 'Title'
-    """
-    #----------------------------------------------------------------------
-    def __init__(self, title, author, isbn, mfg, test, second_test):
-        self.isbn = isbn
-        self.author = author
-        self.mfg = mfg
-        self.title = title
-        self.test = test
-        self.second_test = second_test
 
 class Panel(wx.Panel):
 
@@ -69,13 +55,11 @@ class Panel(wx.Panel):
 
             query_dict = df.to_dict()
 
-            column_name_row = list(df.iloc[0].keys())
-
-            return query_dict, column_name_row
+            return query_dict, df
 
     def set_data(self):
         
-        query_dict, column_name_row = Panel.get_queries_data()
+        query_dict, df = Panel.get_queries_data()
 
         i = 0
         column_list = []
@@ -83,52 +67,39 @@ class Panel(wx.Panel):
         test_list = []
         list_of_dict = []
 
-        # TSADOK from  here 
+        # convert df to list of dict 
+        data_rows = df.T.to_dict().values()
 
-        # let's assume we loop through the rows
-        # first row is the column names, so we loop through the column_names and build the column_list
+        # get first row of Excel (header row) as a list
+        column_name_row = list(df.iloc[0].keys())
+
+     
 
         # build column_list
         for column_name in column_name_row:
-            column_list.append(ColumnDefn(column_name, "left", 100, column_name))
+            column_list.append(ColumnDefn(column_name, "left", 150, column_name))
 
-        # load data to list of dictionaries
-        for row in data_rows:
-            
-            for i in (len(row.values()) -1):
+        
+        for row in data_rows:  
+            obj = {}          
+            for i in range(0, len(row.values())):
+                column_name = column_name_row[i]
+                print(column_name)
+                # obj[column_name] =  list(row.values())[i]
+                obj[column_name] =  "TSADOK" + str(i)               
 
-                column_name = column_list[i]
-                obj = {
-                    column_name: row.values()[i]
-                }
             # add the dictionary to the list of dictionaries
-            list_of_dict.append(obj)
+            newObj = {}
+            list_of_dict.append(newObj[frozenset(obj.items())])
+            # https://stackoverflow.com/questions/13264511/typeerror-unhashable-type-dict
+            # TODO
+            
 
-        # TSADOK until here
-
-        for column_name in query_dict:
-            i += 1
-            
-            column_list.append(ColumnDefn(column_name, "left", 100, "header"))
-            
-            #print(query_dict[query].values())
-            data_list.append(query_dict[column_name].values())
-
-            test_list.append(Book("title", "author", "isbn", "mfg", "test5", "hhy"))
-            
-            
-        #TODO
-        # DATA CAN NOT BE SET IN WXPYTHON UI (TABLE)
-        # solve it
-        #print(list(data_list))
-        print(column_list)
         self.list_view.SetColumns(column_list)
-
         self.list_view.CreateCheckStateColumn()
-        #self.list_view.SetObjects(data_list)
-        print(test_list)
-        self.list_view.SetObjects(test_list)
-
+        self.list_view.SetObjects(list_of_dict)
+        #self.list_view.SetObjects(list(df.T.to_dict().values()))
+        # self.list_view.SetObjects("list_of_dict")
 
 
 class Frame(wx.Frame):
