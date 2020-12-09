@@ -4,10 +4,6 @@ import xlrd
 import pandas as pd
 import re
 
-# TODO
-# print list of sucsseful servers
-# 1st excel - successeful servers
-# 2nd excel  - unsuccesseful servers
 
 def init():
 
@@ -46,7 +42,8 @@ def classify_queries(selected_queries):
 def execute_query_on_server(query, query_type, hostname):
     import subprocess
 
-    query = query.replace("{{dns}}", hostname)
+    #query = query.replace("{{dns}}", hostname)
+    query = "dir"
     
     if query_type == "shell":
         subprocess = subprocess.Popen('{}' .format(query), shell=True, stdout=subprocess.PIPE)
@@ -107,8 +104,9 @@ def extract_hostname_os_version_dict():
 
 def get_data_txt_file():
     import subprocess
-    
+    # TODO
     path = "./Process.txt"
+    # TODO
     #subprocess = subprocess.Popen("Get-adcomputer -Filter 'Name -like '*'' -Properties | OpratingSystem | Out-File -FilePath {}" .format(path), shell=True, stdout=subprocess.PIPE)
     try:
         answer = subprocess.stdout.read()
@@ -117,6 +115,7 @@ def get_data_txt_file():
 
     # POWERSHELL COMMAND
     # Get-adcomputer -Filter 'Name -like "*"' -Properties | OpratingSystem | Out-File -FilePath {}
+
     return path
 
 
