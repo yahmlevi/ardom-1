@@ -123,7 +123,7 @@ def extract_hostname_os_version_dict():
         temp = next(it)
         temp1 = x.split(":")
         temp2 = temp.split(":")
-        hostname_os_version_dict[temp1[1].strip()] = temp2[1].strip()     
+        hostname_os_version_dict[temp1[1].strip()] = temp2[1].strip()
     return hostname_os_version_dict
 
 
