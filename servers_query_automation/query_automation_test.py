@@ -54,8 +54,9 @@ def classify_queries(selected_queries):
 def execute_query_on_server(query, query_type, hostname):
     import subprocess
     
-    query = query.replace("{{dns}}", hostname)
-    query = query.replace("\\\\", "\\")
+    # query = query.replace("{{dns}}", hostname)
+    # query = query.replace("\\\\", "\\")
+
     print("TEST - ", query)
 
     if query_type == "shell":
@@ -126,6 +127,16 @@ def extract_hostname_os_version_dict():
         hostname_os_version_dict[temp1[1].strip()] = temp2[1].strip()
     return hostname_os_version_dict
 
+def write_to_worksheet(worksheet, hostname, query_type, query, query_result):
+    worksheet.write(i, 0, "SERVER NAME - {}" .format(hostname))
+    
+    # Shell or PowerShell 
+    if query_type == "shell":
+        query_type = "CMD" 
+
+    worksheet.write(i, 1, "QUERY TYPE - {}" .format(query_type)) 
+    worksheet.write(i, 2, "QUERY - {}" .format(query))
+    worksheet.write(i, 3, query_result)
 
 
 # if _name_ == "_main_":
@@ -139,13 +150,19 @@ try:
 except:
     print("failed to extract data from Process.txt")
 
-worksheet = workbook.add_worksheet("SUCCESS")
-error_worksheet = workbook.add_worksheet("ERROR")
-error_worksheet.set_column(0, 10000, 50)
-worksheet.set_column(0, 10000, 50)
+
+
+
 
 i = 0
 x = 0
+
+worksheets = {}
+
+error_worksheet = workbook.add_worksheet("ERROR")
+error_worksheet.set_column(0, 10000, 50)
+
+worksheets["ERROR"] = error_worksheet
 
 # get answers for selected queries each server at a time
 for hostname in hostname_os_version_dict:
@@ -160,49 +177,47 @@ for hostname in hostname_os_version_dict:
         print("had no queries to execute for {}, please add queries to Excel" .format(hostname)) 
         continue
     
-
     # classify queries to powershell/shell queries
-    shell_queries, powershell_queries = classify_queries(queries_to_execute_list)
+    # shell_queries, powershell_queries = classify_queries(queries_to_execute_list)
+      
+    for full_query in queries_to_execute_list:
 
-    for query in powershell_queries:
-        answer = execute_query_on_server(query, "powershell", hostname)
-        query = query.replace("{{dns}}", hostname)
-        query = query.replace("\\\\", "\\")
+        temp = full_query.split("-")
 
-        if answer == "ERROR":
-            print("ERROR - could not execute on ", hostname)
-            error_worksheet.write(x, 0, "SERVER NAME - {}" .format(hostname))
-            error_worksheet.write(x, 1, "QUERY TYPE - {}" .format("PowerShell"))
-            error_worksheet.write(x, 2, "QUERY - {}" .format(query)) 
-            error_worksheet.write(x, 3, answer)
-            x += 1
-        else:
-            print("executed successfully on ", hostname)
-            worksheet.write(i, 0, "SERVER NAME - {}" .format(hostname))
-            worksheet.write(i, 1, "QUERY TYPE - {}" .format("PowerShell"))
-            worksheet.write(i, 2, "QUERY - {}" .format(query))
-            worksheet.write(i, 3, answer)
-            i += 1
-    
-    for query in shell_queries:
-        answer = execute_query_on_server(query, "shell", hostname)
-        query = query.replace("{{dns}}", hostname)
-        query = query.replace("\\\\", "\\")
-
-        if answer == "ERROR":
-            print("ERROR - could not execute on ", hostname)
-            error_worksheet.write(x, 0, "SERVER NAME - {}" .format(hostname))
-            error_worksheet.write(x, 1, "QUERY TYPE - {}" .format("CMD"))
-            error_worksheet.write(x, 2, "QUERY - {}" .format(query))
-            error_worksheet.write(x, 3, answer)
-            x += 1
+        if temp[0].strip() == "cmd":
+            query_type = "shell"
+            query = temp[1].strip()
             
+        if temp[0].strip() == "powershell":
+            query_type = "powershell"
+            query = temp[1].strip()
+
+        # user query_name ...
+
+        query = query.replace("{{dns}}", hostname)
+        query = query.replace("\\\\", "\\")
+            
+        # create worksheet if needed
+        if query not in worksheets:
+            new_worksheet = workbook.add_worksheet(query)
+            new_worksheet.set_column(0, 10000, 50)
+
+            worksheets[query] = new_worksheet
+
+        # execute query
+        query_result = execute_query_on_server(query, query_type, hostname)
+        
+        # query = query.replace("{{dns}}", hostname)
+        # query = query.replace("\\\\", "\\")
+
+        if query_result == "ERROR":
+            print("ERROR - could not execute on ", hostname)
+            current_worksheet = worksheets["ERROR"]
         else:
             print("executed successfully on ", hostname)
-            worksheet.write(i, 0, "SERVER NAME - {}" .format(hostname))
-            worksheet.write(i, 1, "QUERY TYPE - {}" .format("CMD"))
-            worksheet.write(i, 2, "QUERY - {}" .format(query))
-            worksheet.write(i, 3, answer)
-            i += 1
+            current_worksheet = worksheets[query]
+            
+        write_to_worksheet(worksheet, hostname, query_type, query, query_result)
+        i += 1
     
 workbook.close()
