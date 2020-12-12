@@ -5,7 +5,6 @@ import pandas as pd
 import re
 import subprocess, sys
 
-
 # class QueryDetailes(object):
 #     self.query = query 
 #     self.query_name = query_name
@@ -34,23 +33,9 @@ def init():
     return workbook, df, user_selected_queries_list
 
 
-def classify_queries(selected_queries):
-
-    shell_query_list = []
-    powershell_query_list = []
-
-    for query in selected_queries:
-        temp = query.split("-")
-
-        if temp[0].strip() == "cmd":
-            shell_query_list.append(temp[1].strip())
-
-        elif temp[0].strip() == "powershell":
-            powershell_query_list.append(temp[1].strip())
-
-    return shell_query_list, powershell_query_list
-
-
+# 
+# execute_query_on_server
+# 
 def execute_query_on_server(query, query_type, hostname):
     import subprocess
     
@@ -81,24 +66,35 @@ def execute_query_on_server(query, query_type, hostname):
     else:
         return "EMPTY"
     
+# 
+# get_queries_to_execute
+# 
 def get_queries_to_execute(df, user_selected_queries_list, server_os_version):
+    
     row = df[df["OS VERSION"] == server_os_version]
     query_dict = row.to_dict()
     os_specific_query_key_list = list(query_dict.keys())
     
-    #TODO
-    #selected_queries_key_list = list(set(os_specific_query_key_list).intersection(user_selected_queries_list))
-    selected_queries_key_list = os_specific_query_key_list 
+    # TODO
+    # selected_query_keys = list(set(os_specific_query_key_list).intersection(user_selected_queries_list))
+    selected_query_keys = os_specific_query_key_list 
     
-    queries_to_execute_list = []
+    # queries to execute (dictionary query_name/query)
+    results = {}
     for key in query_dict:
-        for item in selected_queries_key_list:
-            if key == item:
-                temp = query_dict[key]
-                queries_to_execute_list.append(str(temp).split("'")[1])
-        
-    return queries_to_execute_list, query_dict
+        if key in selected_query_keys:
+            temp = query_dict[key]
+            query = str(temp).split("'")[1]
+            
+            # key is the query name 
+            results[key] = query
+    
+    return results
 
+
+# 
+# extract_hostname_os_version_dict
+# 
 def extract_hostname_os_version_dict():
     hostname_os_version_dict = {}
 
@@ -127,16 +123,23 @@ def extract_hostname_os_version_dict():
         hostname_os_version_dict[temp1[1].strip()] = temp2[1].strip()
     return hostname_os_version_dict
 
-def write_to_worksheet(worksheet, hostname, query_type, query, query_result):
+# 
+# write_to_worksheet
+# 
+# def write_to_worksheet(worksheet, hostname, query_type, query, query_result):
+def write_to_worksheet(workbook, worksheet_name, row_index, hostname, query_type, query, query_result):
     worksheet.write(i, 0, "SERVER NAME - {}" .format(hostname))
     
     # Shell or PowerShell 
     if query_type == "shell":
         query_type = "CMD" 
 
-    worksheet.write(i, 1, "QUERY TYPE - {}" .format(query_type)) 
-    worksheet.write(i, 2, "QUERY - {}" .format(query))
-    worksheet.write(i, 3, query_result)
+    # see here - https://xlsxwriter.readthedocs.io/workbook.html
+    worksheet = workbook.get_worksheet_by_name(worksheet_name)
+
+    worksheet.write(row_index, 1, "QUERY TYPE - {}" .format(query_type)) 
+    worksheet.write(row_index, 2, "QUERY - {}" .format(query))
+    worksheet.write(row_index, 3, query_result)
 
 
 # if _name_ == "_main_":
@@ -151,18 +154,16 @@ except:
     print("failed to extract data from Process.txt")
 
 
-
-
-
-i = 0
-x = 0
-
+# keep track of the worksheet next blank row index
+FIRST_ROW_INDEX = 0
 worksheets = {}
 
 error_worksheet = workbook.add_worksheet("ERROR")
 error_worksheet.set_column(0, 10000, 50)
 
-worksheets["ERROR"] = error_worksheet
+# add the error worksheet to the worksheets dictionary
+# worksheets["ERROR"] = error_worksheet
+worksheets["ERROR"] = FIRST_ROW_INDEX
 
 # get answers for selected queries each server at a time
 for hostname in hostname_os_version_dict:
@@ -171,38 +172,40 @@ for hostname in hostname_os_version_dict:
     
     try:
         # get list of queries to execute
-        queries_to_execute_list, query_dict = get_queries_to_execute(df, user_selected_queries_list, server_os_version)
-        print("got list of queries to execute")
+        # queries_to_execute_list, query_dict = get_queries_to_execute(df, user_selected_queries_list, server_os_version)
+        queries_to_execute = get_queries_to_execute(df, user_selected_queries_list, server_os_version)
+        print("Got list of queries to execute")
     except:
-        print("had no queries to execute for {}, please add queries to Excel" .format(hostname)) 
+        print("Could not find queries to execute for hostname {}, please add queries to Excel" .format(hostname)) 
         continue
-    
-    # classify queries to powershell/shell queries
-    # shell_queries, powershell_queries = classify_queries(queries_to_execute_list)
-      
-    for full_query in queries_to_execute_list:
+
+
+    # loop through the keys of queries_to_execute dictionary
+    for query_name in queries_to_execute:
+
+        full_query = queries_to_execute[query_name]
 
         temp = full_query.split("-")
 
         if temp[0].strip() == "cmd":
             query_type = "shell"
-            query = temp[1].strip()
-            
-        if temp[0].strip() == "powershell":
+        elif temp[0].strip() == "powershell":
             query_type = "powershell"
-            query = temp[1].strip()
-
-        # user query_name ...
-
+        else:
+            print ("Invalid query type " + temp[0].strip())
+            
+        query = temp[1].strip()
         query = query.replace("{{dns}}", hostname)
         query = query.replace("\\\\", "\\")
             
         # create worksheet if needed
-        if query not in worksheets:
-            new_worksheet = workbook.add_worksheet(query)
+        if query_name not in worksheets:
+            new_worksheet = workbook.add_worksheet(query_name)
             new_worksheet.set_column(0, 10000, 50)
-
-            worksheets[query] = new_worksheet
+            
+            # add new worksheet to worksheets dictionary
+            # worksheets[query_name] = new_worksheet
+            worksheets[query_name] = FIRST_ROW_INDEX
 
         # execute query
         query_result = execute_query_on_server(query, query_type, hostname)
@@ -212,12 +215,23 @@ for hostname in hostname_os_version_dict:
 
         if query_result == "ERROR":
             print("ERROR - could not execute on ", hostname)
-            current_worksheet = worksheets["ERROR"]
+
+            worksheet_name = "ERROR"
+            # current_worksheet = worksheets["ERROR"]
         else:
             print("executed successfully on ", hostname)
-            current_worksheet = worksheets[query]
-            
-        write_to_worksheet(worksheet, hostname, query_type, query, query_result)
-        i += 1
-    
+
+            worksheet_name = query_name
+            # current_worksheet = worksheets[query_name]
+
+
+        row_index = worksheets[query_name]
+
+        # write_to_worksheet(worksheet, hostname, query_type, query, query_result)
+        write_to_worksheet(workbook, worksheet_name, row_index, hostname, query_type, query, query_result)
+        
+        # increment the row index by 1
+        worksheets[query_name] = row_index + 1
+
+# close workbook   
 workbook.close()
