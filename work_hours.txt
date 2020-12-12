@@ -92,7 +92,8 @@
 6/12  - 18:30-21:45 (3.15 hrs)  - Kept working on GUI with wxPython, solved some problems i struggled with, and very close to finishing GUI with functionallity. 
 9/12  - 09:00-10:30 (1.5 hrs)   - Zoom meeting with Lior, tested query_automation.py script on Ardom's servers. had bugs and needed further testing.
 10/12 - 15:00-22:00 (7 hrs)     - Zoom meeting with Lior in the morning, tested the script, then fixed some issues. Zoom meeting with Elhanan at noon, then added some features and fixed some issues. Another Zoom meeting with Lior and Elhanan at night, tested the script, Elhanan and i will meet in the morning at Yotvata and finish the last steps in the functionallity.
-11/12 -
+11/12 - 10:30-16:00
+12/12 - 14:00-
 
 
 Title:          1st POC
