@@ -3,7 +3,8 @@ import xlsxwriter
 import xlrd
 import pandas as pd
 import re
-import subprocess, sys
+import subprocess
+import sys
 
 # TODO
 # init powershell
@@ -31,8 +32,6 @@ def init():
 
 def execute_query_on_server(query, query_type, hostname):
     import subprocess
-    
-    print("TEST - ", query)
 
     if query_type == "shell":
         q = '{}' .format(query)
@@ -43,13 +42,13 @@ def execute_query_on_server(query, query_type, hostname):
     subprocess = subprocess.Popen(q, shell=True, stdout=subprocess.PIPE)
     
     try:
-        answer_temp = subprocess.communicate(timeout=5)
+        answer_temp = subprocess.communicate(timeout=0.5)
         answer = answer_temp[0].decode("utf-8")
     
     except:
         subprocess.kill()
         answer = "ERROR"
-    
+
     if answer:
         return answer
     
@@ -115,9 +114,9 @@ def write_to_worksheet(workbook, worksheet_name, row_index, hostname, query_type
     if query_type == "shell":
         query_type = "CMD" 
 
-    i = 0
-    if worksheet_name == "ERROR":
-        row_index = i
+    # i = 0
+    # if worksheet_name == "ERROR":
+    #     row_index = i
 
 
     worksheet = workbook.get_worksheet_by_name(worksheet_name)
@@ -126,7 +125,7 @@ def write_to_worksheet(workbook, worksheet_name, row_index, hostname, query_type
     worksheet.write(row_index, 2, "QUERY - {}" .format(query))
     worksheet.write(row_index, 3, query_result)
 
-    i += 1
+    # i += 1
 
 
 workbook, df, user_selected_queries_list = init()
@@ -136,7 +135,8 @@ try:
     print("extracted data from Process.txt file")
 
 except:
-    print("failed to extract data from Process.txt")
+    print("FATEL ERROR - failed to extract data from Process.txt")
+    sys.exit()
 
 
 # keep track of the worksheet next blank row index
@@ -152,6 +152,9 @@ worksheets["ERROR"] = FIRST_ROW_INDEX
 # get answers for selected queries each server at a time
 for hostname in hostname_os_version_dict:
 
+    if not hostname:
+        continue
+
     server_os_version = hostname_os_version_dict[hostname]
     
     try:
@@ -164,6 +167,9 @@ for hostname in hostname_os_version_dict:
 
     # loop through the keys of queries_to_execute dictionary
     for query_name in queries_to_execute:
+        
+        if queries_to_execute[query_name] is queries_to_execute["OS VERSION"]:
+            continue
 
         full_query = queries_to_execute[query_name]
         temp = full_query.split("-")
@@ -187,7 +193,6 @@ for hostname in hostname_os_version_dict:
             # add new worksheet to worksheets dictionary
             worksheets[query_name] = FIRST_ROW_INDEX
 
-        # execute query
         query_result = execute_query_on_server(query, query_type, hostname)
         
         if query_result == "ERROR":
@@ -200,12 +205,22 @@ for hostname in hostname_os_version_dict:
             worksheet_name = query_name
 
 
-        row_index = worksheets[query_name]
+        row_index = worksheets[worksheet_name
 
         write_to_worksheet(workbook, worksheet_name, row_index, hostname, query_type, query, query_result)
 
         # increment the row index by 1
-        worksheets[query_name] = row_index + 1
+        worksheets[worksheet_name] = row_index + 1
+
+worksheet = workbook.add_worksheet("SERVER'S OS VERSION")
+worksheet.set_column(0, 100, 50)
+
+i = 0
+for hostname in hostname_os_version_dict:
+    worksheet.write(i, 0, "SERVER NAME - {}" .format(hostname))
+    worksheet.write(i, 1, "OS VERSION - {}" .format(hostname_os_version_dict[hostname]))
+    i += 1
 
 # close workbook   
 workbook.close()
+print("FINISH - please look at query_answers.xlsx")
