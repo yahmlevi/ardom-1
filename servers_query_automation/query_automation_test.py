@@ -53,7 +53,7 @@ def execute_query_on_server(query, query_type, hostname):
     subprocess = subprocess.Popen(q, shell=True, stdout=subprocess.PIPE)
     
     try:
-        answer_temp = subprocess.communicate(timeout=1)
+        answer_temp = subprocess.communicate(timeout=5)
         answer = answer_temp[0].decode("utf-8")
     
     except:
@@ -128,19 +128,24 @@ def extract_hostname_os_version_dict():
 # 
 # def write_to_worksheet(worksheet, hostname, query_type, query, query_result):
 def write_to_worksheet(workbook, worksheet_name, row_index, hostname, query_type, query, query_result):
-    worksheet.write(i, 0, "SERVER NAME - {}" .format(hostname))
+    #worksheet.write(i, 0, "SERVER NAME - {}" .format(hostname))
     
     # Shell or PowerShell 
     if query_type == "shell":
         query_type = "CMD" 
 
+    i = 0
+    if worksheet_name == "ERROR":
+        row_index = i
+
     # see here - https://xlsxwriter.readthedocs.io/workbook.html
     worksheet = workbook.get_worksheet_by_name(worksheet_name)
-
+    worksheet.write(row_index, 0, "SERVER NAME - {}" .format(hostname))
     worksheet.write(row_index, 1, "QUERY TYPE - {}" .format(query_type)) 
     worksheet.write(row_index, 2, "QUERY - {}" .format(query))
     worksheet.write(row_index, 3, query_result)
 
+    i += 1
 
 # if _name_ == "_main_":
 
@@ -159,7 +164,7 @@ FIRST_ROW_INDEX = 0
 worksheets = {}
 
 error_worksheet = workbook.add_worksheet("ERROR")
-error_worksheet.set_column(0, 10000, 50)
+error_worksheet.set_column(0, 10, 50)
 
 # add the error worksheet to the worksheets dictionary
 # worksheets["ERROR"] = error_worksheet
@@ -179,14 +184,15 @@ for hostname in hostname_os_version_dict:
         print("Could not find queries to execute for hostname {}, please add queries to Excel" .format(hostname)) 
         continue
 
-
     # loop through the keys of queries_to_execute dictionary
     for query_name in queries_to_execute:
 
+        if queries_to_execute[query_name] is queries_to_execute["OS VERSION"]:
+            continue
+        
         full_query = queries_to_execute[query_name]
-
         temp = full_query.split("-")
-
+        
         if temp[0].strip() == "cmd":
             query_type = "shell"
         elif temp[0].strip() == "powershell":
@@ -210,9 +216,6 @@ for hostname in hostname_os_version_dict:
         # execute query
         query_result = execute_query_on_server(query, query_type, hostname)
         
-        # query = query.replace("{{dns}}", hostname)
-        # query = query.replace("\\\\", "\\")
-
         if query_result == "ERROR":
             print("ERROR - could not execute on ", hostname)
 
@@ -229,7 +232,7 @@ for hostname in hostname_os_version_dict:
 
         # write_to_worksheet(worksheet, hostname, query_type, query, query_result)
         write_to_worksheet(workbook, worksheet_name, row_index, hostname, query_type, query, query_result)
-        
+
         # increment the row index by 1
         worksheets[query_name] = row_index + 1
 

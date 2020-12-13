@@ -92,9 +92,9 @@
 6/12  - 18:30-21:45 (3.15 hrs)  - Kept working on GUI with wxPython, solved some problems i struggled with, and very close to finishing GUI with functionallity. 
 9/12  - 09:00-10:30 (1.5 hrs)   - Zoom meeting with Lior, tested query_automation.py script on Ardom's servers. had bugs and needed further testing.
 10/12 - 15:00-22:00 (7 hrs)     - Zoom meeting with Lior in the morning, tested the script, then fixed some issues. Zoom meeting with Elhanan at noon, then added some features and fixed some issues. Another Zoom meeting with Lior and Elhanan at night, tested the script, Elhanan and i will meet in the morning at Yotvata and finish the last steps in the functionallity.
-11/12 - 10:30-16:00
-12/12 - 14:00-
-
+11/12 - 10:30-16:00 (5.5 hrs)   - Meeting with Elhanan in Yotvata, tested some needed tests and fixed accordingly. Elhanan also asked some new requasts, and worked on those too. have some work to do at home, more testing at Ardom and that should be it.
+12/12 - 14:00-17:30 (3.5 hrs) (WEEKEND) - Started solving the problems i had and implement the new things Elhanan asked for, made very nice progress, hopfully tommorow will finish what i want to do, then on Monday test at Ardom's servers.  very close to finishing functionallity for this project. () Kept working on the script - worked perfectly, then refactored the code a lot.
+13/12 - 12:30-
 
 Title:          1st POC
 Requirement:    Run wxPython application inside Docker container. 
