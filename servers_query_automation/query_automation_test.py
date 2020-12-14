@@ -23,7 +23,7 @@ def init():
 
 
     # get desired queries from user and put into list
-    user_selected_queries = "query 1,query 2, query 3"
+    user_selected_queries = "query 1,query 2,query 3"
     #user_selected_queries = input("what queries would you like to execute? (query_name1,query_name2,...query_nameN, query_nameN+1\n") 
     user_selected_query_names = user_selected_queries.split(",")
     
@@ -38,27 +38,7 @@ def execute_query_on_server(query, query_type, hostname):
         
     elif query_type == "powershell":
         q = 'powershell -command {}' .format(query)
-    #-----------------------------------------------
-    # subprocess = subprocess.Popen(q, shell=True, stdout=subprocess.PIPE)
-    # try:
-    #     answer_temp = subprocess.communicate(timeout=0.5)
-    #     answer = answer_temp[0].decode("utf-8")
-    
-    # except:
-    #     subprocess.kill()
-    #     answer = "ERROR"
 
-    #------------------------------------------------
-    # subprocess = subprocess.Popen(q, shell=True, stdout=subprocess.PIPE)
-    
-    # try:
-    #     answer_temp, error = subprocess.communicate(timeout=0.5)
-    #     answer = answer_temp[0].decode("utf-8")
-
-    # except:
-    #     subprocess.kill()
-    #     answer = "ERROR"
-    #-------------------------------------------------
     p = subprocess.Popen(q, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     
     flag = False
@@ -71,15 +51,12 @@ def execute_query_on_server(query, query_type, hostname):
         flag = True
 
     if p.returncode != 0:
-        #answer = answer.decode('ascii')
         if not flag:
             answer = error
         answer = str(answer)
         return (answer, 'ERROR')
-        print("bitcoin failed TESTTESTTEST {} {}" .format(p.returncode, answer))
         
     answer = str(answer)
-    #-------------------------------------------------
     
     if answer:
         return (answer, "")
@@ -93,42 +70,6 @@ def get_queries_to_execute(df, user_selected_query_names, server_os_version):
     row = df[df["OS VERSION"] == server_os_version]
     query_dict = row.to_dict()
 
-    # os_specific_query_key_list = list(query_dict.keys())
-    
-    # #--------------------------------------
-    # # TODO
-    # # selected_query_keys = list(set(os_specific_query_key_list).intersection(user_selected_query_names))
-    # selected_query_keys = os_specific_query_key_list
-    # #--------------------------------------
-
-    # TODO
-    # FINISH LAST REQUEST BY LIOR
-    #-----------------------------------------------------------
-    # row = df[df["OS VERSION"] == "ALL"]
-    # universal_query_dict = row.to_dict()
-
-    # temp_list = []
-    # universal_query_list = []
-    # # Iterate over each row 
-    # for index, rows in row.iterrows(): 
-    #     # Create list for the current row 
-    #     current_row_list = list(rows)
-
-    #     # append the list to the final list 
-    #     temp_list += current_row_list
-
-    #     print("HEELO - ", temp_list)
-    #     universal_dirty_query_list = temp_list[1:]
-    #     print("HEELO1 - ", universal_dirty_query_list)
-    #     for dirty_query in universal_dirty_query_list:
-    #         query, query_type = clean_query(dirty_query)
-    #         universal_query_list.append(query)
-    #     print("TESTTEST - ", universal_query_list)
-    # #-----------------------------------------------------------
-
-    # add universal_query_dict to query_dict
-    # query_dict.update(universal_query_dict)
-    
     # queries to execute (dictionary query_name/query)
     results = {}
     for query_name in query_dict:
@@ -198,25 +139,22 @@ def clean_query(dirty_query):
         query_type = "shell"
     elif temp[0].strip() == "powershell":
         query_type = "powershell"
-    elif temp[0].strip() == "ALL":
-        query_type = "ALL"
+    elif temp[0].strip() == "NONE":
+        query_type = "NONE"
     else:
         print ("Invalid query type " + temp[0].strip())
-        
-    query = temp[1].strip()
-    query = query.replace("{{dns}}", hostname)
-    query = query.replace("\\\\", "\\")
+    
+    if query_type == "NONE":
+        query = "NONE"
+    else:
+        query = temp[1].strip()
+        query = query.replace("{{dns}}", hostname)
+        query = query.replace("\\\\", "\\")
 
     return query, query_type
 
 
 def execute_query(hostname, query_name, full_query):
-
-    # full_query = queries_to_execute[query_name]
-
-    if full_query is queries_to_execute["OS VERSION"]:
-        continue
-
     query, query_type = clean_query(full_query)
 
     # create worksheet if needed
@@ -231,7 +169,6 @@ def execute_query(hostname, query_name, full_query):
 
     query_result = execute_query_on_server(query, query_type, hostname)
     
-    #if query_result == "ERROR":
     if query_result[1] == "ERROR":
         print("ERROR - could not execute on ", hostname)
 
@@ -280,6 +217,7 @@ for hostname in hostname_os_version_dict:
 
     server_os_version = hostname_os_version_dict[hostname]
     
+    # -----
     try:
         # Getting the list of queries to execute (by OS version)
         queries_to_execute = get_queries_to_execute(df, user_selected_query_names, server_os_version)
@@ -288,28 +226,28 @@ for hostname in hostname_os_version_dict:
         print("Could not find queries to execute for hostname {}, please add queries to Excel" .format(hostname)) 
         continue
 
-    #print("TEST - ", queries_to_execute)
     # loop through the keys of queries_to_execute dictionary
     for query_name in queries_to_execute:
         full_query = queries_to_execute[query_name]
-        execute_query(hostname, query_name, full_query)
-
+        if full_query != "NONE":
+            execute_query(hostname, query_name, full_query)
+    # -----
     try:
         # Getting the list of univeral queries to execute
         queries_to_execute = get_queries_to_execute(df, user_selected_query_names, "ALL")
         print("Got list of univeral queries to execute")
     except:
-        print("Could not find queries to execute for hostname {}, please add queries to Excel" .format(hostname)) 
+        print("Could not find queries to execute for {}, please add queries to Excel" .format(hostname)) 
         continue
     
     for query_name in queries_to_execute:
         full_query = queries_to_execute[query_name]
-        execute_query(hostname, query_name, full_query)
-    
+        if full_query != "NONE":
+            execute_query(hostname, query_name, full_query)
+    # -----
       
 worksheet = workbook.add_worksheet("SERVER'S OS VERSION")
 worksheet.set_column(0, 100, 50)
-
 worksheet.write(0, 0, "SERVER NAME")
 worksheet.write(0, 1, "OS VERSION")
 i = 1
