@@ -25,9 +25,9 @@ def init():
     # get desired queries from user and put into list
     user_selected_queries = "query 1,query 2, query 3"
     #user_selected_queries = input("what queries would you like to execute? (query_name1,query_name2,...query_nameN, query_nameN+1\n") 
-    user_selected_queries_list = user_selected_queries.split(",")
+    user_selected_query_names = user_selected_queries.split(",")
     
-    return workbook, df, user_selected_queries_list
+    return workbook, df, user_selected_query_names
 
 
 def execute_query_on_server(query, query_type, hostname):
@@ -88,22 +88,25 @@ def execute_query_on_server(query, query_type, hostname):
         return ("EMPTY","")
     
 
-def get_queries_to_execute(df, user_selected_queries_list, server_os_version):
+def get_queries_to_execute(df, user_selected_query_names, server_os_version):
     
     row = df[df["OS VERSION"] == server_os_version]
     query_dict = row.to_dict()
-    os_specific_query_key_list = list(query_dict.keys())
+
+    # os_specific_query_key_list = list(query_dict.keys())
     
-    #--------------------------------------
-    # TODO
-    # selected_query_keys = list(set(os_specific_query_key_list).intersection(user_selected_queries_list))
-    selected_query_keys = os_specific_query_key_list
-    #--------------------------------------
+    # #--------------------------------------
+    # # TODO
+    # # selected_query_keys = list(set(os_specific_query_key_list).intersection(user_selected_query_names))
+    # selected_query_keys = os_specific_query_key_list
+    # #--------------------------------------
 
     # TODO
     # FINISH LAST REQUEST BY LIOR
     #-----------------------------------------------------------
     # row = df[df["OS VERSION"] == "ALL"]
+    # universal_query_dict = row.to_dict()
+
     # temp_list = []
     # universal_query_list = []
     # # Iterate over each row 
@@ -123,16 +126,18 @@ def get_queries_to_execute(df, user_selected_queries_list, server_os_version):
     #     print("TESTTEST - ", universal_query_list)
     # #-----------------------------------------------------------
 
+    # add universal_query_dict to query_dict
+    # query_dict.update(universal_query_dict)
     
     # queries to execute (dictionary query_name/query)
     results = {}
-    for key in query_dict:
-        if key in selected_query_keys:
-            temp = query_dict[key]
+    for query_name in query_dict:
+        if query_name in user_selected_query_names:
+            temp = query_dict[query_name]
             query = str(temp).split("'")[1]
             
             # key is the query name 
-            results[key] = query
+            results[query_name] = query
     
     return results
 
@@ -173,15 +178,18 @@ def write_to_worksheet(workbook, worksheet_name, row_index, hostname, query_type
         query_type = "CMD" 
 
     worksheet = workbook.get_worksheet_by_name(worksheet_name)
-    worksheet.write(0, 0, "SERVER NAME")
-    #worksheet.write(0, 1, "QUERY TYPE") 
-    worksheet.write(0, 1, "QUERY")
-    worksheet.write(0, 2, "RESULT")
+    
     worksheet.write(row_index, 0, "{}" .format(hostname))
     #worksheet.write(row_index, 1, "{}" .format(query_type)) 
     worksheet.write(row_index, 1, "{}" .format(query))
     worksheet.write(row_index, 2, query_result)
 
+
+def add_column_headers_to_worksheet(worksheet):
+    worksheet.write(0, 0, "SERVER NAME")
+    #worksheet.write(0, 1, "QUERY TYPE") 
+    worksheet.write(0, 1, "QUERY")
+    worksheet.write(0, 2, "RESULT")
 
 def clean_query(dirty_query):
     temp = dirty_query.split("-")
@@ -202,8 +210,46 @@ def clean_query(dirty_query):
     return query, query_type
 
 
+def execute_query(hostname, query_name, full_query):
+
+    # full_query = queries_to_execute[query_name]
+
+    if full_query is queries_to_execute["OS VERSION"]:
+        continue
+
+    query, query_type = clean_query(full_query)
+
+    # create worksheet if needed
+    if query_name not in worksheets:
+        new_worksheet = workbook.add_worksheet(query_name)
+        new_worksheet.set_column(0, 10, 50)
+
+        add_column_headers_to_worksheet(new_worksheet)
+
+        # add new worksheet to worksheets dictionary
+        worksheets[query_name] = FIRST_ROW_INDEX
+
+    query_result = execute_query_on_server(query, query_type, hostname)
+    
+    #if query_result == "ERROR":
+    if query_result[1] == "ERROR":
+        print("ERROR - could not execute on ", hostname)
+
+        worksheet_name = "ERROR"
+    else:
+        print("executed successfully on ", hostname)
+
+        worksheet_name = query_name
+
+    row_index = worksheets[worksheet_name]
+
+    write_to_worksheet(workbook, worksheet_name, row_index, hostname, query_type, query, query_result[0])
+
+    # increment the row index by 1
+    worksheets[worksheet_name] = row_index + 1
+
             
-workbook, df, user_selected_queries_list = init()
+workbook, df, user_selected_query_names = init()
 
 try:
     hostname_os_version_dict = extract_hostname_os_version_dict()
@@ -221,6 +267,8 @@ worksheets = {}
 error_worksheet = workbook.add_worksheet("ERROR")
 error_worksheet.set_column(0, 10, 50)
 
+add_column_headers_to_worksheet(error_worksheet)
+
 # add the error worksheet to the worksheets dictionary
 worksheets["ERROR"] = FIRST_ROW_INDEX
 
@@ -233,50 +281,32 @@ for hostname in hostname_os_version_dict:
     server_os_version = hostname_os_version_dict[hostname]
     
     try:
-        # get list of queries to execute
-        queries_to_execute = get_queries_to_execute(df, user_selected_queries_list, server_os_version)
+        # Getting the list of queries to execute (by OS version)
+        queries_to_execute = get_queries_to_execute(df, user_selected_query_names, server_os_version)
         print("Got list of queries to execute")
-
     except:
         print("Could not find queries to execute for hostname {}, please add queries to Excel" .format(hostname)) 
         continue
+
     #print("TEST - ", queries_to_execute)
     # loop through the keys of queries_to_execute dictionary
     for query_name in queries_to_execute:
-        
-        if queries_to_execute[query_name] is queries_to_execute["OS VERSION"]:
-            continue
-
         full_query = queries_to_execute[query_name]
-        query, query_type = clean_query(full_query)
+        execute_query(hostname, query_name, full_query)
+
+    try:
+        # Getting the list of univeral queries to execute
+        queries_to_execute = get_queries_to_execute(df, user_selected_query_names, "ALL")
+        print("Got list of univeral queries to execute")
+    except:
+        print("Could not find queries to execute for hostname {}, please add queries to Excel" .format(hostname)) 
+        continue
     
-        # create worksheet if needed
-        if query_name not in worksheets:
-            new_worksheet = workbook.add_worksheet(query_name)
-            new_worksheet.set_column(0, 10000, 50)
-            
-            # add new worksheet to worksheets dictionary
-            worksheets[query_name] = FIRST_ROW_INDEX
-
-        query_result = execute_query_on_server(query, query_type, hostname)
-        
-        #if query_result == "ERROR":
-        if query_result[1] == "ERROR":
-            print("ERROR - could not execute on ", hostname)
-
-            worksheet_name = "ERROR"
-        else:
-            print("executed successfully on ", hostname)
-
-            worksheet_name = query_name
-
-        row_index = worksheets[worksheet_name]
-
-        write_to_worksheet(workbook, worksheet_name, row_index, hostname, query_type, query, query_result[0])
-
-        # increment the row index by 1
-        worksheets[worksheet_name] = row_index + 1
-
+    for query_name in queries_to_execute:
+        full_query = queries_to_execute[query_name]
+        execute_query(hostname, query_name, full_query)
+    
+      
 worksheet = workbook.add_worksheet("SERVER'S OS VERSION")
 worksheet.set_column(0, 100, 50)
 
