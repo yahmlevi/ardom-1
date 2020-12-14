@@ -94,6 +94,8 @@
 10/12 - 15:00-22:00 (7 hrs)     - Zoom meeting with Lior in the morning, tested the script, then fixed some issues. Zoom meeting with Elhanan at noon, then added some features and fixed some issues. Another Zoom meeting with Lior and Elhanan at night, tested the script, Elhanan and i will meet in the morning at Yotvata and finish the last steps in the functionallity.
 11/12 - 10:30-16:00 (5.5 hrs)   - Meeting with Elhanan in Yotvata, tested some needed tests and fixed accordingly. Elhanan also asked some new requasts, and worked on those too. have some work to do at home, more testing at Ardom and that should be it.
 13/12 - 12:30-19:00 (6.5 hrs)   - Worked at Ardom's office in Yotvata, fixed last bugs and added last features, brought the code to a working condition. Then, at home, kept working on Lior's new requasts, made a lot of progress and finished all of them except the last one which im close to finish.
+14/12 - 16:45
+
 
 Title:          1st POC
 Requirement:    Run wxPython application inside Docker container. 

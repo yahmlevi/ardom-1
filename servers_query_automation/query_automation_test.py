@@ -98,7 +98,7 @@ def get_queries_to_execute(df, user_selected_queries_list, server_os_version):
     # TODO
     # selected_query_keys = list(set(os_specific_query_key_list).intersection(user_selected_queries_list))
     selected_query_keys = os_specific_query_key_list
-
+    #--------------------------------------
 
     # TODO
     # FINISH LAST REQUEST BY LIOR
@@ -240,7 +240,7 @@ for hostname in hostname_os_version_dict:
     except:
         print("Could not find queries to execute for hostname {}, please add queries to Excel" .format(hostname)) 
         continue
-
+    #print("TEST - ", queries_to_execute)
     # loop through the keys of queries_to_execute dictionary
     for query_name in queries_to_execute:
         
@@ -249,20 +249,7 @@ for hostname in hostname_os_version_dict:
 
         full_query = queries_to_execute[query_name]
         query, query_type = clean_query(full_query)
-
-        # temp = full_query.split("-")
-        
-        # if temp[0].strip() == "cmd":
-        #     query_type = "shell"
-        # elif temp[0].strip() == "powershell":
-        #     query_type = "powershell"
-        # else:
-        #     print ("Invalid query type " + temp[0].strip())
-            
-        # query = temp[1].strip()
-        # query = query.replace("{{dns}}", hostname)
-        # query = query.replace("\\\\", "\\")
-            
+    
         # create worksheet if needed
         if query_name not in worksheets:
             new_worksheet = workbook.add_worksheet(query_name)
