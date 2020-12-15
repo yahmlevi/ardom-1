@@ -16,7 +16,7 @@ class Panel(wx.Panel):
     def __init__(self, parent):
     
         wx.Panel.__init__(self, parent=parent)
-
+        
         self.desired_query_list = []
         
         mainSizer = wx.BoxSizer(wx.VERTICAL)
@@ -46,12 +46,16 @@ class Panel(wx.Panel):
         temp = self.list_view.GetSelectedObject()
         checked = True if self.list_view.IsChecked(temp) else False
         selected_row = vars(temp)
+        print("TEST - ", selected_row)
 
         if checked:
             self.desired_query_list.append(selected_row)
         elif not checked:
-            self.desired_query_list.remove(selected_row)
-        
+            if selected_row in self.desired_query_list:
+                self.desired_query_list.remove(selected_row)
+            else:
+                pass
+            
         return self.desired_query_list
 
     
@@ -77,7 +81,7 @@ class Panel(wx.Panel):
 
     def set_data(self):
         query_dict, df = Panel.get_queries_data()
-
+        
         i = 0
         column_list = []
         list_of_dict = []
