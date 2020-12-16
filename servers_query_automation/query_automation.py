@@ -23,8 +23,8 @@ def init():
 
 
     # get desired queries from user and put into list
-    user_selected_queries = "query 1,query 2,query 3"
-    #user_selected_queries = input("what queries would you like to execute? (query_name1,query_name2,...query_nameN, query_nameN+1\n") 
+    #user_selected_queries = "query 1,query 2,query 3"
+    user_selected_queries = input("what queries would you like to execute? (query_name1,query_name2,...query_nameN, query_nameN+1) or type ALL\n")
     user_selected_query_names = user_selected_queries.split(",")
     
     return workbook, df, user_selected_query_names
