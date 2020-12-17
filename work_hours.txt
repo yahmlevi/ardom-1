@@ -97,7 +97,7 @@
 14/12 - 16:45-20:00 (3.25 hrs)  - Finished Lior's new requasts and refactored the script some more. everything works as expected, need to test at Ardom's servers, then i can start working on GUI.
 15/12 - 16:30-19:00 (2.5 hrs)   - Zoom meeting with Lior, wanted to show him the code afrer finishing his requasts, but code didnt work - for whatever reason couldnt read Excel file. tommorow will go to the office and solve it.  other then that, started working again on the GUI. got fimiliar with the current script again and started fixing bugs, solved some but still couldnt fix all current bugs. still learning the wxPython framework. 
 16/12 - 13:30-19:00 (5.5 hrs)   - Went to office at Yotvata, fixed yesterday's error, which was a wrong version dependency, got more detailes on GUI from Lior, showed him the working product.  After that, searched information about Tkinter, the library Elhanan told me about, seemed way nicer then wxPython in many aspects, so tried to implement it, then started a course on it (not on work time). tommorow, will keep working on it. 
-17/12 - 14:30-16:30 (2 hrs)     - Fixed the bug Lior talked about and added the features he asked for in his latest Email. Other then that, kept studying the Tkinter library. and did some tests.
+17/12 - 14:30-19:30 (5 hrs)     - Fixed the bug Lior talked about and added the features he asked for in his latest Email. Other then that, kept studying the Tkinter library, and made a lot of progress with the GUI.
 
 
 GUI:
