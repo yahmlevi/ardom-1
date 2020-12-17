@@ -27,12 +27,10 @@ def init():
     user_selected_queries = input("what queries would you like to execute? (query_name1,query_name2,...query_nameN, query_nameN+1\n") 
     user_selected_query_names = user_selected_queries.split(",")
     
-    timeout_val = input("Please enter timeout size\n")
-
-    return workbook, df, user_selected_query_names, timeout_val
+    return workbook, df, user_selected_query_names
 
 
-def execute_query_on_server(query, query_type, hostname, timeout_val):
+def execute_query_on_server(query, query_type, hostname):
     import subprocess
 
     if query_type == "shell":
@@ -45,7 +43,7 @@ def execute_query_on_server(query, query_type, hostname, timeout_val):
     
     flag = False
     try:
-        answer, error = p.communicate(timeout=timeout_val)
+        answer, error = p.communicate(timeout=0.5)
         answer = answer.decode('ascii')
         error = error.decode('ascii')
     except:
@@ -89,13 +87,13 @@ def extract_hostname_os_version_dict():
     hostname_os_version_dict = {}
 
     #---------------------------------------------
-    query = "Import-module activedirectory; Get-ADComputer -Filter 'Name -like \"*\"' -searchbase \"cn=computers, dc=ardomnet, dc=co, dc=il\" -Properties OperatingSystem, IPv4Address | sort-object name"
-    p = subprocess.Popen(["powershell.exe", '{}'.format(query) ], stdout=subprocess.PIPE)
-    res = p.communicate()
-    batches = res[0].decode("utf-8").split("DistinguishedName")
-    # with open("Process.txt") as fp:
-    #     temp = fp.read()
-    #     batches = temp.split("DistinguishedName")
+    # query = "Import-module activedirectory; Get-ADComputer -Filter 'Name -like \"*\"' -searchbase \"cn=computers, dc=ardomnet, dc=co, dc=il\" -Properties OperatingSystem, IPv4Address | sort-object name"
+    # p = subprocess.Popen(["powershell.exe", '{}'.format(query) ], stdout=subprocess.PIPE)
+    # res = p.communicate()
+    # batches = res[0].decode("utf-8").split("DistinguishedName")
+    with open("Process.txt") as fp:
+        temp = fp.read()
+        batches = temp.split("DistinguishedName")
     #---------------------------------------------
     
     temp_list = []
@@ -156,7 +154,7 @@ def clean_query(dirty_query):
     return query, query_type
 
 
-def execute_query(hostname, query_name, full_query, timeout_val):
+def execute_query(hostname, query_name, full_query):
     query, query_type = clean_query(full_query)
 
     # create worksheet if needed
@@ -169,7 +167,7 @@ def execute_query(hostname, query_name, full_query, timeout_val):
         # add new worksheet to worksheets dictionary
         worksheets[query_name] = FIRST_ROW_INDEX
 
-    query_result = execute_query_on_server(query, query_type, hostname, timeout_val)
+    query_result = execute_query_on_server(query, query_type, hostname)
     
     if query_result[1] == "ERROR":
         print("ERROR - could not execute on ", hostname)
@@ -188,7 +186,7 @@ def execute_query(hostname, query_name, full_query, timeout_val):
     worksheets[worksheet_name] = row_index + 1
 
             
-workbook, df, user_selected_query_names, timeout_val = init()
+workbook, df, user_selected_query_names = init()
 
 try:
     hostname_os_version_dict = extract_hostname_os_version_dict()
@@ -213,12 +211,26 @@ worksheets["ERROR"] = FIRST_ROW_INDEX
 
 # get answers for selected queries each server at a time
 for hostname in hostname_os_version_dict:
-    
+
     if not hostname:
         continue
 
     server_os_version = hostname_os_version_dict[hostname]
     
+    # -----
+    try:
+        # Getting the list of queries to execute (by OS version)
+        queries_to_execute = get_queries_to_execute(df, user_selected_query_names, server_os_version)
+        print("Got list of queries to execute")
+    except:
+        print("Could not find queries to execute for hostname {}, please add queries to Excel" .format(hostname)) 
+        continue
+
+    # loop through the keys of queries_to_execute dictionary
+    for query_name in queries_to_execute:
+        full_query = queries_to_execute[query_name]
+        if full_query != "NONE":
+            execute_query(hostname, query_name, full_query)
     # -----
     try:
         # Getting the list of univeral queries to execute
@@ -231,23 +243,8 @@ for hostname in hostname_os_version_dict:
     for query_name in queries_to_execute:
         full_query = queries_to_execute[query_name]
         if full_query != "NONE":
-            execute_query(hostname, query_name, full_query, timeout_val)
+            execute_query(hostname, query_name, full_query)
     # -----
-    try:
-        # Getting the list of queries to execute (by OS version)
-        queries_to_execute = get_queries_to_execute(df, user_selected_query_names, server_os_version)
-        print("Got list of queries to execute")
-    except:
-        print("Could not find queries to execute for hostname {}, please add queries to Excel" .format(hostname))
-        print("HOSTNAME - {}, OS VERSION - {}" .format(hostname, server_os_version)) 
-        continue
-    
-    # loop through the keys of queries_to_execute dictionary
-    for query_name in queries_to_execute:
-        full_query = queries_to_execute[query_name]
-        if full_query != "NONE":
-            execute_query(hostname, query_name, full_query, timeout_val)
-    # ----
       
 worksheet = workbook.add_worksheet("SERVER'S OS VERSION")
 worksheet.set_column(0, 100, 50)
