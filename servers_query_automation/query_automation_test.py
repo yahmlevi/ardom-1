@@ -5,6 +5,7 @@ import pandas as pd
 import re
 import subprocess
 import sys
+from datetime import date
 
 # TODO
 # init powershell
@@ -12,13 +13,16 @@ import sys
 # Get-ADComputer -Filter 'Name -like "*"' -Properties OperatingSystem | Out-File -FilePath ./process.txt
 
 def init():
-
+    
     # create handle to write to Excel
-    xl_answers_path = ".\query_answers.xlsx"
+    today_date = date.today()
+    xl_answers_path = ".\query_answers_{}.xlsx" .format(today_date)
     workbook = xlsxwriter.Workbook(xl_answers_path)
 
     # create handle to read Excel
-    xl_query_to_os_path = ".\queries.xlsx"
+    #TODO
+    xl_query_to_os_path = ".\queries_test.xlsx"
+    #xl_query_to_os_path = ".\queries.xlsx"
     df = pd.read_excel(xl_query_to_os_path)
 
 
@@ -28,8 +32,8 @@ def init():
     user_selected_query_names = user_selected_queries.split(",")
     
     timeout_val = input("Please enter timeout size\n")
-
-    return workbook, df, user_selected_query_names, timeout_val
+    
+    return workbook, df, user_selected_query_names, int(timeout_val)
 
 
 def execute_query_on_server(query, query_type, hostname, timeout_val):
@@ -61,7 +65,8 @@ def execute_query_on_server(query, query_type, hostname, timeout_val):
     answer = str(answer)
     
     if answer:
-        return (answer, "")
+        #return (answer, "")
+        return (answer.replace("\r\n","^"), "")
     
     else:
         return ("EMPTY","")
@@ -193,7 +198,6 @@ workbook, df, user_selected_query_names, timeout_val = init()
 try:
     hostname_os_version_dict = extract_hostname_os_version_dict()
     print("extracted data from Process.txt file")
-
 except:
     print("FATEL ERROR - failed to extract data from Process.txt")
     sys.exit()
@@ -238,8 +242,7 @@ for hostname in hostname_os_version_dict:
         queries_to_execute = get_queries_to_execute(df, user_selected_query_names, server_os_version)
         print("Got list of queries to execute")
     except:
-        print("Could not find queries to execute for hostname {}, please add queries to Excel" .format(hostname))
-        print("HOSTNAME - {}, OS VERSION - {}" .format(hostname, server_os_version)) 
+        print("Could not find queries to execute for HOSTNAME - {}, OS VERSION - {}, please add queries to Excel" .format(hostname, server_os_version)) 
         continue
     
     # loop through the keys of queries_to_execute dictionary

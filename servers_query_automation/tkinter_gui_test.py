@@ -14,9 +14,10 @@ class GUI():
         self.topframe = Frame(master)
         self.topframe.pack(side=TOP)
 
-
         self.create_left_panel(master, functions)
         self.create_right_panel(master, functions)
+
+
 
     def create_left_panel(self, master, functions):
 
@@ -33,13 +34,13 @@ class GUI():
         left_select_all_chk.pack(side=LEFT)
 
         scrollbar = Scrollbar(master, orient=VERTICAL) # orient=VERTICAL
-        scrollbar.pack(side=LEFT)
+        scrollbar.pack(side=LEFT, fill=BOTH)
 
-        hostname_list = Listbox(root,height=29, width=40) # , yscrollcommand = scrollbar.set
+        hostname_list = Listbox(root, yscrollcommand = scrollbar.set) #,height=29, width=40 # , yscrollcommand = scrollbar.set
         for hostname in hostname_to_os_version_dict:
             hostname_list.insert(END, hostname)
 
-        hostname_list.pack(side=LEFT)
+        hostname_list.pack(side=LEFT, expand = True, fill=BOTH)
         scrollbar.config(command=hostname_list.yview)
 
 
