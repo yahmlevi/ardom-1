@@ -13,8 +13,13 @@ class GUIFunctions(object):
         xl_manual_servers = ".\manual_servers_list.xlsx"
         self.manual_server_list_df = pd.read_excel(xl_manual_servers)
 
-    def extract_manual_servers_list(self):
-        return list(self.manual_server_list_df.iloc[:,0])
+    def extract_manual_servers_dict(self):
+        
+        server = self.manual_server_list_df.iloc[:,0]
+        os_version = self.manual_server_list_df.iloc[:,1]
+
+        return pd.Series(os_version.values, index=server).to_dict()
+
 
 
     def extract_query_name_list(self):
@@ -23,7 +28,7 @@ class GUIFunctions(object):
         return header_list[1:]
         
 
-    def extract_activedir_server_list(self):
+    def extract_activedir_server_dict(self):
         self.hostname_os_version_dict = {}
 
         #---------------------------------------------

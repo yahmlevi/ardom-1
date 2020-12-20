@@ -202,7 +202,6 @@ except:
     print("FATEL ERROR - failed to extract data from Process.txt")
     sys.exit()
 
-
 # keep track of the worksheet next blank row index
 FIRST_ROW_INDEX = 1
 worksheets = {}

@@ -15,18 +15,11 @@ def init():
     xl_answers_path = ".\query_answers_{}.xlsx" .format(today_date)
     workbook = xlsxwriter.Workbook(xl_answers_path)
 
-    # create handle to read Excel
+    # # create handle to read Excel
     xl_query_to_os_path = ".\queries.xlsx"
     df = pd.read_excel(xl_query_to_os_path)
 
-
-    # get desired queries from user and put into list
-    user_selected_queries = input("what queries would you like to execute? (query_name1,query_name2,...query_nameN, query_nameN+1\n") 
-    user_selected_query_names = user_selected_queries.split(",")
-    
-    timeout_val = input("Please enter timeout size\n")
-    
-    return workbook, df, user_selected_query_names, int(timeout_val)
+    return workbook, df
 
 
 def execute_query_on_server(query, query_type, hostname, timeout_val):
@@ -132,7 +125,7 @@ def add_column_headers_to_worksheet(worksheet):
     worksheet.write(0, 1, "QUERY")
     worksheet.write(0, 2, "RESULT")
 
-def clean_query(dirty_query):
+def clean_query(dirty_query, hostname):
     temp = dirty_query.split("-")
     
     if temp[0].strip() == "cmd":
@@ -154,8 +147,8 @@ def clean_query(dirty_query):
     return query, query_type
 
 
-def execute_query(hostname, query_name, full_query, timeout_val):
-    query, query_type = clean_query(full_query)
+def execute_query(hostname, query_name, full_query, timeout_val, worksheets, workbook, FIRST_ROW_INDEX):
+    query, query_type = clean_query(full_query, hostname)
 
     # create worksheet if needed
     if query_name not in worksheets:
@@ -185,76 +178,76 @@ def execute_query(hostname, query_name, full_query, timeout_val):
     # increment the row index by 1
     worksheets[worksheet_name] = row_index + 1
 
-            
-workbook, df, user_selected_query_names, timeout_val = init()
+def run(user_selected_query_names, hostname_os_version_dict, timeout_val):        
+    workbook, df = init()
 
-try:
-    hostname_os_version_dict = extract_hostname_os_version_dict()
-    print("extracted data from Process.txt file")
-except:
-    print("FATEL ERROR - failed to extract data from Process.txt")
-    sys.exit()
+    # try:
+    #     hostname_os_version_dict = extract_hostname_os_version_dict()
+    #     print("extracted data from Process.txt file")
+    # except:
+    #     print("FATEL ERROR - failed to extract data from Process.txt")
+    #     sys.exit()
 
 
-# keep track of the worksheet next blank row index
-FIRST_ROW_INDEX = 1
-worksheets = {}
+    # keep track of the worksheet next blank row index
+    FIRST_ROW_INDEX = 1
+    worksheets = {}
 
-error_worksheet = workbook.add_worksheet("ERROR")
-error_worksheet.set_column(0, 10, 50)
+    error_worksheet = workbook.add_worksheet("ERROR")
+    error_worksheet.set_column(0, 10, 50)
 
-add_column_headers_to_worksheet(error_worksheet)
+    add_column_headers_to_worksheet(error_worksheet)
 
-# add the error worksheet to the worksheets dictionary
-worksheets["ERROR"] = FIRST_ROW_INDEX
+    # add the error worksheet to the worksheets dictionary
+    worksheets["ERROR"] = FIRST_ROW_INDEX
 
-# get answers for selected queries each server at a time
-for hostname in hostname_os_version_dict:
-    
-    if not hostname:
-        continue
+    # get answers for selected queries each server at a time
+    for hostname in hostname_os_version_dict:
+        
+        if not hostname:
+            continue
 
-    server_os_version = hostname_os_version_dict[hostname]
-    
-    # -----
-    try:
-        # Getting the list of univeral queries to execute
-        queries_to_execute = get_queries_to_execute(df, user_selected_query_names, "ALL")
-        print("Got list of univeral queries to execute")
-    except:
-        print("Could not find queries to execute for {}, please add queries to Excel" .format(hostname)) 
-        continue
-    
-    for query_name in queries_to_execute:
-        full_query = queries_to_execute[query_name]
-        if full_query != "NONE":
-            execute_query(hostname, query_name, full_query, timeout_val)
-    # -----
-    try:
-        # Getting the list of queries to execute (by OS version)
-        queries_to_execute = get_queries_to_execute(df, user_selected_query_names, server_os_version)
-        print("Got list of queries to execute")
-    except:
-        print("Could not find queries to execute for HOSTNAME - {}, OS VERSION - {}, please add queries to Excel" .format(hostname, server_os_version)) 
-        continue
-    
-    # loop through the keys of queries_to_execute dictionary
-    for query_name in queries_to_execute:
-        full_query = queries_to_execute[query_name]
-        if full_query != "NONE":
-            execute_query(hostname, query_name, full_query, timeout_val)
-    # ----
-      
-worksheet = workbook.add_worksheet("SERVER'S OS VERSION")
-worksheet.set_column(0, 100, 50)
-worksheet.write(0, 0, "SERVER NAME")
-worksheet.write(0, 1, "OS VERSION")
-i = 1
-for hostname in hostname_os_version_dict:
-    worksheet.write(i, 0, "{}" .format(hostname))
-    worksheet.write(i, 1, "{}" .format(hostname_os_version_dict[hostname]))
-    i += 1
+        server_os_version = hostname_os_version_dict[hostname]
+        
+        # -----
+        try:
+            # Getting the list of univeral queries to execute
+            queries_to_execute = get_queries_to_execute(df, user_selected_query_names, "ALL")
+            print("Got list of univeral queries to execute")
+        except:
+            print("Could not find queries to execute for {}, please add queries to Excel" .format(hostname)) 
+            continue
+        
+        for query_name in queries_to_execute:
+            full_query = queries_to_execute[query_name]
+            if full_query != "NONE":
+                execute_query(hostname, query_name, full_query, timeout_val, worksheets, workbook, FIRST_ROW_INDEX)
+        # -----
+        try:
+            # Getting the list of queries to execute (by OS version)
+            queries_to_execute = get_queries_to_execute(df, user_selected_query_names, server_os_version)
+            print("Got list of queries to execute")
+        except:
+            print("Could not find queries to execute for HOSTNAME - {}, OS VERSION - {}, please add queries to Excel" .format(hostname, server_os_version)) 
+            continue
+        
+        # loop through the keys of queries_to_execute dictionary
+        for query_name in queries_to_execute:
+            full_query = queries_to_execute[query_name]
+            if full_query != "NONE":
+                execute_query(hostname, query_name, full_query, timeout_val, worksheets, workbook, FIRST_ROW_INDEX)
+        # ----
+        
+    worksheet = workbook.add_worksheet("SERVER'S OS VERSION")
+    worksheet.set_column(0, 100, 50)
+    worksheet.write(0, 0, "SERVER NAME")
+    worksheet.write(0, 1, "OS VERSION")
+    i = 1
+    for hostname in hostname_os_version_dict:
+        worksheet.write(i, 0, "{}" .format(hostname))
+        worksheet.write(i, 1, "{}" .format(hostname_os_version_dict[hostname]))
+        i += 1
 
-# close workbook   
-workbook.close()
-print("FINISH - please look at query_answers.xlsx")
+    # close workbook   
+    workbook.close()
+    print("FINISH - please look at query_answers.xlsx")

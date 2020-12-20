@@ -1,5 +1,6 @@
 from tkinter import *
 from gui_functions import GUIFunctions
+from query_automation_tkinter import run
 
 class GUI():
 
@@ -11,6 +12,7 @@ class GUI():
 
         self.servers_checkbox_value = IntVar()
         self.queries_checkbox_value = IntVar()
+        self.timeout_selected = StringVar(master)
 
         self.bottomframe = Frame(master)
         self.bottomframe.pack(side=BOTTOM,expand=TRUE, fill=BOTH)        
@@ -22,6 +24,9 @@ class GUI():
 
         run_btn = Button(self.bottomframe, text="RUN", command=self.pressed_run_btn)
         run_btn.pack(fill=X)
+
+        self.server_dict_excel = self.functions.extract_manual_servers_dict()
+        self.server_dict_activedir = self.functions.extract_activedir_server_dict()
         
 
     def servers_checkbox_status(self):
@@ -41,17 +46,15 @@ class GUI():
     def left_panel_excel_btn(self):
 
         self.hostname_list.delete(0,'end')
-        server_list_excel = self.functions.extract_manual_servers_list()
         
-        for hostname in server_list_excel:
+        for hostname in self.server_dict_excel:
             self.hostname_list.insert(END, hostname)
 
     def left_panel_ad_btn(self):
 
         self.hostname_list.delete(0,'end')
-        server_list_activedir = self.functions.extract_activedir_server_list()
 
-        for hostname in server_list_activedir:
+        for hostname in self.server_dict_activedir:
             self.hostname_list.insert(END, hostname)
 
 
@@ -59,14 +62,10 @@ class GUI():
 
         self.hostname_list.delete(0,'end')
         
-        server_list_excel = self.functions.extract_manual_servers_list()
-
-        for hostname in server_list_excel:
+        for hostname in self.server_dict_excel:
             self.hostname_list.insert(END, hostname)
 
-        server_list_activedir = self.functions.extract_activedir_server_list()
-
-        for hostname in server_list_activedir:
+        for hostname in self.server_dict_activedir:
             self.hostname_list.insert(END, hostname)
 
 
@@ -79,17 +78,43 @@ class GUI():
             self.query_list.insert(END, query)
 
     def pressed_run_btn(self):
-
-        server_values = [self.hostname_list.get(idx) for idx in self.hostname_list.curselection()]
-        query_values = [self.query_list.get(idx) for idx in self.query_list.curselection()]
-        print(server_values)
-        print(query_values)
-        # toplevel = Toplevel()
-        # toplevel.geometry("200x150")
-        # toplevel.title("Result Location")
-        # label1 = Label(toplevel, text="test", height=0, width=100)
-        # label1.pack()
+        from tkinter import messagebox
+        selected_server = [self.hostname_list.get(idx) for idx in self.hostname_list.curselection()]
+        selected_query = [self.query_list.get(idx) for idx in self.query_list.curselection()]
+        print(selected_server)
+        print(selected_query)
         
+        try:
+            timeout_val = float(self.timeout_selected.get())
+            print(timeout_val)
+        except:
+            self.timeout_entry.delete(0, 'end')
+            messagebox.showerror("error", "TIMEOUT value should be a number")
+        
+        
+        # Intersection between list and dict
+        temp1 = self.server_dict_excel.keys() & selected_server
+        temp2 = self.server_dict_activedir.keys() & selected_server
+         
+        excel_hostname_to_os_version_dict = {}
+        for item in self.server_dict_excel:
+            if item in temp1:
+                excel_hostname_to_os_version_dict[item] = self.server_dict_excel[item]
+
+        ad_hostname_to_os_version_dict = {}
+        for item in self.server_dict_activedir:
+            if item in temp2:
+                ad_hostname_to_os_version_dict[item] = self.server_dict_activedir[item]
+
+        final_dict = {**ad_hostname_to_os_version_dict, **excel_hostname_to_os_version_dict}
+        print(final_dict)
+        run(selected_query, final_dict, timeout_val)
+        try:
+            run(selected_query, final_dict, timeout_val)
+            messagebox.showinfo("SUCCESS","Finished executing queries on servers.\nAnswers at .\\query_answers.xlsx")
+
+        except:
+            print("ERROR")
         
     def create_left_panel(self, master):
         
@@ -113,13 +138,15 @@ class GUI():
 
 
     def create_right_panel(self, master):
-        # TODO
-        # fix entry
-        timeout_entry = Entry(self.topframe, text="TIMEOUT", width=3, font=10)
-        timeout_entry.pack(side=LEFT, padx=30) 
+        
+        password_label = Label(self.topframe, text="Enter Timeout Size:")
+        password_label.pack(side=LEFT)
+        
+        self.timeout_entry = Entry(self.topframe, width=3, font=10, textvariable=self.timeout_selected)
+        self.timeout_entry.pack(side=LEFT) 
 
-        right_btn = Button(self.topframe, text="Load Queries", command=self.right_panel_load_queries_btn)
-        right_btn.pack(side=RIGHT, padx=5)
+        load_queries_btn = Button(self.topframe, text="Load Queries", command=self.right_panel_load_queries_btn)
+        load_queries_btn.pack(side=RIGHT, padx=5)
         
         right_select_all_chk = Checkbutton(self.topframe,text="Select All Queries", padx=5, variable=self.queries_checkbox_value, command=self.queries_checkbox_status)
         right_select_all_chk.pack(side=RIGHT)
@@ -127,7 +154,7 @@ class GUI():
         scrollbar = Scrollbar(master,orient=VERTICAL)
         scrollbar.pack(side=RIGHT, fill=BOTH)
 
-        self.query_list = Listbox(root,height=29, width=40, yscrollcommand = scrollbar.set, exportselection=False)
+        self.query_list = Listbox(root,height=29, width=40, yscrollcommand = scrollbar.set, exportselection=False,selectmode=MULTIPLE)
         self.query_list.pack(side=RIGHT)
 
         scrollbar.config(command=self.query_list.yview)
