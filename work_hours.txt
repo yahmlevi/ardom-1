@@ -100,6 +100,8 @@
 17/12 - 14:30-22:30 (8 hrs)     - Fixed the bug Lior talked about and added the features he asked for in his latest Email. Other then that, kept studying the Tkinter library, and made a lot of progress with the GUI. (WEEKEND-Friday-18/12- 3 hrs) - added additional features Lior asked for in last Email, fixed another bug i had. 
 19/12 - 15:45-19:15 (3.5 hrs)   - Kept working on the GUI, made a lot of progress, basically finished the UI, just couple of twiks. Then need to connect the GUI to the functionality script, already did some adjusments so it should'nt take long.  
 20/12 - 11:00-16:00 (5 hrs)     - Kept working on the GUI, finished UI, then finished integration with functionality script, so basically finished project on my host - still need to test and run on Ardom's servers.  Zoom meeting with Lior, tried to run GUI on Ardom's server, fall because couldnt import tkinter, possibly Python installation problem, Lior said that Arik will take care of it. 
+11/1  - 10:30-16:00 (5.5 hrs)   - Went to Ardom's office in Yotvata, fixed with Arik the Tkinter problem, then executed GUI successfully on Ardom's server. Then Lior asked some more requasts as documented in my whatsapp conversation, worked on them and solved almost all requasts, accept the multiple choice in GUI lists, Tkinter offers some possibilities, not perfect for us but need to show Lior and ask what he prefers.  as for the first requirements - all of them are done successfully and runs on Ardom's servers.
+12/1  - 16:00-18:30 (2.5 hrs)   - Added functionality like Lior asked and sent via Email.  Took a bit time because code's architecture was not supportive of that feature. 
 
 
 GUI:

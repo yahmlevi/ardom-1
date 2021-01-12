@@ -1,6 +1,7 @@
 from tkinter import *
 from gui_functions import GUIFunctions
-from query_automation_tkinter import run
+from query_automation_tkinter import run, init
+import os
 
 class GUI():
 
@@ -27,7 +28,11 @@ class GUI():
 
         self.server_dict_excel = self.functions.extract_manual_servers_dict()
         self.server_dict_activedir = self.functions.extract_activedir_server_dict()
-        
+
+        self.label1 = Label(self.bottomframe, text = "Waiting To RUN")
+        self.label1.pack()
+
+        self.workbook, self.df, self.xl_answers_path = init()        
 
     def servers_checkbox_status(self):
 
@@ -79,6 +84,10 @@ class GUI():
 
     def pressed_run_btn(self):
         from tkinter import messagebox
+        #------------------
+        self.label1.config(text = "RUNNING...")
+        self.label1.update_idletasks()
+        #------------------
         selected_server = [self.hostname_list.get(idx) for idx in self.hostname_list.curselection()]
         selected_query = [self.query_list.get(idx) for idx in self.query_list.curselection()]
         print(selected_server)
@@ -108,11 +117,16 @@ class GUI():
 
         final_dict = {**ad_hostname_to_os_version_dict, **excel_hostname_to_os_version_dict}
         print(final_dict)
-        run(selected_query, final_dict, timeout_val)
-        try:
-            run(selected_query, final_dict, timeout_val)
-            messagebox.showinfo("SUCCESS","Finished executing queries on servers.\nAnswers at .\\query_answers.xlsx")
+        #------------------
+        self.label1.config(text = "DONE")
+        #------------------
 
+        try:
+            run(self.workbook, self.df, selected_query, final_dict, timeout_val)
+            messagebox.showinfo("SUCCESS","Finished executing queries on servers.\nProceed to open .\\query_answers.xlsx")
+            current_dir = os.getcwd()
+            current_dir.replace('\\','\\\\')
+            os.system('start excel.exe {}' .format(current_dir + self.xl_answers_path))
         except:
             print("ERROR")
         
@@ -132,6 +146,7 @@ class GUI():
         scrollbar.pack(side=LEFT, fill=BOTH)
 
         self.hostname_list = Listbox(root, yscrollcommand=scrollbar.set,selectmode=MULTIPLE, exportselection=False)
+        #self.hostname_list = Listbox(root, yscrollcommand=scrollbar.set,selectmode="extended", exportselection=False)
         self.hostname_list.pack(side=LEFT, expand = True, fill=BOTH)
 
         scrollbar.config(command=self.hostname_list.yview)

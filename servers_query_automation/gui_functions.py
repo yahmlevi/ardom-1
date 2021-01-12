@@ -32,14 +32,14 @@ class GUIFunctions(object):
         self.hostname_os_version_dict = {}
 
         #---------------------------------------------
-        # import subprocess
-        # query = "Import-module activedirectory; Get-ADComputer -Filter 'Name -like \"*\"' -searchbase \"cn=computers, dc=ardomnet, dc=co, dc=il\" -Properties OperatingSystem, IPv4Address | sort-object name"
-        # p = subprocess.Popen(["powershell.exe", '{}'.format(query) ], stdout=subprocess.PIPE)
-        # res = p.communicate()
-        # batches = res[0].decode("utf-8").split("DistinguishedName")
-        with open("Process.txt") as fp:
-            temp = fp.read()
-            batches = temp.split("DistinguishedName")
+        import subprocess
+        query = "Import-module activedirectory; Get-ADComputer -Filter 'Name -like \"*\"' -searchbase \"cn=computers, dc=ardomnet, dc=co, dc=il\" -Properties OperatingSystem, IPv4Address | sort-object name"
+        p = subprocess.Popen(["powershell.exe", '{}'.format(query) ], stdout=subprocess.PIPE)
+        res = p.communicate()
+        batches = res[0].decode("utf-8").split("DistinguishedName")
+        # with open("Process.txt") as fp:
+        #     temp = fp.read()
+        #     batches = temp.split("DistinguishedName")
         #---------------------------------------------
         
         temp_list = []

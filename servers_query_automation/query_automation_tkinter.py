@@ -6,20 +6,27 @@ import re
 import subprocess
 import sys
 from datetime import date
+import re
 
 
 def init():
     
     # create handle to write to Excel
     today_date = date.today()
-    xl_answers_path = ".\query_answers_{}.xlsx" .format(today_date)
+
+    hour = pd.datetime.now().hour
+    minute = pd.datetime.now().minute
+    second = pd.datetime.now().second
+
+    xl_answers_path = ".\query_answers_{}_time-{}.{}.{}.xlsx" .format(today_date, hour, minute, second)
+    #xl_answers_path = ".\query_answers_{}.xlsx" .format(today_date)
     workbook = xlsxwriter.Workbook(xl_answers_path)
 
     # # create handle to read Excel
     xl_query_to_os_path = ".\queries.xlsx"
     df = pd.read_excel(xl_query_to_os_path)
 
-    return workbook, df
+    return workbook, df, xl_answers_path
 
 
 def execute_query_on_server(query, query_type, hostname, timeout_val):
@@ -125,6 +132,15 @@ def add_column_headers_to_worksheet(worksheet):
     worksheet.write(0, 1, "QUERY")
     worksheet.write(0, 2, "RESULT")
 
+def listToString(s):  
+    # initialize an empty string 
+    str1 = ""  
+    # traverse in the string   
+    for ele in s:  
+        str1 += ele   
+    # return string   
+    return str1  
+
 def clean_query(dirty_query, hostname):
     temp = dirty_query.split("-")
     
@@ -140,12 +156,17 @@ def clean_query(dirty_query, hostname):
     if query_type == "NONE":
         query = "NONE"
     else:
-        query = temp[1].strip()
+        #query = temp[1:].strip()
+        query = re.split('(-)', dirty_query)
+        print("TEST - ", query)
+        print("TEST0.5 - ", query[2:])
+        query = listToString(query[2:])
+        print("TEST1 - ", query)
+        query = query.strip()
         query = query.replace("{{dns}}", hostname)
         query = query.replace("\\\\", "\\")
 
     return query, query_type
-
 
 def execute_query(hostname, query_name, full_query, timeout_val, worksheets, workbook, FIRST_ROW_INDEX):
     query, query_type = clean_query(full_query, hostname)
@@ -178,8 +199,8 @@ def execute_query(hostname, query_name, full_query, timeout_val, worksheets, wor
     # increment the row index by 1
     worksheets[worksheet_name] = row_index + 1
 
-def run(user_selected_query_names, hostname_os_version_dict, timeout_val):        
-    workbook, df = init()
+def run(workbook, df, user_selected_query_names, hostname_os_version_dict, timeout_val):        
+    # workbook, df = init()
 
     # try:
     #     hostname_os_version_dict = extract_hostname_os_version_dict()
