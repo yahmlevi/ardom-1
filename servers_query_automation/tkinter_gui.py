@@ -32,7 +32,7 @@ class GUI():
         self.label1 = Label(self.bottomframe, text = "Waiting To RUN")
         self.label1.pack()
 
-        self.workbook, self.df, self.xl_answers_path = init()        
+        self.df = init()        
 
     def servers_checkbox_status(self):
 
@@ -122,11 +122,11 @@ class GUI():
         #------------------
 
         try:
-            run(self.workbook, self.df, selected_query, final_dict, timeout_val)
+            xl_answers_path = run(self.df, selected_query, final_dict, timeout_val)
             messagebox.showinfo("SUCCESS","Finished executing queries on servers.\nProceed to open .\\query_answers.xlsx")
             current_dir = os.getcwd()
             current_dir.replace('\\','\\\\')
-            os.system('start excel.exe {}' .format(current_dir + self.xl_answers_path))
+            os.system('start excel.exe {}' .format(current_dir + xl_answers_path))
         except:
             print("ERROR")
         

@@ -11,22 +11,23 @@ import re
 
 def init():
     
-    # create handle to write to Excel
-    today_date = date.today()
+    # # create handle to write to Excel
+    # today_date = date.today()
 
-    hour = pd.datetime.now().hour
-    minute = pd.datetime.now().minute
-    second = pd.datetime.now().second
+    # hour = pd.datetime.now().hour
+    # minute = pd.datetime.now().minute
+    # second = pd.datetime.now().second
 
-    xl_answers_path = ".\query_answers_{}_time-{}.{}.{}.xlsx" .format(today_date, hour, minute, second)
-    #xl_answers_path = ".\query_answers_{}.xlsx" .format(today_date)
-    workbook = xlsxwriter.Workbook(xl_answers_path)
+    # xl_answers_path = ".\query_answers_{}_time-{}.{}.{}.xlsx" .format(today_date, hour, minute, second)
+    # #xl_answers_path = ".\query_answers_{}.xlsx" .format(today_date)
+    # workbook = xlsxwriter.Workbook(xl_answers_path)
 
     # # create handle to read Excel
     xl_query_to_os_path = ".\queries.xlsx"
     df = pd.read_excel(xl_query_to_os_path)
 
-    return workbook, df, xl_answers_path
+    # return workbook, df, xl_answers_path
+    return df
 
 
 def execute_query_on_server(query, query_type, hostname, timeout_val):
@@ -158,10 +159,7 @@ def clean_query(dirty_query, hostname):
     else:
         #query = temp[1:].strip()
         query = re.split('(-)', dirty_query)
-        print("TEST - ", query)
-        print("TEST0.5 - ", query[2:])
         query = listToString(query[2:])
-        print("TEST1 - ", query)
         query = query.strip()
         query = query.replace("{{dns}}", hostname)
         query = query.replace("\\\\", "\\")
@@ -199,8 +197,19 @@ def execute_query(hostname, query_name, full_query, timeout_val, worksheets, wor
     # increment the row index by 1
     worksheets[worksheet_name] = row_index + 1
 
-def run(workbook, df, user_selected_query_names, hostname_os_version_dict, timeout_val):        
+#def run(workbook, df, user_selected_query_names, hostname_os_version_dict, timeout_val):
+def run(df, user_selected_query_names, hostname_os_version_dict, timeout_val):        
     # workbook, df = init()
+
+    # create handle to write to Excel
+    today_date = date.today()
+
+    hour = pd.datetime.now().hour
+    minute = pd.datetime.now().minute
+    second = pd.datetime.now().second
+
+    xl_answers_path = ".\query_answers_{}_time-{}.{}.{}.xlsx" .format(today_date, hour, minute, second)
+    workbook = xlsxwriter.Workbook(xl_answers_path)
 
     # try:
     #     hostname_os_version_dict = extract_hostname_os_version_dict()
@@ -209,19 +218,15 @@ def run(workbook, df, user_selected_query_names, hostname_os_version_dict, timeo
     #     print("FATEL ERROR - failed to extract data from Process.txt")
     #     sys.exit()
 
-
     # keep track of the worksheet next blank row index
     FIRST_ROW_INDEX = 1
     worksheets = {}
-
     error_worksheet = workbook.add_worksheet("ERROR")
     error_worksheet.set_column(0, 10, 50)
-
     add_column_headers_to_worksheet(error_worksheet)
 
     # add the error worksheet to the worksheets dictionary
     worksheets["ERROR"] = FIRST_ROW_INDEX
-
     # get answers for selected queries each server at a time
     for hostname in hostname_os_version_dict:
         
@@ -238,7 +243,6 @@ def run(workbook, df, user_selected_query_names, hostname_os_version_dict, timeo
         except:
             print("Could not find queries to execute for {}, please add queries to Excel" .format(hostname)) 
             continue
-        
         for query_name in queries_to_execute:
             full_query = queries_to_execute[query_name]
             if full_query != "NONE":
@@ -251,14 +255,12 @@ def run(workbook, df, user_selected_query_names, hostname_os_version_dict, timeo
         except:
             print("Could not find queries to execute for HOSTNAME - {}, OS VERSION - {}, please add queries to Excel" .format(hostname, server_os_version)) 
             continue
-        
         # loop through the keys of queries_to_execute dictionary
         for query_name in queries_to_execute:
             full_query = queries_to_execute[query_name]
             if full_query != "NONE":
                 execute_query(hostname, query_name, full_query, timeout_val, worksheets, workbook, FIRST_ROW_INDEX)
         # ----
-        
     worksheet = workbook.add_worksheet("SERVER'S OS VERSION")
     worksheet.set_column(0, 100, 50)
     worksheet.write(0, 0, "SERVER NAME")
@@ -272,3 +274,4 @@ def run(workbook, df, user_selected_query_names, hostname_os_version_dict, timeo
     # close workbook   
     workbook.close()
     print("FINISH - please look at query_answers.xlsx")
+    return xl_answers_path
